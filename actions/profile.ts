@@ -3,7 +3,7 @@ const { WebClient } = require('@slack/web-api')
 import { getOrCreateUser } from '../userManager'
 import message from '../messages/profile'
 
-slackInteractions.action({ blockId: 'profile_actions', actionId: 'my_profile'}, async (payload, respond) => {
+slackInteractions.action({ blockId: 'index_actions', actionId: 'my_profile'}, async (payload, respond) => {
   console.log({payload})
   console.log(payload.actions)
 

@@ -15,7 +15,7 @@ export default {
 		"elements": [
 			{
         "type": "users_select",
-        "action_id": "select_user",
+				"action_id": "select_user",
 				"placeholder": {
 					"type": "plain_text",
 					"text": "Select a user",

@@ -9,7 +9,7 @@ export default {
     },
     {
       "type": "actions",
-      "block_id": "profile_actions",
+      "block_id": "index_actions",
       "elements": [
         {
           "type": "button",

@@ -23,6 +23,10 @@ app.post('/slack/commands', bodyParser.urlencoded({extended: false}), slashComma
 app.get('/auth', oauth.authPage)
 app.get('/auth/redirect', oauth.redirect)
 
+app.use(function (err, req, res, next) {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
 const port = process.env.PORT || 3000
 
 http.createServer(app).listen(port, () => {

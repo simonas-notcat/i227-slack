@@ -2,21 +2,21 @@ export default (user) => ({
   delete_original: true,
 	blocks: [
     {
-      "type": "context",
-      "elements": [
-        {
-          "type": "plain_text",
-          "emoji": true,
-          "text": "DIDass: " + user.default_did
-        }
-      ]
-    },
-    {
       "type": "section",
       "text": {
         "type": "mrkdwn",
         "text": "Here is your profile summary from all available sources." 
       }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "plain_text",
+          "emoji": true, 
+          "text":  user.default_did
+        }
+      ]
     },
     {
       "type": "divider"
