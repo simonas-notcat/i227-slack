@@ -2,7 +2,11 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateInstallation {
+export const typeDefs = /* GraphQL */ `type AggregateDid {
+  count: Int!
+}
+
+type AggregateInstallation {
   count: Int!
 }
 
@@ -12,6 +16,216 @@ type AggregateUser {
 
 type BatchPayload {
   count: Long!
+}
+
+type Did {
+  id: ID!
+  did: String!
+  privateKey: String
+}
+
+type DidConnection {
+  pageInfo: PageInfo!
+  edges: [DidEdge]!
+  aggregate: AggregateDid!
+}
+
+input DidCreateInput {
+  id: ID
+  did: String!
+  privateKey: String
+}
+
+input DidCreateManyInput {
+  create: [DidCreateInput!]
+  connect: [DidWhereUniqueInput!]
+}
+
+type DidEdge {
+  node: Did!
+  cursor: String!
+}
+
+enum DidOrderByInput {
+  id_ASC
+  id_DESC
+  did_ASC
+  did_DESC
+  privateKey_ASC
+  privateKey_DESC
+}
+
+type DidPreviousValues {
+  id: ID!
+  did: String!
+  privateKey: String
+}
+
+input DidScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  did: String
+  did_not: String
+  did_in: [String!]
+  did_not_in: [String!]
+  did_lt: String
+  did_lte: String
+  did_gt: String
+  did_gte: String
+  did_contains: String
+  did_not_contains: String
+  did_starts_with: String
+  did_not_starts_with: String
+  did_ends_with: String
+  did_not_ends_with: String
+  privateKey: String
+  privateKey_not: String
+  privateKey_in: [String!]
+  privateKey_not_in: [String!]
+  privateKey_lt: String
+  privateKey_lte: String
+  privateKey_gt: String
+  privateKey_gte: String
+  privateKey_contains: String
+  privateKey_not_contains: String
+  privateKey_starts_with: String
+  privateKey_not_starts_with: String
+  privateKey_ends_with: String
+  privateKey_not_ends_with: String
+  AND: [DidScalarWhereInput!]
+  OR: [DidScalarWhereInput!]
+  NOT: [DidScalarWhereInput!]
+}
+
+type DidSubscriptionPayload {
+  mutation: MutationType!
+  node: Did
+  updatedFields: [String!]
+  previousValues: DidPreviousValues
+}
+
+input DidSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DidWhereInput
+  AND: [DidSubscriptionWhereInput!]
+  OR: [DidSubscriptionWhereInput!]
+  NOT: [DidSubscriptionWhereInput!]
+}
+
+input DidUpdateDataInput {
+  did: String
+  privateKey: String
+}
+
+input DidUpdateInput {
+  did: String
+  privateKey: String
+}
+
+input DidUpdateManyDataInput {
+  did: String
+  privateKey: String
+}
+
+input DidUpdateManyInput {
+  create: [DidCreateInput!]
+  update: [DidUpdateWithWhereUniqueNestedInput!]
+  upsert: [DidUpsertWithWhereUniqueNestedInput!]
+  delete: [DidWhereUniqueInput!]
+  connect: [DidWhereUniqueInput!]
+  set: [DidWhereUniqueInput!]
+  disconnect: [DidWhereUniqueInput!]
+  deleteMany: [DidScalarWhereInput!]
+  updateMany: [DidUpdateManyWithWhereNestedInput!]
+}
+
+input DidUpdateManyMutationInput {
+  did: String
+  privateKey: String
+}
+
+input DidUpdateManyWithWhereNestedInput {
+  where: DidScalarWhereInput!
+  data: DidUpdateManyDataInput!
+}
+
+input DidUpdateWithWhereUniqueNestedInput {
+  where: DidWhereUniqueInput!
+  data: DidUpdateDataInput!
+}
+
+input DidUpsertWithWhereUniqueNestedInput {
+  where: DidWhereUniqueInput!
+  update: DidUpdateDataInput!
+  create: DidCreateInput!
+}
+
+input DidWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  did: String
+  did_not: String
+  did_in: [String!]
+  did_not_in: [String!]
+  did_lt: String
+  did_lte: String
+  did_gt: String
+  did_gte: String
+  did_contains: String
+  did_not_contains: String
+  did_starts_with: String
+  did_not_starts_with: String
+  did_ends_with: String
+  did_not_ends_with: String
+  privateKey: String
+  privateKey_not: String
+  privateKey_in: [String!]
+  privateKey_not_in: [String!]
+  privateKey_lt: String
+  privateKey_lte: String
+  privateKey_gt: String
+  privateKey_gte: String
+  privateKey_contains: String
+  privateKey_not_contains: String
+  privateKey_starts_with: String
+  privateKey_not_starts_with: String
+  privateKey_ends_with: String
+  privateKey_not_ends_with: String
+  AND: [DidWhereInput!]
+  OR: [DidWhereInput!]
+  NOT: [DidWhereInput!]
+}
+
+input DidWhereUniqueInput {
+  id: ID
+  did: String
 }
 
 type Installation {
@@ -198,6 +412,12 @@ input InstallationWhereUniqueInput {
 scalar Long
 
 type Mutation {
+  createDid(data: DidCreateInput!): Did!
+  updateDid(data: DidUpdateInput!, where: DidWhereUniqueInput!): Did
+  updateManyDids(data: DidUpdateManyMutationInput!, where: DidWhereInput): BatchPayload!
+  upsertDid(where: DidWhereUniqueInput!, create: DidCreateInput!, update: DidUpdateInput!): Did!
+  deleteDid(where: DidWhereUniqueInput!): Did
+  deleteManyDids(where: DidWhereInput): BatchPayload!
   createInstallation(data: InstallationCreateInput!): Installation!
   updateInstallation(data: InstallationUpdateInput!, where: InstallationWhereUniqueInput!): Installation
   updateManyInstallations(data: InstallationUpdateManyMutationInput!, where: InstallationWhereInput): BatchPayload!
@@ -230,6 +450,9 @@ type PageInfo {
 }
 
 type Query {
+  did(where: DidWhereUniqueInput!): Did
+  dids(where: DidWhereInput, orderBy: DidOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Did]!
+  didsConnection(where: DidWhereInput, orderBy: DidOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DidConnection!
   installation(where: InstallationWhereUniqueInput!): Installation
   installations(where: InstallationWhereInput, orderBy: InstallationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Installation]!
   installationsConnection(where: InstallationWhereInput, orderBy: InstallationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InstallationConnection!
@@ -240,6 +463,7 @@ type Query {
 }
 
 type Subscription {
+  did(where: DidSubscriptionWhereInput): DidSubscriptionPayload
   installation(where: InstallationSubscriptionWhereInput): InstallationSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -248,6 +472,8 @@ type User {
   id: ID!
   user_id: String!
   team_id: String!
+  default_did: String!
+  dids(where: DidWhereInput, orderBy: DidOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Did!]
 }
 
 type UserConnection {
@@ -260,6 +486,8 @@ input UserCreateInput {
   id: ID
   user_id: String!
   team_id: String!
+  default_did: String!
+  dids: DidCreateManyInput
 }
 
 type UserEdge {
@@ -274,12 +502,15 @@ enum UserOrderByInput {
   user_id_DESC
   team_id_ASC
   team_id_DESC
+  default_did_ASC
+  default_did_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   user_id: String!
   team_id: String!
+  default_did: String!
 }
 
 type UserSubscriptionPayload {
@@ -303,11 +534,14 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   user_id: String
   team_id: String
+  default_did: String
+  dids: DidUpdateManyInput
 }
 
 input UserUpdateManyMutationInput {
   user_id: String
   team_id: String
+  default_did: String
 }
 
 input UserWhereInput {
@@ -353,6 +587,23 @@ input UserWhereInput {
   team_id_not_starts_with: String
   team_id_ends_with: String
   team_id_not_ends_with: String
+  default_did: String
+  default_did_not: String
+  default_did_in: [String!]
+  default_did_not_in: [String!]
+  default_did_lt: String
+  default_did_lte: String
+  default_did_gt: String
+  default_did_gte: String
+  default_did_contains: String
+  default_did_not_contains: String
+  default_did_starts_with: String
+  default_did_not_starts_with: String
+  default_did_ends_with: String
+  default_did_not_ends_with: String
+  dids_every: DidWhereInput
+  dids_some: DidWhereInput
+  dids_none: DidWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

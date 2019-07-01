@@ -11,4 +11,12 @@ type User {
   id: ID! @id
   user_id: String!
   team_id: String!
+  default_did: String!
+  dids: [Did!]!
+}
+
+type Did {
+  id: ID! @id
+  did: String! @unique
+  privateKey: String
 }

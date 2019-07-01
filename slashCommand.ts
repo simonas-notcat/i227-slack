@@ -1,11 +1,13 @@
 
+import Help from './messages/help'
+
 export default (req, res, next) => {
-  if (req.body.command === '/interactive-example') {
+  if (req.body.command === '/devbot') {
     const type = req.body.text.split(' ')[0];
     if (type === 'button') {
       res.json(interactiveButtons);
     } else {
-      res.send('Use this command followed by `button`, `menu`, or `dialog`.');
+      res.json(Help);
     }
   } else {
     next();

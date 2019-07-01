@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  did: (where?: DidWhereInput) => Promise<boolean>;
   installation: (where?: InstallationWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -39,6 +40,25 @@ export interface Prisma {
    * Queries
    */
 
+  did: (where: DidWhereUniqueInput) => DidNullablePromise;
+  dids: (args?: {
+    where?: DidWhereInput;
+    orderBy?: DidOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Did>;
+  didsConnection: (args?: {
+    where?: DidWhereInput;
+    orderBy?: DidOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => DidConnectionPromise;
   installation: (
     where: InstallationWhereUniqueInput
   ) => InstallationNullablePromise;
@@ -85,6 +105,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createDid: (data: DidCreateInput) => DidPromise;
+  updateDid: (args: {
+    data: DidUpdateInput;
+    where: DidWhereUniqueInput;
+  }) => DidPromise;
+  updateManyDids: (args: {
+    data: DidUpdateManyMutationInput;
+    where?: DidWhereInput;
+  }) => BatchPayloadPromise;
+  upsertDid: (args: {
+    where: DidWhereUniqueInput;
+    create: DidCreateInput;
+    update: DidUpdateInput;
+  }) => DidPromise;
+  deleteDid: (where: DidWhereUniqueInput) => DidPromise;
+  deleteManyDids: (where?: DidWhereInput) => BatchPayloadPromise;
   createInstallation: (data: InstallationCreateInput) => InstallationPromise;
   updateInstallation: (args: {
     data: InstallationUpdateInput;
@@ -130,6 +166,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  did: (
+    where?: DidSubscriptionWhereInput
+  ) => DidSubscriptionPayloadSubscription;
   installation: (
     where?: InstallationSubscriptionWhereInput
   ) => InstallationSubscriptionPayloadSubscription;
@@ -145,6 +184,14 @@ export interface ClientConstructor<T> {
 /**
  * Types
  */
+
+export type DidOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "did_ASC"
+  | "did_DESC"
+  | "privateKey_ASC"
+  | "privateKey_DESC";
 
 export type InstallationOrderByInput =
   | "id_ASC"
@@ -166,43 +213,149 @@ export type UserOrderByInput =
   | "user_id_ASC"
   | "user_id_DESC"
   | "team_id_ASC"
-  | "team_id_DESC";
+  | "team_id_DESC"
+  | "default_did_ASC"
+  | "default_did_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface UserCreateInput {
+export interface DidUpdateInput {
+  did?: Maybe<String>;
+  privateKey?: Maybe<String>;
+}
+
+export type DidWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  did?: Maybe<String>;
+}>;
+
+export interface DidUpdateDataInput {
+  did?: Maybe<String>;
+  privateKey?: Maybe<String>;
+}
+
+export interface InstallationCreateInput {
   id?: Maybe<ID_Input>;
+  access_token: String;
+  scope: String;
   user_id: String;
+  team_name: String;
   team_id: String;
+}
+
+export interface UserWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user_id?: Maybe<String>;
+  user_id_not?: Maybe<String>;
+  user_id_in?: Maybe<String[] | String>;
+  user_id_not_in?: Maybe<String[] | String>;
+  user_id_lt?: Maybe<String>;
+  user_id_lte?: Maybe<String>;
+  user_id_gt?: Maybe<String>;
+  user_id_gte?: Maybe<String>;
+  user_id_contains?: Maybe<String>;
+  user_id_not_contains?: Maybe<String>;
+  user_id_starts_with?: Maybe<String>;
+  user_id_not_starts_with?: Maybe<String>;
+  user_id_ends_with?: Maybe<String>;
+  user_id_not_ends_with?: Maybe<String>;
+  team_id?: Maybe<String>;
+  team_id_not?: Maybe<String>;
+  team_id_in?: Maybe<String[] | String>;
+  team_id_not_in?: Maybe<String[] | String>;
+  team_id_lt?: Maybe<String>;
+  team_id_lte?: Maybe<String>;
+  team_id_gt?: Maybe<String>;
+  team_id_gte?: Maybe<String>;
+  team_id_contains?: Maybe<String>;
+  team_id_not_contains?: Maybe<String>;
+  team_id_starts_with?: Maybe<String>;
+  team_id_not_starts_with?: Maybe<String>;
+  team_id_ends_with?: Maybe<String>;
+  team_id_not_ends_with?: Maybe<String>;
+  default_did?: Maybe<String>;
+  default_did_not?: Maybe<String>;
+  default_did_in?: Maybe<String[] | String>;
+  default_did_not_in?: Maybe<String[] | String>;
+  default_did_lt?: Maybe<String>;
+  default_did_lte?: Maybe<String>;
+  default_did_gt?: Maybe<String>;
+  default_did_gte?: Maybe<String>;
+  default_did_contains?: Maybe<String>;
+  default_did_not_contains?: Maybe<String>;
+  default_did_starts_with?: Maybe<String>;
+  default_did_not_starts_with?: Maybe<String>;
+  default_did_ends_with?: Maybe<String>;
+  default_did_not_ends_with?: Maybe<String>;
+  dids_every?: Maybe<DidWhereInput>;
+  dids_some?: Maybe<DidWhereInput>;
+  dids_none?: Maybe<DidWhereInput>;
+  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
+  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
+  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
+
+export interface DidUpdateManyMutationInput {
+  did?: Maybe<String>;
+  privateKey?: Maybe<String>;
+}
+
+export interface DidUpdateWithWhereUniqueNestedInput {
+  where: DidWhereUniqueInput;
+  data: DidUpdateDataInput;
+}
+
+export interface DidSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<DidWhereInput>;
+  AND?: Maybe<DidSubscriptionWhereInput[] | DidSubscriptionWhereInput>;
+  OR?: Maybe<DidSubscriptionWhereInput[] | DidSubscriptionWhereInput>;
+  NOT?: Maybe<DidSubscriptionWhereInput[] | DidSubscriptionWhereInput>;
+}
+
+export interface DidUpdateManyInput {
+  create?: Maybe<DidCreateInput[] | DidCreateInput>;
+  update?: Maybe<
+    DidUpdateWithWhereUniqueNestedInput[] | DidUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    DidUpsertWithWhereUniqueNestedInput[] | DidUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<DidWhereUniqueInput[] | DidWhereUniqueInput>;
+  connect?: Maybe<DidWhereUniqueInput[] | DidWhereUniqueInput>;
+  set?: Maybe<DidWhereUniqueInput[] | DidWhereUniqueInput>;
+  disconnect?: Maybe<DidWhereUniqueInput[] | DidWhereUniqueInput>;
+  deleteMany?: Maybe<DidScalarWhereInput[] | DidScalarWhereInput>;
+  updateMany?: Maybe<
+    DidUpdateManyWithWhereNestedInput[] | DidUpdateManyWithWhereNestedInput
+  >;
 }
 
 export type InstallationWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface InstallationUpdateInput {
-  access_token?: Maybe<String>;
-  scope?: Maybe<String>;
+export interface UserUpdateInput {
   user_id?: Maybe<String>;
-  team_name?: Maybe<String>;
   team_id?: Maybe<String>;
-}
-
-export interface InstallationSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<InstallationWhereInput>;
-  AND?: Maybe<
-    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
-  >;
+  default_did?: Maybe<String>;
+  dids?: Maybe<DidUpdateManyInput>;
 }
 
 export interface InstallationWhereInput {
@@ -295,7 +448,86 @@ export interface InstallationWhereInput {
   NOT?: Maybe<InstallationWhereInput[] | InstallationWhereInput>;
 }
 
-export interface UserWhereInput {
+export interface DidCreateManyInput {
+  create?: Maybe<DidCreateInput[] | DidCreateInput>;
+  connect?: Maybe<DidWhereUniqueInput[] | DidWhereUniqueInput>;
+}
+
+export interface DidUpdateManyWithWhereNestedInput {
+  where: DidScalarWhereInput;
+  data: DidUpdateManyDataInput;
+}
+
+export interface DidUpsertWithWhereUniqueNestedInput {
+  where: DidWhereUniqueInput;
+  update: DidUpdateDataInput;
+  create: DidCreateInput;
+}
+
+export interface InstallationSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<InstallationWhereInput>;
+  AND?: Maybe<
+    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
+  >;
+}
+
+export interface DidCreateInput {
+  id?: Maybe<ID_Input>;
+  did: String;
+  privateKey?: Maybe<String>;
+}
+
+export interface DidUpdateManyDataInput {
+  did?: Maybe<String>;
+  privateKey?: Maybe<String>;
+}
+
+export interface InstallationUpdateInput {
+  access_token?: Maybe<String>;
+  scope?: Maybe<String>;
+  user_id?: Maybe<String>;
+  team_name?: Maybe<String>;
+  team_id?: Maybe<String>;
+}
+
+export interface InstallationUpdateManyMutationInput {
+  access_token?: Maybe<String>;
+  scope?: Maybe<String>;
+  user_id?: Maybe<String>;
+  team_name?: Maybe<String>;
+  team_id?: Maybe<String>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  user_id: String;
+  team_id: String;
+  default_did: String;
+  dids?: Maybe<DidCreateManyInput>;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+}
+
+export interface DidWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -310,187 +542,99 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  user_id?: Maybe<String>;
-  user_id_not?: Maybe<String>;
-  user_id_in?: Maybe<String[] | String>;
-  user_id_not_in?: Maybe<String[] | String>;
-  user_id_lt?: Maybe<String>;
-  user_id_lte?: Maybe<String>;
-  user_id_gt?: Maybe<String>;
-  user_id_gte?: Maybe<String>;
-  user_id_contains?: Maybe<String>;
-  user_id_not_contains?: Maybe<String>;
-  user_id_starts_with?: Maybe<String>;
-  user_id_not_starts_with?: Maybe<String>;
-  user_id_ends_with?: Maybe<String>;
-  user_id_not_ends_with?: Maybe<String>;
-  team_id?: Maybe<String>;
-  team_id_not?: Maybe<String>;
-  team_id_in?: Maybe<String[] | String>;
-  team_id_not_in?: Maybe<String[] | String>;
-  team_id_lt?: Maybe<String>;
-  team_id_lte?: Maybe<String>;
-  team_id_gt?: Maybe<String>;
-  team_id_gte?: Maybe<String>;
-  team_id_contains?: Maybe<String>;
-  team_id_not_contains?: Maybe<String>;
-  team_id_starts_with?: Maybe<String>;
-  team_id_not_starts_with?: Maybe<String>;
-  team_id_ends_with?: Maybe<String>;
-  team_id_not_ends_with?: Maybe<String>;
-  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
-  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
-  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+  did?: Maybe<String>;
+  did_not?: Maybe<String>;
+  did_in?: Maybe<String[] | String>;
+  did_not_in?: Maybe<String[] | String>;
+  did_lt?: Maybe<String>;
+  did_lte?: Maybe<String>;
+  did_gt?: Maybe<String>;
+  did_gte?: Maybe<String>;
+  did_contains?: Maybe<String>;
+  did_not_contains?: Maybe<String>;
+  did_starts_with?: Maybe<String>;
+  did_not_starts_with?: Maybe<String>;
+  did_ends_with?: Maybe<String>;
+  did_not_ends_with?: Maybe<String>;
+  privateKey?: Maybe<String>;
+  privateKey_not?: Maybe<String>;
+  privateKey_in?: Maybe<String[] | String>;
+  privateKey_not_in?: Maybe<String[] | String>;
+  privateKey_lt?: Maybe<String>;
+  privateKey_lte?: Maybe<String>;
+  privateKey_gt?: Maybe<String>;
+  privateKey_gte?: Maybe<String>;
+  privateKey_contains?: Maybe<String>;
+  privateKey_not_contains?: Maybe<String>;
+  privateKey_starts_with?: Maybe<String>;
+  privateKey_not_starts_with?: Maybe<String>;
+  privateKey_ends_with?: Maybe<String>;
+  privateKey_not_ends_with?: Maybe<String>;
+  AND?: Maybe<DidWhereInput[] | DidWhereInput>;
+  OR?: Maybe<DidWhereInput[] | DidWhereInput>;
+  NOT?: Maybe<DidWhereInput[] | DidWhereInput>;
 }
 
-export interface InstallationCreateInput {
-  id?: Maybe<ID_Input>;
-  access_token: String;
-  scope: String;
-  user_id: String;
-  team_name: String;
-  team_id: String;
+export interface UserUpdateManyMutationInput {
+  user_id?: Maybe<String>;
+  team_id?: Maybe<String>;
+  default_did?: Maybe<String>;
 }
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface UserUpdateManyMutationInput {
-  user_id?: Maybe<String>;
-  team_id?: Maybe<String>;
-}
-
-export interface InstallationUpdateManyMutationInput {
-  access_token?: Maybe<String>;
-  scope?: Maybe<String>;
-  user_id?: Maybe<String>;
-  team_name?: Maybe<String>;
-  team_id?: Maybe<String>;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-}
-
-export interface UserUpdateInput {
-  user_id?: Maybe<String>;
-  team_id?: Maybe<String>;
+export interface DidScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  did?: Maybe<String>;
+  did_not?: Maybe<String>;
+  did_in?: Maybe<String[] | String>;
+  did_not_in?: Maybe<String[] | String>;
+  did_lt?: Maybe<String>;
+  did_lte?: Maybe<String>;
+  did_gt?: Maybe<String>;
+  did_gte?: Maybe<String>;
+  did_contains?: Maybe<String>;
+  did_not_contains?: Maybe<String>;
+  did_starts_with?: Maybe<String>;
+  did_not_starts_with?: Maybe<String>;
+  did_ends_with?: Maybe<String>;
+  did_not_ends_with?: Maybe<String>;
+  privateKey?: Maybe<String>;
+  privateKey_not?: Maybe<String>;
+  privateKey_in?: Maybe<String[] | String>;
+  privateKey_not_in?: Maybe<String[] | String>;
+  privateKey_lt?: Maybe<String>;
+  privateKey_lte?: Maybe<String>;
+  privateKey_gt?: Maybe<String>;
+  privateKey_gte?: Maybe<String>;
+  privateKey_contains?: Maybe<String>;
+  privateKey_not_contains?: Maybe<String>;
+  privateKey_starts_with?: Maybe<String>;
+  privateKey_not_starts_with?: Maybe<String>;
+  privateKey_ends_with?: Maybe<String>;
+  privateKey_not_ends_with?: Maybe<String>;
+  AND?: Maybe<DidScalarWhereInput[] | DidScalarWhereInput>;
+  OR?: Maybe<DidScalarWhereInput[] | DidScalarWhereInput>;
+  NOT?: Maybe<DidScalarWhereInput[] | DidScalarWhereInput>;
 }
 
 export interface NodeNode {
   id: ID_Output;
-}
-
-export interface UserEdge {
-  node: User;
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserPreviousValues {
-  id: ID_Output;
-  user_id: String;
-  team_id: String;
-}
-
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  user_id: () => Promise<String>;
-  team_id: () => Promise<String>;
-}
-
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  user_id: () => Promise<AsyncIterator<String>>;
-  team_id: () => Promise<AsyncIterator<String>>;
-}
-
-export interface InstallationConnection {
-  pageInfo: PageInfo;
-  edges: InstallationEdge[];
-}
-
-export interface InstallationConnectionPromise
-  extends Promise<InstallationConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<InstallationEdge>>() => T;
-  aggregate: <T = AggregateInstallationPromise>() => T;
-}
-
-export interface InstallationConnectionSubscription
-  extends Promise<AsyncIterator<InstallationConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<InstallationEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateInstallationSubscription>() => T;
-}
-
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
-}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
 }
 
 export interface InstallationSubscriptionPayload {
@@ -518,37 +662,6 @@ export interface InstallationSubscriptionPayloadSubscription
   previousValues: <T = InstallationPreviousValuesSubscription>() => T;
 }
 
-export interface InstallationPreviousValues {
-  id: ID_Output;
-  access_token: String;
-  scope: String;
-  user_id: String;
-  team_name: String;
-  team_id: String;
-}
-
-export interface InstallationPreviousValuesPromise
-  extends Promise<InstallationPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  access_token: () => Promise<String>;
-  scope: () => Promise<String>;
-  user_id: () => Promise<String>;
-  team_name: () => Promise<String>;
-  team_id: () => Promise<String>;
-}
-
-export interface InstallationPreviousValuesSubscription
-  extends Promise<AsyncIterator<InstallationPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  access_token: () => Promise<AsyncIterator<String>>;
-  scope: () => Promise<AsyncIterator<String>>;
-  user_id: () => Promise<AsyncIterator<String>>;
-  team_name: () => Promise<AsyncIterator<String>>;
-  team_id: () => Promise<AsyncIterator<String>>;
-}
-
 export interface InstallationEdge {
   node: Installation;
   cursor: String;
@@ -568,48 +681,71 @@ export interface InstallationEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface User {
+export interface UserPreviousValues {
   id: ID_Output;
   user_id: String;
   team_id: String;
+  default_did: String;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   user_id: () => Promise<String>;
   team_id: () => Promise<String>;
+  default_did: () => Promise<String>;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   user_id: () => Promise<AsyncIterator<String>>;
   team_id: () => Promise<AsyncIterator<String>>;
+  default_did: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserNullablePromise
-  extends Promise<User | null>,
+export interface InstallationConnection {
+  pageInfo: PageInfo;
+  edges: InstallationEdge[];
+}
+
+export interface InstallationConnectionPromise
+  extends Promise<InstallationConnection>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  user_id: () => Promise<String>;
-  team_id: () => Promise<String>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<InstallationEdge>>() => T;
+  aggregate: <T = AggregateInstallationPromise>() => T;
 }
 
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
+export interface InstallationConnectionSubscription
+  extends Promise<AsyncIterator<InstallationConnection>>,
     Fragmentable {
-  count: () => Promise<Int>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<InstallationEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateInstallationSubscription>() => T;
 }
 
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
+export interface DidConnection {
+  pageInfo: PageInfo;
+  edges: DidEdge[];
+}
+
+export interface DidConnectionPromise
+  extends Promise<DidConnection>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<DidEdge>>() => T;
+  aggregate: <T = AggregateDidPromise>() => T;
+}
+
+export interface DidConnectionSubscription
+  extends Promise<AsyncIterator<DidConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<DidEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateDidSubscription>() => T;
 }
 
 export interface Installation {
@@ -654,6 +790,121 @@ export interface InstallationNullablePromise
   team_id: () => Promise<String>;
 }
 
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateDid {
+  count: Int;
+}
+
+export interface AggregateDidPromise
+  extends Promise<AggregateDid>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateDidSubscription
+  extends Promise<AsyncIterator<AggregateDid>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface DidEdge {
+  node: Did;
+  cursor: String;
+}
+
+export interface DidEdgePromise extends Promise<DidEdge>, Fragmentable {
+  node: <T = DidPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface DidEdgeSubscription
+  extends Promise<AsyncIterator<DidEdge>>,
+    Fragmentable {
+  node: <T = DidSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Did {
+  id: ID_Output;
+  did: String;
+  privateKey?: String;
+}
+
+export interface DidPromise extends Promise<Did>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  did: () => Promise<String>;
+  privateKey: () => Promise<String>;
+}
+
+export interface DidSubscription
+  extends Promise<AsyncIterator<Did>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  did: () => Promise<AsyncIterator<String>>;
+  privateKey: () => Promise<AsyncIterator<String>>;
+}
+
+export interface DidNullablePromise extends Promise<Did | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  did: () => Promise<String>;
+  privateKey: () => Promise<String>;
+}
+
+export interface AggregateInstallation {
+  count: Int;
+}
+
+export interface AggregateInstallationPromise
+  extends Promise<AggregateInstallation>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateInstallationSubscription
+  extends Promise<AsyncIterator<AggregateInstallation>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -679,6 +930,84 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
+export interface DidPreviousValues {
+  id: ID_Output;
+  did: String;
+  privateKey?: String;
+}
+
+export interface DidPreviousValuesPromise
+  extends Promise<DidPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  did: () => Promise<String>;
+  privateKey: () => Promise<String>;
+}
+
+export interface DidPreviousValuesSubscription
+  extends Promise<AsyncIterator<DidPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  did: () => Promise<AsyncIterator<String>>;
+  privateKey: () => Promise<AsyncIterator<String>>;
+}
+
+export interface DidSubscriptionPayload {
+  mutation: MutationType;
+  node: Did;
+  updatedFields: String[];
+  previousValues: DidPreviousValues;
+}
+
+export interface DidSubscriptionPayloadPromise
+  extends Promise<DidSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = DidPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = DidPreviousValuesPromise>() => T;
+}
+
+export interface DidSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<DidSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = DidSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = DidPreviousValuesSubscription>() => T;
+}
+
+export interface InstallationPreviousValues {
+  id: ID_Output;
+  access_token: String;
+  scope: String;
+  user_id: String;
+  team_name: String;
+  team_id: String;
+}
+
+export interface InstallationPreviousValuesPromise
+  extends Promise<InstallationPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  access_token: () => Promise<String>;
+  scope: () => Promise<String>;
+  user_id: () => Promise<String>;
+  team_name: () => Promise<String>;
+  team_id: () => Promise<String>;
+}
+
+export interface InstallationPreviousValuesSubscription
+  extends Promise<AsyncIterator<InstallationPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  access_token: () => Promise<AsyncIterator<String>>;
+  scope: () => Promise<AsyncIterator<String>>;
+  user_id: () => Promise<AsyncIterator<String>>;
+  team_name: () => Promise<AsyncIterator<String>>;
+  team_id: () => Promise<AsyncIterator<String>>;
+}
+
 export interface BatchPayload {
   count: Long;
 }
@@ -695,21 +1024,103 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface AggregateInstallation {
+export interface User {
+  id: ID_Output;
+  user_id: String;
+  team_id: String;
+  default_did: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user_id: () => Promise<String>;
+  team_id: () => Promise<String>;
+  default_did: () => Promise<String>;
+  dids: <T = FragmentableArray<Did>>(args?: {
+    where?: DidWhereInput;
+    orderBy?: DidOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user_id: () => Promise<AsyncIterator<String>>;
+  team_id: () => Promise<AsyncIterator<String>>;
+  default_did: () => Promise<AsyncIterator<String>>;
+  dids: <T = Promise<AsyncIterator<DidSubscription>>>(args?: {
+    where?: DidWhereInput;
+    orderBy?: DidOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user_id: () => Promise<String>;
+  team_id: () => Promise<String>;
+  default_did: () => Promise<String>;
+  dids: <T = FragmentableArray<Did>>(args?: {
+    where?: DidWhereInput;
+    orderBy?: DidOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface AggregateUser {
   count: Int;
 }
 
-export interface AggregateInstallationPromise
-  extends Promise<AggregateInstallation>,
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateInstallationSubscription
-  extends Promise<AsyncIterator<AggregateInstallation>>,
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
+
+export type Long = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
@@ -717,17 +1128,15 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 export type Int = number;
 
 /*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
+
+/*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
-
-export type Long = string;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
@@ -745,6 +1154,10 @@ export const models: Model[] = [
   },
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "Did",
     embedded: false
   }
 ];
