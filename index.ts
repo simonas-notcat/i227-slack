@@ -1,3 +1,4 @@
+require('dotenv/config')
 const http = require('http')
 const express = require('express')
 import * as ngrok from 'ngrok'

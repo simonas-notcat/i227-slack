@@ -21,5 +21,7 @@ export const getOrCreateUser = async (user_id: string, team_id: string) => {
       },
     })
     return user
+  } else {
+    return users[0]
   }
 }

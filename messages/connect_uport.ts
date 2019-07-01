@@ -1,4 +1,6 @@
-const blocks = [
+export default {
+	blocks: [
+
 	{
 		"type": "section",
 		"text": {
@@ -8,7 +10,4 @@ const blocks = [
 		}
 	}
 ]
-
-module.exports = {
-  blocks
 }
