@@ -24,6 +24,7 @@ export const redirect = async (req, res) => {
     } else {
 
       console.log(response)
+      await prisma.deleteManyInstallations({team_id: response.team_id})
       const installation = await prisma.createInstallation({
         scope: response.scope,
         user_id: response.user_id,
