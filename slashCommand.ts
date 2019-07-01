@@ -14,7 +14,7 @@ export default (req, res, next) => {
 
 const interactiveButtons = {
   text: 'The terms of service for this app are _not really_ here: <https://unsplash.com/photos/bmmcfZqSjBU>',
-  response_type: 'in_channel',
+  // response_type: 'in_channel',
   attachments: [{
     text: 'Do you accept the terms of service?',
     callback_id: 'accept_tos',
