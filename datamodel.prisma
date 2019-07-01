@@ -1,0 +1,14 @@
+type Installation {
+  id: ID! @id
+  access_token: String!
+  scope: String!
+  user_id: String!
+  team_name: String!
+  team_id: String!
+}
+
+type User {
+  id: ID! @id
+  user_id: String!
+  team_id: String!
+}
