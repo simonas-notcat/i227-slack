@@ -9,7 +9,7 @@ export default (issuer, subject, payload, signers, signersCount) => {
 	elements.push({
 		"type": "plain_text",
 		"emoji": true,
-		"text": signersCount + " signers"
+		"text": signersCount + " claims"
 	})
 
 

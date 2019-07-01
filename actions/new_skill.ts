@@ -112,7 +112,6 @@ slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload
     } catch(e) {
       console.log(e)
     }
-    let countSigners = 1
     const fragment = `
       fragment UserWithPosts on User {
         id
@@ -125,7 +124,7 @@ slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload
         }
       }
 `
-    const data = await prisma.claimFieldses({
+    const data: [] = await prisma.claimFieldses({
         where: {
           claimType: 'skill',
           claimValue: payload.submission.skill,
@@ -133,6 +132,7 @@ slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload
         }
     }).$fragment(fragment)
 
+    let countSigners = data.length
 
     // data.forEach(element => {
       
