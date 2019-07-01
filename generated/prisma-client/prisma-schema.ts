@@ -2,7 +2,15 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateDid {
+export const typeDefs = /* GraphQL */ `type AggregateClaim {
+  count: Int!
+}
+
+type AggregateClaimFields {
+  count: Int!
+}
+
+type AggregateDid {
   count: Int!
 }
 
@@ -18,10 +26,601 @@ type BatchPayload {
   count: Long!
 }
 
+type Claim {
+  id: ID!
+  team_id: String!
+  channel_id: String!
+  issuer: String!
+  subject: String!
+  createdAt: DateTime!
+  issuedAt: DateTime!
+  jwt: String!
+  claimFields(where: ClaimFieldsWhereInput, orderBy: ClaimFieldsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ClaimFields!]
+}
+
+type ClaimConnection {
+  pageInfo: PageInfo!
+  edges: [ClaimEdge]!
+  aggregate: AggregateClaim!
+}
+
+input ClaimCreateInput {
+  id: ID
+  team_id: String!
+  channel_id: String!
+  issuer: String!
+  subject: String!
+  issuedAt: DateTime!
+  jwt: String!
+  claimFields: ClaimFieldsCreateManyInput
+}
+
+input ClaimCreateManyInput {
+  create: [ClaimCreateInput!]
+  connect: [ClaimWhereUniqueInput!]
+}
+
+type ClaimEdge {
+  node: Claim!
+  cursor: String!
+}
+
+type ClaimFields {
+  id: ID!
+  claimType: String!
+  claimValue: String!
+  subject: Did!
+}
+
+type ClaimFieldsConnection {
+  pageInfo: PageInfo!
+  edges: [ClaimFieldsEdge]!
+  aggregate: AggregateClaimFields!
+}
+
+input ClaimFieldsCreateInput {
+  id: ID
+  claimType: String!
+  claimValue: String!
+  subject: DidCreateOneInput!
+}
+
+input ClaimFieldsCreateManyInput {
+  create: [ClaimFieldsCreateInput!]
+  connect: [ClaimFieldsWhereUniqueInput!]
+}
+
+type ClaimFieldsEdge {
+  node: ClaimFields!
+  cursor: String!
+}
+
+enum ClaimFieldsOrderByInput {
+  id_ASC
+  id_DESC
+  claimType_ASC
+  claimType_DESC
+  claimValue_ASC
+  claimValue_DESC
+}
+
+type ClaimFieldsPreviousValues {
+  id: ID!
+  claimType: String!
+  claimValue: String!
+}
+
+input ClaimFieldsScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  claimType: String
+  claimType_not: String
+  claimType_in: [String!]
+  claimType_not_in: [String!]
+  claimType_lt: String
+  claimType_lte: String
+  claimType_gt: String
+  claimType_gte: String
+  claimType_contains: String
+  claimType_not_contains: String
+  claimType_starts_with: String
+  claimType_not_starts_with: String
+  claimType_ends_with: String
+  claimType_not_ends_with: String
+  claimValue: String
+  claimValue_not: String
+  claimValue_in: [String!]
+  claimValue_not_in: [String!]
+  claimValue_lt: String
+  claimValue_lte: String
+  claimValue_gt: String
+  claimValue_gte: String
+  claimValue_contains: String
+  claimValue_not_contains: String
+  claimValue_starts_with: String
+  claimValue_not_starts_with: String
+  claimValue_ends_with: String
+  claimValue_not_ends_with: String
+  AND: [ClaimFieldsScalarWhereInput!]
+  OR: [ClaimFieldsScalarWhereInput!]
+  NOT: [ClaimFieldsScalarWhereInput!]
+}
+
+type ClaimFieldsSubscriptionPayload {
+  mutation: MutationType!
+  node: ClaimFields
+  updatedFields: [String!]
+  previousValues: ClaimFieldsPreviousValues
+}
+
+input ClaimFieldsSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ClaimFieldsWhereInput
+  AND: [ClaimFieldsSubscriptionWhereInput!]
+  OR: [ClaimFieldsSubscriptionWhereInput!]
+  NOT: [ClaimFieldsSubscriptionWhereInput!]
+}
+
+input ClaimFieldsUpdateDataInput {
+  claimType: String
+  claimValue: String
+  subject: DidUpdateOneRequiredInput
+}
+
+input ClaimFieldsUpdateInput {
+  claimType: String
+  claimValue: String
+  subject: DidUpdateOneRequiredInput
+}
+
+input ClaimFieldsUpdateManyDataInput {
+  claimType: String
+  claimValue: String
+}
+
+input ClaimFieldsUpdateManyInput {
+  create: [ClaimFieldsCreateInput!]
+  update: [ClaimFieldsUpdateWithWhereUniqueNestedInput!]
+  upsert: [ClaimFieldsUpsertWithWhereUniqueNestedInput!]
+  delete: [ClaimFieldsWhereUniqueInput!]
+  connect: [ClaimFieldsWhereUniqueInput!]
+  set: [ClaimFieldsWhereUniqueInput!]
+  disconnect: [ClaimFieldsWhereUniqueInput!]
+  deleteMany: [ClaimFieldsScalarWhereInput!]
+  updateMany: [ClaimFieldsUpdateManyWithWhereNestedInput!]
+}
+
+input ClaimFieldsUpdateManyMutationInput {
+  claimType: String
+  claimValue: String
+}
+
+input ClaimFieldsUpdateManyWithWhereNestedInput {
+  where: ClaimFieldsScalarWhereInput!
+  data: ClaimFieldsUpdateManyDataInput!
+}
+
+input ClaimFieldsUpdateWithWhereUniqueNestedInput {
+  where: ClaimFieldsWhereUniqueInput!
+  data: ClaimFieldsUpdateDataInput!
+}
+
+input ClaimFieldsUpsertWithWhereUniqueNestedInput {
+  where: ClaimFieldsWhereUniqueInput!
+  update: ClaimFieldsUpdateDataInput!
+  create: ClaimFieldsCreateInput!
+}
+
+input ClaimFieldsWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  claimType: String
+  claimType_not: String
+  claimType_in: [String!]
+  claimType_not_in: [String!]
+  claimType_lt: String
+  claimType_lte: String
+  claimType_gt: String
+  claimType_gte: String
+  claimType_contains: String
+  claimType_not_contains: String
+  claimType_starts_with: String
+  claimType_not_starts_with: String
+  claimType_ends_with: String
+  claimType_not_ends_with: String
+  claimValue: String
+  claimValue_not: String
+  claimValue_in: [String!]
+  claimValue_not_in: [String!]
+  claimValue_lt: String
+  claimValue_lte: String
+  claimValue_gt: String
+  claimValue_gte: String
+  claimValue_contains: String
+  claimValue_not_contains: String
+  claimValue_starts_with: String
+  claimValue_not_starts_with: String
+  claimValue_ends_with: String
+  claimValue_not_ends_with: String
+  subject: DidWhereInput
+  AND: [ClaimFieldsWhereInput!]
+  OR: [ClaimFieldsWhereInput!]
+  NOT: [ClaimFieldsWhereInput!]
+}
+
+input ClaimFieldsWhereUniqueInput {
+  id: ID
+}
+
+enum ClaimOrderByInput {
+  id_ASC
+  id_DESC
+  team_id_ASC
+  team_id_DESC
+  channel_id_ASC
+  channel_id_DESC
+  issuer_ASC
+  issuer_DESC
+  subject_ASC
+  subject_DESC
+  createdAt_ASC
+  createdAt_DESC
+  issuedAt_ASC
+  issuedAt_DESC
+  jwt_ASC
+  jwt_DESC
+}
+
+type ClaimPreviousValues {
+  id: ID!
+  team_id: String!
+  channel_id: String!
+  issuer: String!
+  subject: String!
+  createdAt: DateTime!
+  issuedAt: DateTime!
+  jwt: String!
+}
+
+input ClaimScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  team_id: String
+  team_id_not: String
+  team_id_in: [String!]
+  team_id_not_in: [String!]
+  team_id_lt: String
+  team_id_lte: String
+  team_id_gt: String
+  team_id_gte: String
+  team_id_contains: String
+  team_id_not_contains: String
+  team_id_starts_with: String
+  team_id_not_starts_with: String
+  team_id_ends_with: String
+  team_id_not_ends_with: String
+  channel_id: String
+  channel_id_not: String
+  channel_id_in: [String!]
+  channel_id_not_in: [String!]
+  channel_id_lt: String
+  channel_id_lte: String
+  channel_id_gt: String
+  channel_id_gte: String
+  channel_id_contains: String
+  channel_id_not_contains: String
+  channel_id_starts_with: String
+  channel_id_not_starts_with: String
+  channel_id_ends_with: String
+  channel_id_not_ends_with: String
+  issuer: String
+  issuer_not: String
+  issuer_in: [String!]
+  issuer_not_in: [String!]
+  issuer_lt: String
+  issuer_lte: String
+  issuer_gt: String
+  issuer_gte: String
+  issuer_contains: String
+  issuer_not_contains: String
+  issuer_starts_with: String
+  issuer_not_starts_with: String
+  issuer_ends_with: String
+  issuer_not_ends_with: String
+  subject: String
+  subject_not: String
+  subject_in: [String!]
+  subject_not_in: [String!]
+  subject_lt: String
+  subject_lte: String
+  subject_gt: String
+  subject_gte: String
+  subject_contains: String
+  subject_not_contains: String
+  subject_starts_with: String
+  subject_not_starts_with: String
+  subject_ends_with: String
+  subject_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  issuedAt: DateTime
+  issuedAt_not: DateTime
+  issuedAt_in: [DateTime!]
+  issuedAt_not_in: [DateTime!]
+  issuedAt_lt: DateTime
+  issuedAt_lte: DateTime
+  issuedAt_gt: DateTime
+  issuedAt_gte: DateTime
+  jwt: String
+  jwt_not: String
+  jwt_in: [String!]
+  jwt_not_in: [String!]
+  jwt_lt: String
+  jwt_lte: String
+  jwt_gt: String
+  jwt_gte: String
+  jwt_contains: String
+  jwt_not_contains: String
+  jwt_starts_with: String
+  jwt_not_starts_with: String
+  jwt_ends_with: String
+  jwt_not_ends_with: String
+  AND: [ClaimScalarWhereInput!]
+  OR: [ClaimScalarWhereInput!]
+  NOT: [ClaimScalarWhereInput!]
+}
+
+type ClaimSubscriptionPayload {
+  mutation: MutationType!
+  node: Claim
+  updatedFields: [String!]
+  previousValues: ClaimPreviousValues
+}
+
+input ClaimSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ClaimWhereInput
+  AND: [ClaimSubscriptionWhereInput!]
+  OR: [ClaimSubscriptionWhereInput!]
+  NOT: [ClaimSubscriptionWhereInput!]
+}
+
+input ClaimUpdateDataInput {
+  team_id: String
+  channel_id: String
+  issuer: String
+  subject: String
+  issuedAt: DateTime
+  jwt: String
+  claimFields: ClaimFieldsUpdateManyInput
+}
+
+input ClaimUpdateInput {
+  team_id: String
+  channel_id: String
+  issuer: String
+  subject: String
+  issuedAt: DateTime
+  jwt: String
+  claimFields: ClaimFieldsUpdateManyInput
+}
+
+input ClaimUpdateManyDataInput {
+  team_id: String
+  channel_id: String
+  issuer: String
+  subject: String
+  issuedAt: DateTime
+  jwt: String
+}
+
+input ClaimUpdateManyInput {
+  create: [ClaimCreateInput!]
+  update: [ClaimUpdateWithWhereUniqueNestedInput!]
+  upsert: [ClaimUpsertWithWhereUniqueNestedInput!]
+  delete: [ClaimWhereUniqueInput!]
+  connect: [ClaimWhereUniqueInput!]
+  set: [ClaimWhereUniqueInput!]
+  disconnect: [ClaimWhereUniqueInput!]
+  deleteMany: [ClaimScalarWhereInput!]
+  updateMany: [ClaimUpdateManyWithWhereNestedInput!]
+}
+
+input ClaimUpdateManyMutationInput {
+  team_id: String
+  channel_id: String
+  issuer: String
+  subject: String
+  issuedAt: DateTime
+  jwt: String
+}
+
+input ClaimUpdateManyWithWhereNestedInput {
+  where: ClaimScalarWhereInput!
+  data: ClaimUpdateManyDataInput!
+}
+
+input ClaimUpdateWithWhereUniqueNestedInput {
+  where: ClaimWhereUniqueInput!
+  data: ClaimUpdateDataInput!
+}
+
+input ClaimUpsertWithWhereUniqueNestedInput {
+  where: ClaimWhereUniqueInput!
+  update: ClaimUpdateDataInput!
+  create: ClaimCreateInput!
+}
+
+input ClaimWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  team_id: String
+  team_id_not: String
+  team_id_in: [String!]
+  team_id_not_in: [String!]
+  team_id_lt: String
+  team_id_lte: String
+  team_id_gt: String
+  team_id_gte: String
+  team_id_contains: String
+  team_id_not_contains: String
+  team_id_starts_with: String
+  team_id_not_starts_with: String
+  team_id_ends_with: String
+  team_id_not_ends_with: String
+  channel_id: String
+  channel_id_not: String
+  channel_id_in: [String!]
+  channel_id_not_in: [String!]
+  channel_id_lt: String
+  channel_id_lte: String
+  channel_id_gt: String
+  channel_id_gte: String
+  channel_id_contains: String
+  channel_id_not_contains: String
+  channel_id_starts_with: String
+  channel_id_not_starts_with: String
+  channel_id_ends_with: String
+  channel_id_not_ends_with: String
+  issuer: String
+  issuer_not: String
+  issuer_in: [String!]
+  issuer_not_in: [String!]
+  issuer_lt: String
+  issuer_lte: String
+  issuer_gt: String
+  issuer_gte: String
+  issuer_contains: String
+  issuer_not_contains: String
+  issuer_starts_with: String
+  issuer_not_starts_with: String
+  issuer_ends_with: String
+  issuer_not_ends_with: String
+  subject: String
+  subject_not: String
+  subject_in: [String!]
+  subject_not_in: [String!]
+  subject_lt: String
+  subject_lte: String
+  subject_gt: String
+  subject_gte: String
+  subject_contains: String
+  subject_not_contains: String
+  subject_starts_with: String
+  subject_not_starts_with: String
+  subject_ends_with: String
+  subject_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  issuedAt: DateTime
+  issuedAt_not: DateTime
+  issuedAt_in: [DateTime!]
+  issuedAt_not_in: [DateTime!]
+  issuedAt_lt: DateTime
+  issuedAt_lte: DateTime
+  issuedAt_gt: DateTime
+  issuedAt_gte: DateTime
+  jwt: String
+  jwt_not: String
+  jwt_in: [String!]
+  jwt_not_in: [String!]
+  jwt_lt: String
+  jwt_lte: String
+  jwt_gt: String
+  jwt_gte: String
+  jwt_contains: String
+  jwt_not_contains: String
+  jwt_starts_with: String
+  jwt_not_starts_with: String
+  jwt_ends_with: String
+  jwt_not_ends_with: String
+  claimFields_every: ClaimFieldsWhereInput
+  claimFields_some: ClaimFieldsWhereInput
+  claimFields_none: ClaimFieldsWhereInput
+  AND: [ClaimWhereInput!]
+  OR: [ClaimWhereInput!]
+  NOT: [ClaimWhereInput!]
+}
+
+input ClaimWhereUniqueInput {
+  id: ID
+}
+
+scalar DateTime
+
 type Did {
   id: ID!
   did: String!
   privateKey: String
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  issuedClaims(where: ClaimWhereInput, orderBy: ClaimOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Claim!]
+  receivedClaims(where: ClaimWhereInput, orderBy: ClaimOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Claim!]
 }
 
 type DidConnection {
@@ -34,11 +633,27 @@ input DidCreateInput {
   id: ID
   did: String!
   privateKey: String
+  users: UserCreateManyWithoutDidsInput
+  issuedClaims: ClaimCreateManyInput
+  receivedClaims: ClaimCreateManyInput
 }
 
-input DidCreateManyInput {
-  create: [DidCreateInput!]
+input DidCreateManyWithoutUsersInput {
+  create: [DidCreateWithoutUsersInput!]
   connect: [DidWhereUniqueInput!]
+}
+
+input DidCreateOneInput {
+  create: DidCreateInput
+  connect: DidWhereUniqueInput
+}
+
+input DidCreateWithoutUsersInput {
+  id: ID
+  did: String!
+  privateKey: String
+  issuedClaims: ClaimCreateManyInput
+  receivedClaims: ClaimCreateManyInput
 }
 
 type DidEdge {
@@ -130,11 +745,17 @@ input DidSubscriptionWhereInput {
 input DidUpdateDataInput {
   did: String
   privateKey: String
+  users: UserUpdateManyWithoutDidsInput
+  issuedClaims: ClaimUpdateManyInput
+  receivedClaims: ClaimUpdateManyInput
 }
 
 input DidUpdateInput {
   did: String
   privateKey: String
+  users: UserUpdateManyWithoutDidsInput
+  issuedClaims: ClaimUpdateManyInput
+  receivedClaims: ClaimUpdateManyInput
 }
 
 input DidUpdateManyDataInput {
@@ -142,21 +763,21 @@ input DidUpdateManyDataInput {
   privateKey: String
 }
 
-input DidUpdateManyInput {
-  create: [DidCreateInput!]
-  update: [DidUpdateWithWhereUniqueNestedInput!]
-  upsert: [DidUpsertWithWhereUniqueNestedInput!]
+input DidUpdateManyMutationInput {
+  did: String
+  privateKey: String
+}
+
+input DidUpdateManyWithoutUsersInput {
+  create: [DidCreateWithoutUsersInput!]
   delete: [DidWhereUniqueInput!]
   connect: [DidWhereUniqueInput!]
   set: [DidWhereUniqueInput!]
   disconnect: [DidWhereUniqueInput!]
+  update: [DidUpdateWithWhereUniqueWithoutUsersInput!]
+  upsert: [DidUpsertWithWhereUniqueWithoutUsersInput!]
   deleteMany: [DidScalarWhereInput!]
   updateMany: [DidUpdateManyWithWhereNestedInput!]
-}
-
-input DidUpdateManyMutationInput {
-  did: String
-  privateKey: String
 }
 
 input DidUpdateManyWithWhereNestedInput {
@@ -164,15 +785,34 @@ input DidUpdateManyWithWhereNestedInput {
   data: DidUpdateManyDataInput!
 }
 
-input DidUpdateWithWhereUniqueNestedInput {
-  where: DidWhereUniqueInput!
-  data: DidUpdateDataInput!
+input DidUpdateOneRequiredInput {
+  create: DidCreateInput
+  update: DidUpdateDataInput
+  upsert: DidUpsertNestedInput
+  connect: DidWhereUniqueInput
 }
 
-input DidUpsertWithWhereUniqueNestedInput {
+input DidUpdateWithoutUsersDataInput {
+  did: String
+  privateKey: String
+  issuedClaims: ClaimUpdateManyInput
+  receivedClaims: ClaimUpdateManyInput
+}
+
+input DidUpdateWithWhereUniqueWithoutUsersInput {
   where: DidWhereUniqueInput!
+  data: DidUpdateWithoutUsersDataInput!
+}
+
+input DidUpsertNestedInput {
   update: DidUpdateDataInput!
   create: DidCreateInput!
+}
+
+input DidUpsertWithWhereUniqueWithoutUsersInput {
+  where: DidWhereUniqueInput!
+  update: DidUpdateWithoutUsersDataInput!
+  create: DidCreateWithoutUsersInput!
 }
 
 input DidWhereInput {
@@ -218,6 +858,15 @@ input DidWhereInput {
   privateKey_not_starts_with: String
   privateKey_ends_with: String
   privateKey_not_ends_with: String
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
+  issuedClaims_every: ClaimWhereInput
+  issuedClaims_some: ClaimWhereInput
+  issuedClaims_none: ClaimWhereInput
+  receivedClaims_every: ClaimWhereInput
+  receivedClaims_some: ClaimWhereInput
+  receivedClaims_none: ClaimWhereInput
   AND: [DidWhereInput!]
   OR: [DidWhereInput!]
   NOT: [DidWhereInput!]
@@ -412,6 +1061,18 @@ input InstallationWhereUniqueInput {
 scalar Long
 
 type Mutation {
+  createClaim(data: ClaimCreateInput!): Claim!
+  updateClaim(data: ClaimUpdateInput!, where: ClaimWhereUniqueInput!): Claim
+  updateManyClaims(data: ClaimUpdateManyMutationInput!, where: ClaimWhereInput): BatchPayload!
+  upsertClaim(where: ClaimWhereUniqueInput!, create: ClaimCreateInput!, update: ClaimUpdateInput!): Claim!
+  deleteClaim(where: ClaimWhereUniqueInput!): Claim
+  deleteManyClaims(where: ClaimWhereInput): BatchPayload!
+  createClaimFields(data: ClaimFieldsCreateInput!): ClaimFields!
+  updateClaimFields(data: ClaimFieldsUpdateInput!, where: ClaimFieldsWhereUniqueInput!): ClaimFields
+  updateManyClaimFieldses(data: ClaimFieldsUpdateManyMutationInput!, where: ClaimFieldsWhereInput): BatchPayload!
+  upsertClaimFields(where: ClaimFieldsWhereUniqueInput!, create: ClaimFieldsCreateInput!, update: ClaimFieldsUpdateInput!): ClaimFields!
+  deleteClaimFields(where: ClaimFieldsWhereUniqueInput!): ClaimFields
+  deleteManyClaimFieldses(where: ClaimFieldsWhereInput): BatchPayload!
   createDid(data: DidCreateInput!): Did!
   updateDid(data: DidUpdateInput!, where: DidWhereUniqueInput!): Did
   updateManyDids(data: DidUpdateManyMutationInput!, where: DidWhereInput): BatchPayload!
@@ -450,6 +1111,12 @@ type PageInfo {
 }
 
 type Query {
+  claim(where: ClaimWhereUniqueInput!): Claim
+  claims(where: ClaimWhereInput, orderBy: ClaimOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Claim]!
+  claimsConnection(where: ClaimWhereInput, orderBy: ClaimOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClaimConnection!
+  claimFields(where: ClaimFieldsWhereUniqueInput!): ClaimFields
+  claimFieldses(where: ClaimFieldsWhereInput, orderBy: ClaimFieldsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ClaimFields]!
+  claimFieldsesConnection(where: ClaimFieldsWhereInput, orderBy: ClaimFieldsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClaimFieldsConnection!
   did(where: DidWhereUniqueInput!): Did
   dids(where: DidWhereInput, orderBy: DidOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Did]!
   didsConnection(where: DidWhereInput, orderBy: DidOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DidConnection!
@@ -463,6 +1130,8 @@ type Query {
 }
 
 type Subscription {
+  claim(where: ClaimSubscriptionWhereInput): ClaimSubscriptionPayload
+  claimFields(where: ClaimFieldsSubscriptionWhereInput): ClaimFieldsSubscriptionPayload
   did(where: DidSubscriptionWhereInput): DidSubscriptionPayload
   installation(where: InstallationSubscriptionWhereInput): InstallationSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -487,7 +1156,19 @@ input UserCreateInput {
   user_id: String!
   team_id: String!
   default_did: String!
-  dids: DidCreateManyInput
+  dids: DidCreateManyWithoutUsersInput
+}
+
+input UserCreateManyWithoutDidsInput {
+  create: [UserCreateWithoutDidsInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateWithoutDidsInput {
+  id: ID
+  user_id: String!
+  team_id: String!
+  default_did: String!
 }
 
 type UserEdge {
@@ -513,6 +1194,68 @@ type UserPreviousValues {
   default_did: String!
 }
 
+input UserScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user_id: String
+  user_id_not: String
+  user_id_in: [String!]
+  user_id_not_in: [String!]
+  user_id_lt: String
+  user_id_lte: String
+  user_id_gt: String
+  user_id_gte: String
+  user_id_contains: String
+  user_id_not_contains: String
+  user_id_starts_with: String
+  user_id_not_starts_with: String
+  user_id_ends_with: String
+  user_id_not_ends_with: String
+  team_id: String
+  team_id_not: String
+  team_id_in: [String!]
+  team_id_not_in: [String!]
+  team_id_lt: String
+  team_id_lte: String
+  team_id_gt: String
+  team_id_gte: String
+  team_id_contains: String
+  team_id_not_contains: String
+  team_id_starts_with: String
+  team_id_not_starts_with: String
+  team_id_ends_with: String
+  team_id_not_ends_with: String
+  default_did: String
+  default_did_not: String
+  default_did_in: [String!]
+  default_did_not_in: [String!]
+  default_did_lt: String
+  default_did_lte: String
+  default_did_gt: String
+  default_did_gte: String
+  default_did_contains: String
+  default_did_not_contains: String
+  default_did_starts_with: String
+  default_did_not_starts_with: String
+  default_did_ends_with: String
+  default_did_not_ends_with: String
+  AND: [UserScalarWhereInput!]
+  OR: [UserScalarWhereInput!]
+  NOT: [UserScalarWhereInput!]
+}
+
 type UserSubscriptionPayload {
   mutation: MutationType!
   node: User
@@ -535,13 +1278,53 @@ input UserUpdateInput {
   user_id: String
   team_id: String
   default_did: String
-  dids: DidUpdateManyInput
+  dids: DidUpdateManyWithoutUsersInput
+}
+
+input UserUpdateManyDataInput {
+  user_id: String
+  team_id: String
+  default_did: String
 }
 
 input UserUpdateManyMutationInput {
   user_id: String
   team_id: String
   default_did: String
+}
+
+input UserUpdateManyWithoutDidsInput {
+  create: [UserCreateWithoutDidsInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutDidsInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutDidsInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
+}
+
+input UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput!
+  data: UserUpdateManyDataInput!
+}
+
+input UserUpdateWithoutDidsDataInput {
+  user_id: String
+  team_id: String
+  default_did: String
+}
+
+input UserUpdateWithWhereUniqueWithoutDidsInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutDidsDataInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutDidsInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutDidsDataInput!
+  create: UserCreateWithoutDidsInput!
 }
 
 input UserWhereInput {

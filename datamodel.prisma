@@ -19,4 +19,26 @@ type Did {
   id: ID! @id
   did: String! @unique
   privateKey: String
+  users: [User!]
+  issuedClaims: [Claim!] @relation(name: "Claims_From_User")
+  receivedClaims: [Claim!] @relation(name: "Claims_To_User")
+}
+
+type ClaimFields {
+  id: ID! @id
+  claimType: String!
+  claimValue: String!
+  subject: Did!
+}
+
+type Claim {
+  id: ID! @id
+  team_id: String!
+  channel_id: String!
+  issuer: String!
+  subject: String!
+  createdAt: DateTime! @createdAt
+  issuedAt: DateTime!
+  jwt: String!
+  claimFields: [ClaimFields!]!
 }

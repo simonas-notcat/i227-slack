@@ -1,60 +1,57 @@
-export default {
-	blocks: [
+export default (issuer, subject, payload, signers, signersCount) => {
+	console.log({signers})
+	const elements = signers.map(signer => ({
+		"type": "image",
+		"image_url": signer.image_url,
+		"alt_text": signer.name
+	}))
 
-	{
-		"type": "section",
-		"text": {
-			"type": "mrkdwn",
-			"text": "@simonas has created new claim about @Ziggy "
-		}
-	},
-	{
-		"type": "divider"
-	},
-	{
-		"type": "section",
-		"text": {
-			"type": "mrkdwn",
-			"text": "Skill *Developer*"
-		},
-		"accessory": {
-			"type": "button",
-			"text": {
-				"type": "plain_text",
-				"emoji": true,
-				"text": "Sign"
-			},
-			"value": "click_me_123"
-		}
-	},
-	{
+	elements.push({
+		"type": "plain_text",
+		"emoji": true,
+		"text": signersCount + " signers"
+	})
+
+
+	const signersBlock = {
 		"type": "context",
-		"elements": [
-			{
-				"type": "image",
-				"image_url": "https://api.slack.com/img/blocks/bkb_template_images/profile_1.png",
-				"alt_text": "Michael Scott"
-			},
-			{
-				"type": "image",
-				"image_url": "https://api.slack.com/img/blocks/bkb_template_images/profile_2.png",
-				"alt_text": "Dwight Schrute"
-			},
-			{
-				"type": "image",
-				"image_url": "https://api.slack.com/img/blocks/bkb_template_images/profile_3.png",
-				"alt_text": "Pam Beasely"
-			},
-			{
-				"type": "plain_text",
-				"emoji": true,
-				"text": "3 signers"
-			}
-		]
-	},
-	{
-		"type": "divider"
+		elements
 	}
-	
-]
+	return {
+		channel: payload.channel.id,
+		blocks: [
+
+			{
+				"type": "section",
+				"text": {
+					"type": "mrkdwn",
+					"text": `<@${issuer.user_id}> has created new claim`
+				}
+			},
+			{
+				"type": "divider"
+			},
+			{
+				"type": "section",
+				"text": {
+					"type": "mrkdwn",
+					"text": `<@${subject.user_id}> \n Skill *${payload.submission.skill}*`
+				},
+				"accessory": {
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"emoji": true,
+						"text": "Sign"
+					},
+					"value": "click_me_123"
+				}
+			},
+			signersBlock,
+			{
+				"type": "divider"
+			}
+
+		]
+	}
 }

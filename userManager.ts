@@ -25,3 +25,16 @@ export const getOrCreateUser = async (user_id: string, team_id: string) => {
     return users[0]
   }
 }
+
+export const signClaim = async (user, claim) => {
+  try{    
+    const dids = await prisma.user({id: user.id}).dids() 
+    const did = dids.find((did) => did.did === user.default_did)
+    const identity = naclDid.loadIdentity({did: did.did, privateKey: did.privateKey})
+    const jwt = identity.createJWT(claim)
+    return jwt
+  } catch (e) {
+    console.log(e)
+  }
+  
+}
