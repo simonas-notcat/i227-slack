@@ -24,7 +24,7 @@ type Did {
   receivedClaims: [Claim!] @relation(name: "Claims_To_User")
 }
 
-type ClaimFields {
+type ClaimField {
   id: ID! @id
   claimType: String!
   claimValue: String!
@@ -40,5 +40,5 @@ type Claim {
   createdAt: DateTime! @createdAt
   issuedAt: DateTime!
   jwt: String!
-  claimFields: [ClaimFields!]!
+  claimFields: [ClaimField!]!
 }

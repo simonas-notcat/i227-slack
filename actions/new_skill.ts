@@ -124,7 +124,7 @@ slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload
         }
       }
 `
-    const data: [] = await prisma.claimFieldses({
+    const data: [] = await prisma.claimFields({
         where: {
           claimType: 'skill',
           claimValue: payload.submission.skill,

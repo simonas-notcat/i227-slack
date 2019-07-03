@@ -17,7 +17,7 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   claim: (where?: ClaimWhereInput) => Promise<boolean>;
-  claimFields: (where?: ClaimFieldsWhereInput) => Promise<boolean>;
+  claimField: (where?: ClaimFieldWhereInput) => Promise<boolean>;
   did: (where?: DidWhereInput) => Promise<boolean>;
   installation: (where?: InstallationWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
@@ -61,27 +61,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => ClaimConnectionPromise;
-  claimFields: (
-    where: ClaimFieldsWhereUniqueInput
-  ) => ClaimFieldsNullablePromise;
-  claimFieldses: (args?: {
-    where?: ClaimFieldsWhereInput;
-    orderBy?: ClaimFieldsOrderByInput;
+  claimField: (where: ClaimFieldWhereUniqueInput) => ClaimFieldNullablePromise;
+  claimFields: (args?: {
+    where?: ClaimFieldWhereInput;
+    orderBy?: ClaimFieldOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<ClaimFields>;
-  claimFieldsesConnection: (args?: {
-    where?: ClaimFieldsWhereInput;
-    orderBy?: ClaimFieldsOrderByInput;
+  }) => FragmentableArray<ClaimField>;
+  claimFieldsConnection: (args?: {
+    where?: ClaimFieldWhereInput;
+    orderBy?: ClaimFieldOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => ClaimFieldsConnectionPromise;
+  }) => ClaimFieldConnectionPromise;
   did: (where: DidWhereUniqueInput) => DidNullablePromise;
   dids: (args?: {
     where?: DidWhereInput;
@@ -163,24 +161,22 @@ export interface Prisma {
   }) => ClaimPromise;
   deleteClaim: (where: ClaimWhereUniqueInput) => ClaimPromise;
   deleteManyClaims: (where?: ClaimWhereInput) => BatchPayloadPromise;
-  createClaimFields: (data: ClaimFieldsCreateInput) => ClaimFieldsPromise;
-  updateClaimFields: (args: {
-    data: ClaimFieldsUpdateInput;
-    where: ClaimFieldsWhereUniqueInput;
-  }) => ClaimFieldsPromise;
-  updateManyClaimFieldses: (args: {
-    data: ClaimFieldsUpdateManyMutationInput;
-    where?: ClaimFieldsWhereInput;
+  createClaimField: (data: ClaimFieldCreateInput) => ClaimFieldPromise;
+  updateClaimField: (args: {
+    data: ClaimFieldUpdateInput;
+    where: ClaimFieldWhereUniqueInput;
+  }) => ClaimFieldPromise;
+  updateManyClaimFields: (args: {
+    data: ClaimFieldUpdateManyMutationInput;
+    where?: ClaimFieldWhereInput;
   }) => BatchPayloadPromise;
-  upsertClaimFields: (args: {
-    where: ClaimFieldsWhereUniqueInput;
-    create: ClaimFieldsCreateInput;
-    update: ClaimFieldsUpdateInput;
-  }) => ClaimFieldsPromise;
-  deleteClaimFields: (where: ClaimFieldsWhereUniqueInput) => ClaimFieldsPromise;
-  deleteManyClaimFieldses: (
-    where?: ClaimFieldsWhereInput
-  ) => BatchPayloadPromise;
+  upsertClaimField: (args: {
+    where: ClaimFieldWhereUniqueInput;
+    create: ClaimFieldCreateInput;
+    update: ClaimFieldUpdateInput;
+  }) => ClaimFieldPromise;
+  deleteClaimField: (where: ClaimFieldWhereUniqueInput) => ClaimFieldPromise;
+  deleteManyClaimFields: (where?: ClaimFieldWhereInput) => BatchPayloadPromise;
   createDid: (data: DidCreateInput) => DidPromise;
   updateDid: (args: {
     data: DidUpdateInput;
@@ -245,9 +241,9 @@ export interface Subscription {
   claim: (
     where?: ClaimSubscriptionWhereInput
   ) => ClaimSubscriptionPayloadSubscription;
-  claimFields: (
-    where?: ClaimFieldsSubscriptionWhereInput
-  ) => ClaimFieldsSubscriptionPayloadSubscription;
+  claimField: (
+    where?: ClaimFieldSubscriptionWhereInput
+  ) => ClaimFieldSubscriptionPayloadSubscription;
   did: (
     where?: DidSubscriptionWhereInput
   ) => DidSubscriptionPayloadSubscription;
@@ -267,7 +263,7 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type ClaimFieldsOrderByInput =
+export type ClaimFieldOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "claimType_ASC"
@@ -514,17 +510,17 @@ export interface ClaimWhereInput {
   jwt_not_starts_with?: Maybe<String>;
   jwt_ends_with?: Maybe<String>;
   jwt_not_ends_with?: Maybe<String>;
-  claimFields_every?: Maybe<ClaimFieldsWhereInput>;
-  claimFields_some?: Maybe<ClaimFieldsWhereInput>;
-  claimFields_none?: Maybe<ClaimFieldsWhereInput>;
+  claimFields_every?: Maybe<ClaimFieldWhereInput>;
+  claimFields_some?: Maybe<ClaimFieldWhereInput>;
+  claimFields_none?: Maybe<ClaimFieldWhereInput>;
   AND?: Maybe<ClaimWhereInput[] | ClaimWhereInput>;
   OR?: Maybe<ClaimWhereInput[] | ClaimWhereInput>;
   NOT?: Maybe<ClaimWhereInput[] | ClaimWhereInput>;
 }
 
-export interface ClaimFieldsCreateManyInput {
-  create?: Maybe<ClaimFieldsCreateInput[] | ClaimFieldsCreateInput>;
-  connect?: Maybe<ClaimFieldsWhereUniqueInput[] | ClaimFieldsWhereUniqueInput>;
+export interface ClaimFieldCreateManyInput {
+  create?: Maybe<ClaimFieldCreateInput[] | ClaimFieldCreateInput>;
+  connect?: Maybe<ClaimFieldWhereUniqueInput[] | ClaimFieldWhereUniqueInput>;
 }
 
 export interface ClaimUpdateManyMutationInput {
@@ -536,7 +532,7 @@ export interface ClaimUpdateManyMutationInput {
   jwt?: Maybe<String>;
 }
 
-export interface ClaimFieldsCreateInput {
+export interface ClaimFieldCreateInput {
   id?: Maybe<ID_Input>;
   claimType: String;
   claimValue: String;
@@ -619,7 +615,7 @@ export interface DidCreateInput {
   receivedClaims?: Maybe<ClaimCreateManyInput>;
 }
 
-export interface ClaimFieldsWhereInput {
+export interface ClaimFieldWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -663,9 +659,9 @@ export interface ClaimFieldsWhereInput {
   claimValue_ends_with?: Maybe<String>;
   claimValue_not_ends_with?: Maybe<String>;
   subject?: Maybe<DidWhereInput>;
-  AND?: Maybe<ClaimFieldsWhereInput[] | ClaimFieldsWhereInput>;
-  OR?: Maybe<ClaimFieldsWhereInput[] | ClaimFieldsWhereInput>;
-  NOT?: Maybe<ClaimFieldsWhereInput[] | ClaimFieldsWhereInput>;
+  AND?: Maybe<ClaimFieldWhereInput[] | ClaimFieldWhereInput>;
+  OR?: Maybe<ClaimFieldWhereInput[] | ClaimFieldWhereInput>;
+  NOT?: Maybe<ClaimFieldWhereInput[] | ClaimFieldWhereInput>;
 }
 
 export interface UserCreateManyWithoutDidsInput {
@@ -673,20 +669,20 @@ export interface UserCreateManyWithoutDidsInput {
   connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
 }
 
-export interface ClaimFieldsSubscriptionWhereInput {
+export interface ClaimFieldSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ClaimFieldsWhereInput>;
+  node?: Maybe<ClaimFieldWhereInput>;
   AND?: Maybe<
-    ClaimFieldsSubscriptionWhereInput[] | ClaimFieldsSubscriptionWhereInput
+    ClaimFieldSubscriptionWhereInput[] | ClaimFieldSubscriptionWhereInput
   >;
   OR?: Maybe<
-    ClaimFieldsSubscriptionWhereInput[] | ClaimFieldsSubscriptionWhereInput
+    ClaimFieldSubscriptionWhereInput[] | ClaimFieldSubscriptionWhereInput
   >;
   NOT?: Maybe<
-    ClaimFieldsSubscriptionWhereInput[] | ClaimFieldsSubscriptionWhereInput
+    ClaimFieldSubscriptionWhereInput[] | ClaimFieldSubscriptionWhereInput
   >;
 }
 
@@ -720,7 +716,7 @@ export interface ClaimUpdateInput {
   subject?: Maybe<String>;
   issuedAt?: Maybe<DateTimeInput>;
   jwt?: Maybe<String>;
-  claimFields?: Maybe<ClaimFieldsUpdateManyInput>;
+  claimFields?: Maybe<ClaimFieldUpdateManyInput>;
 }
 
 export interface DidScalarWhereInput {
@@ -771,28 +767,24 @@ export interface DidScalarWhereInput {
   NOT?: Maybe<DidScalarWhereInput[] | DidScalarWhereInput>;
 }
 
-export interface ClaimFieldsUpdateManyInput {
-  create?: Maybe<ClaimFieldsCreateInput[] | ClaimFieldsCreateInput>;
+export interface ClaimFieldUpdateManyInput {
+  create?: Maybe<ClaimFieldCreateInput[] | ClaimFieldCreateInput>;
   update?: Maybe<
-    | ClaimFieldsUpdateWithWhereUniqueNestedInput[]
-    | ClaimFieldsUpdateWithWhereUniqueNestedInput
+    | ClaimFieldUpdateWithWhereUniqueNestedInput[]
+    | ClaimFieldUpdateWithWhereUniqueNestedInput
   >;
   upsert?: Maybe<
-    | ClaimFieldsUpsertWithWhereUniqueNestedInput[]
-    | ClaimFieldsUpsertWithWhereUniqueNestedInput
+    | ClaimFieldUpsertWithWhereUniqueNestedInput[]
+    | ClaimFieldUpsertWithWhereUniqueNestedInput
   >;
-  delete?: Maybe<ClaimFieldsWhereUniqueInput[] | ClaimFieldsWhereUniqueInput>;
-  connect?: Maybe<ClaimFieldsWhereUniqueInput[] | ClaimFieldsWhereUniqueInput>;
-  set?: Maybe<ClaimFieldsWhereUniqueInput[] | ClaimFieldsWhereUniqueInput>;
-  disconnect?: Maybe<
-    ClaimFieldsWhereUniqueInput[] | ClaimFieldsWhereUniqueInput
-  >;
-  deleteMany?: Maybe<
-    ClaimFieldsScalarWhereInput[] | ClaimFieldsScalarWhereInput
-  >;
+  delete?: Maybe<ClaimFieldWhereUniqueInput[] | ClaimFieldWhereUniqueInput>;
+  connect?: Maybe<ClaimFieldWhereUniqueInput[] | ClaimFieldWhereUniqueInput>;
+  set?: Maybe<ClaimFieldWhereUniqueInput[] | ClaimFieldWhereUniqueInput>;
+  disconnect?: Maybe<ClaimFieldWhereUniqueInput[] | ClaimFieldWhereUniqueInput>;
+  deleteMany?: Maybe<ClaimFieldScalarWhereInput[] | ClaimFieldScalarWhereInput>;
   updateMany?: Maybe<
-    | ClaimFieldsUpdateManyWithWhereNestedInput[]
-    | ClaimFieldsUpdateManyWithWhereNestedInput
+    | ClaimFieldUpdateManyWithWhereNestedInput[]
+    | ClaimFieldUpdateManyWithWhereNestedInput
   >;
 }
 
@@ -803,9 +795,9 @@ export interface DidUpdateWithoutUsersDataInput {
   receivedClaims?: Maybe<ClaimUpdateManyInput>;
 }
 
-export interface ClaimFieldsUpdateWithWhereUniqueNestedInput {
-  where: ClaimFieldsWhereUniqueInput;
-  data: ClaimFieldsUpdateDataInput;
+export interface ClaimFieldUpdateWithWhereUniqueNestedInput {
+  where: ClaimFieldWhereUniqueInput;
+  data: ClaimFieldUpdateDataInput;
 }
 
 export interface DidUpdateWithWhereUniqueWithoutUsersInput {
@@ -813,7 +805,7 @@ export interface DidUpdateWithWhereUniqueWithoutUsersInput {
   data: DidUpdateWithoutUsersDataInput;
 }
 
-export interface ClaimFieldsUpdateDataInput {
+export interface ClaimFieldUpdateDataInput {
   claimType?: Maybe<String>;
   claimValue?: Maybe<String>;
   subject?: Maybe<DidUpdateOneRequiredInput>;
@@ -854,7 +846,7 @@ export interface DidCreateManyWithoutUsersInput {
   connect?: Maybe<DidWhereUniqueInput[] | DidWhereUniqueInput>;
 }
 
-export interface ClaimFieldsUpdateManyMutationInput {
+export interface ClaimFieldUpdateManyMutationInput {
   claimType?: Maybe<String>;
   claimValue?: Maybe<String>;
 }
@@ -980,7 +972,7 @@ export interface DidSubscriptionWhereInput {
   NOT?: Maybe<DidSubscriptionWhereInput[] | DidSubscriptionWhereInput>;
 }
 
-export interface ClaimFieldsUpdateInput {
+export interface ClaimFieldUpdateInput {
   claimType?: Maybe<String>;
   claimValue?: Maybe<String>;
   subject?: Maybe<DidUpdateOneRequiredInput>;
@@ -1145,7 +1137,7 @@ export interface ClaimUpdateDataInput {
   subject?: Maybe<String>;
   issuedAt?: Maybe<DateTimeInput>;
   jwt?: Maybe<String>;
-  claimFields?: Maybe<ClaimFieldsUpdateManyInput>;
+  claimFields?: Maybe<ClaimFieldUpdateManyInput>;
 }
 
 export interface InstallationUpdateInput {
@@ -1298,7 +1290,7 @@ export interface ClaimUpdateManyWithWhereNestedInput {
   data: ClaimUpdateManyDataInput;
 }
 
-export type ClaimFieldsWhereUniqueInput = AtLeastOne<{
+export type ClaimFieldWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -1329,17 +1321,17 @@ export interface InstallationCreateInput {
   team_id: String;
 }
 
-export interface ClaimFieldsUpdateManyDataInput {
+export interface ClaimFieldUpdateManyDataInput {
   claimType?: Maybe<String>;
   claimValue?: Maybe<String>;
 }
 
-export interface ClaimFieldsUpdateManyWithWhereNestedInput {
-  where: ClaimFieldsScalarWhereInput;
-  data: ClaimFieldsUpdateManyDataInput;
+export interface ClaimFieldUpdateManyWithWhereNestedInput {
+  where: ClaimFieldScalarWhereInput;
+  data: ClaimFieldUpdateManyDataInput;
 }
 
-export interface ClaimFieldsScalarWhereInput {
+export interface ClaimFieldScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -1382,15 +1374,15 @@ export interface ClaimFieldsScalarWhereInput {
   claimValue_not_starts_with?: Maybe<String>;
   claimValue_ends_with?: Maybe<String>;
   claimValue_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ClaimFieldsScalarWhereInput[] | ClaimFieldsScalarWhereInput>;
-  OR?: Maybe<ClaimFieldsScalarWhereInput[] | ClaimFieldsScalarWhereInput>;
-  NOT?: Maybe<ClaimFieldsScalarWhereInput[] | ClaimFieldsScalarWhereInput>;
+  AND?: Maybe<ClaimFieldScalarWhereInput[] | ClaimFieldScalarWhereInput>;
+  OR?: Maybe<ClaimFieldScalarWhereInput[] | ClaimFieldScalarWhereInput>;
+  NOT?: Maybe<ClaimFieldScalarWhereInput[] | ClaimFieldScalarWhereInput>;
 }
 
-export interface ClaimFieldsUpsertWithWhereUniqueNestedInput {
-  where: ClaimFieldsWhereUniqueInput;
-  update: ClaimFieldsUpdateDataInput;
-  create: ClaimFieldsCreateInput;
+export interface ClaimFieldUpsertWithWhereUniqueNestedInput {
+  where: ClaimFieldWhereUniqueInput;
+  update: ClaimFieldUpdateDataInput;
+  create: ClaimFieldCreateInput;
 }
 
 export interface ClaimCreateInput {
@@ -1401,7 +1393,7 @@ export interface ClaimCreateInput {
   subject: String;
   issuedAt: DateTimeInput;
   jwt: String;
-  claimFields?: Maybe<ClaimFieldsCreateManyInput>;
+  claimFields?: Maybe<ClaimFieldCreateManyInput>;
 }
 
 export interface UserCreateInput {
@@ -1506,21 +1498,21 @@ export interface ClaimEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ClaimFields {
+export interface ClaimField {
   id: ID_Output;
   claimType: String;
   claimValue: String;
 }
 
-export interface ClaimFieldsPromise extends Promise<ClaimFields>, Fragmentable {
+export interface ClaimFieldPromise extends Promise<ClaimField>, Fragmentable {
   id: () => Promise<ID_Output>;
   claimType: () => Promise<String>;
   claimValue: () => Promise<String>;
   subject: <T = DidPromise>() => T;
 }
 
-export interface ClaimFieldsSubscription
-  extends Promise<AsyncIterator<ClaimFields>>,
+export interface ClaimFieldSubscription
+  extends Promise<AsyncIterator<ClaimField>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   claimType: () => Promise<AsyncIterator<String>>;
@@ -1528,8 +1520,8 @@ export interface ClaimFieldsSubscription
   subject: <T = DidSubscription>() => T;
 }
 
-export interface ClaimFieldsNullablePromise
-  extends Promise<ClaimFields | null>,
+export interface ClaimFieldNullablePromise
+  extends Promise<ClaimField | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   claimType: () => Promise<String>;
@@ -1847,9 +1839,9 @@ export interface ClaimPromise extends Promise<Claim>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   issuedAt: () => Promise<DateTimeOutput>;
   jwt: () => Promise<String>;
-  claimFields: <T = FragmentableArray<ClaimFields>>(args?: {
-    where?: ClaimFieldsWhereInput;
-    orderBy?: ClaimFieldsOrderByInput;
+  claimFields: <T = FragmentableArray<ClaimField>>(args?: {
+    where?: ClaimFieldWhereInput;
+    orderBy?: ClaimFieldOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1869,9 +1861,9 @@ export interface ClaimSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   issuedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   jwt: () => Promise<AsyncIterator<String>>;
-  claimFields: <T = Promise<AsyncIterator<ClaimFieldsSubscription>>>(args?: {
-    where?: ClaimFieldsWhereInput;
-    orderBy?: ClaimFieldsOrderByInput;
+  claimFields: <T = Promise<AsyncIterator<ClaimFieldSubscription>>>(args?: {
+    where?: ClaimFieldWhereInput;
+    orderBy?: ClaimFieldOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1891,9 +1883,9 @@ export interface ClaimNullablePromise
   createdAt: () => Promise<DateTimeOutput>;
   issuedAt: () => Promise<DateTimeOutput>;
   jwt: () => Promise<String>;
-  claimFields: <T = FragmentableArray<ClaimFields>>(args?: {
-    where?: ClaimFieldsWhereInput;
-    orderBy?: ClaimFieldsOrderByInput;
+  claimFields: <T = FragmentableArray<ClaimField>>(args?: {
+    where?: ClaimFieldWhereInput;
+    orderBy?: ClaimFieldOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -2023,18 +2015,18 @@ export interface ClaimPreviousValuesSubscription
   jwt: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateClaimFields {
+export interface AggregateClaimField {
   count: Int;
 }
 
-export interface AggregateClaimFieldsPromise
-  extends Promise<AggregateClaimFields>,
+export interface AggregateClaimFieldPromise
+  extends Promise<AggregateClaimField>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateClaimFieldsSubscription
-  extends Promise<AsyncIterator<AggregateClaimFields>>,
+export interface AggregateClaimFieldSubscription
+  extends Promise<AsyncIterator<AggregateClaimField>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -2060,50 +2052,50 @@ export interface ClaimConnectionSubscription
   aggregate: <T = AggregateClaimSubscription>() => T;
 }
 
-export interface ClaimFieldsConnection {
+export interface ClaimFieldConnection {
   pageInfo: PageInfo;
-  edges: ClaimFieldsEdge[];
+  edges: ClaimFieldEdge[];
 }
 
-export interface ClaimFieldsConnectionPromise
-  extends Promise<ClaimFieldsConnection>,
+export interface ClaimFieldConnectionPromise
+  extends Promise<ClaimFieldConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ClaimFieldsEdge>>() => T;
-  aggregate: <T = AggregateClaimFieldsPromise>() => T;
+  edges: <T = FragmentableArray<ClaimFieldEdge>>() => T;
+  aggregate: <T = AggregateClaimFieldPromise>() => T;
 }
 
-export interface ClaimFieldsConnectionSubscription
-  extends Promise<AsyncIterator<ClaimFieldsConnection>>,
+export interface ClaimFieldConnectionSubscription
+  extends Promise<AsyncIterator<ClaimFieldConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ClaimFieldsEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateClaimFieldsSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ClaimFieldEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateClaimFieldSubscription>() => T;
 }
 
-export interface ClaimFieldsSubscriptionPayload {
+export interface ClaimFieldSubscriptionPayload {
   mutation: MutationType;
-  node: ClaimFields;
+  node: ClaimField;
   updatedFields: String[];
-  previousValues: ClaimFieldsPreviousValues;
+  previousValues: ClaimFieldPreviousValues;
 }
 
-export interface ClaimFieldsSubscriptionPayloadPromise
-  extends Promise<ClaimFieldsSubscriptionPayload>,
+export interface ClaimFieldSubscriptionPayloadPromise
+  extends Promise<ClaimFieldSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = ClaimFieldsPromise>() => T;
+  node: <T = ClaimFieldPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = ClaimFieldsPreviousValuesPromise>() => T;
+  previousValues: <T = ClaimFieldPreviousValuesPromise>() => T;
 }
 
-export interface ClaimFieldsSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ClaimFieldsSubscriptionPayload>>,
+export interface ClaimFieldSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ClaimFieldSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ClaimFieldsSubscription>() => T;
+  node: <T = ClaimFieldSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ClaimFieldsPreviousValuesSubscription>() => T;
+  previousValues: <T = ClaimFieldPreviousValuesSubscription>() => T;
 }
 
 export interface InstallationEdge {
@@ -2213,22 +2205,22 @@ export interface InstallationSubscriptionPayloadSubscription
   previousValues: <T = InstallationPreviousValuesSubscription>() => T;
 }
 
-export interface ClaimFieldsPreviousValues {
+export interface ClaimFieldPreviousValues {
   id: ID_Output;
   claimType: String;
   claimValue: String;
 }
 
-export interface ClaimFieldsPreviousValuesPromise
-  extends Promise<ClaimFieldsPreviousValues>,
+export interface ClaimFieldPreviousValuesPromise
+  extends Promise<ClaimFieldPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   claimType: () => Promise<String>;
   claimValue: () => Promise<String>;
 }
 
-export interface ClaimFieldsPreviousValuesSubscription
-  extends Promise<AsyncIterator<ClaimFieldsPreviousValues>>,
+export interface ClaimFieldPreviousValuesSubscription
+  extends Promise<AsyncIterator<ClaimFieldPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   claimType: () => Promise<AsyncIterator<String>>;
@@ -2302,22 +2294,22 @@ export interface UserConnectionSubscription
   aggregate: <T = AggregateUserSubscription>() => T;
 }
 
-export interface ClaimFieldsEdge {
-  node: ClaimFields;
+export interface ClaimFieldEdge {
+  node: ClaimField;
   cursor: String;
 }
 
-export interface ClaimFieldsEdgePromise
-  extends Promise<ClaimFieldsEdge>,
+export interface ClaimFieldEdgePromise
+  extends Promise<ClaimFieldEdge>,
     Fragmentable {
-  node: <T = ClaimFieldsPromise>() => T;
+  node: <T = ClaimFieldPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface ClaimFieldsEdgeSubscription
-  extends Promise<AsyncIterator<ClaimFieldsEdge>>,
+export interface ClaimFieldEdgeSubscription
+  extends Promise<AsyncIterator<ClaimFieldEdge>>,
     Fragmentable {
-  node: <T = ClaimFieldsSubscription>() => T;
+  node: <T = ClaimFieldSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -2372,7 +2364,7 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "ClaimFields",
+    name: "ClaimField",
     embedded: false
   },
   {
@@ -2388,6 +2380,6 @@ export const models: Model[] = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `https://eu1.prisma.sh/simonas-karuzas-6e9bd0/i227/dev`
+  endpoint: `http://localhost:4466`
 });
 export const prisma = new Prisma();

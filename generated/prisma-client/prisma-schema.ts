@@ -6,7 +6,7 @@ export const typeDefs = /* GraphQL */ `type AggregateClaim {
   count: Int!
 }
 
-type AggregateClaimFields {
+type AggregateClaimField {
   count: Int!
 }
 
@@ -35,7 +35,7 @@ type Claim {
   createdAt: DateTime!
   issuedAt: DateTime!
   jwt: String!
-  claimFields(where: ClaimFieldsWhereInput, orderBy: ClaimFieldsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ClaimFields!]
+  claimFields(where: ClaimFieldWhereInput, orderBy: ClaimFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ClaimField!]
 }
 
 type ClaimConnection {
@@ -52,7 +52,7 @@ input ClaimCreateInput {
   subject: String!
   issuedAt: DateTime!
   jwt: String!
-  claimFields: ClaimFieldsCreateManyInput
+  claimFields: ClaimFieldCreateManyInput
 }
 
 input ClaimCreateManyInput {
@@ -65,37 +65,37 @@ type ClaimEdge {
   cursor: String!
 }
 
-type ClaimFields {
+type ClaimField {
   id: ID!
   claimType: String!
   claimValue: String!
   subject: Did!
 }
 
-type ClaimFieldsConnection {
+type ClaimFieldConnection {
   pageInfo: PageInfo!
-  edges: [ClaimFieldsEdge]!
-  aggregate: AggregateClaimFields!
+  edges: [ClaimFieldEdge]!
+  aggregate: AggregateClaimField!
 }
 
-input ClaimFieldsCreateInput {
+input ClaimFieldCreateInput {
   id: ID
   claimType: String!
   claimValue: String!
   subject: DidCreateOneInput!
 }
 
-input ClaimFieldsCreateManyInput {
-  create: [ClaimFieldsCreateInput!]
-  connect: [ClaimFieldsWhereUniqueInput!]
+input ClaimFieldCreateManyInput {
+  create: [ClaimFieldCreateInput!]
+  connect: [ClaimFieldWhereUniqueInput!]
 }
 
-type ClaimFieldsEdge {
-  node: ClaimFields!
+type ClaimFieldEdge {
+  node: ClaimField!
   cursor: String!
 }
 
-enum ClaimFieldsOrderByInput {
+enum ClaimFieldOrderByInput {
   id_ASC
   id_DESC
   claimType_ASC
@@ -104,13 +104,13 @@ enum ClaimFieldsOrderByInput {
   claimValue_DESC
 }
 
-type ClaimFieldsPreviousValues {
+type ClaimFieldPreviousValues {
   id: ID!
   claimType: String!
   claimValue: String!
 }
 
-input ClaimFieldsScalarWhereInput {
+input ClaimFieldScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -153,80 +153,80 @@ input ClaimFieldsScalarWhereInput {
   claimValue_not_starts_with: String
   claimValue_ends_with: String
   claimValue_not_ends_with: String
-  AND: [ClaimFieldsScalarWhereInput!]
-  OR: [ClaimFieldsScalarWhereInput!]
-  NOT: [ClaimFieldsScalarWhereInput!]
+  AND: [ClaimFieldScalarWhereInput!]
+  OR: [ClaimFieldScalarWhereInput!]
+  NOT: [ClaimFieldScalarWhereInput!]
 }
 
-type ClaimFieldsSubscriptionPayload {
+type ClaimFieldSubscriptionPayload {
   mutation: MutationType!
-  node: ClaimFields
+  node: ClaimField
   updatedFields: [String!]
-  previousValues: ClaimFieldsPreviousValues
+  previousValues: ClaimFieldPreviousValues
 }
 
-input ClaimFieldsSubscriptionWhereInput {
+input ClaimFieldSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: ClaimFieldsWhereInput
-  AND: [ClaimFieldsSubscriptionWhereInput!]
-  OR: [ClaimFieldsSubscriptionWhereInput!]
-  NOT: [ClaimFieldsSubscriptionWhereInput!]
+  node: ClaimFieldWhereInput
+  AND: [ClaimFieldSubscriptionWhereInput!]
+  OR: [ClaimFieldSubscriptionWhereInput!]
+  NOT: [ClaimFieldSubscriptionWhereInput!]
 }
 
-input ClaimFieldsUpdateDataInput {
+input ClaimFieldUpdateDataInput {
   claimType: String
   claimValue: String
   subject: DidUpdateOneRequiredInput
 }
 
-input ClaimFieldsUpdateInput {
+input ClaimFieldUpdateInput {
   claimType: String
   claimValue: String
   subject: DidUpdateOneRequiredInput
 }
 
-input ClaimFieldsUpdateManyDataInput {
+input ClaimFieldUpdateManyDataInput {
   claimType: String
   claimValue: String
 }
 
-input ClaimFieldsUpdateManyInput {
-  create: [ClaimFieldsCreateInput!]
-  update: [ClaimFieldsUpdateWithWhereUniqueNestedInput!]
-  upsert: [ClaimFieldsUpsertWithWhereUniqueNestedInput!]
-  delete: [ClaimFieldsWhereUniqueInput!]
-  connect: [ClaimFieldsWhereUniqueInput!]
-  set: [ClaimFieldsWhereUniqueInput!]
-  disconnect: [ClaimFieldsWhereUniqueInput!]
-  deleteMany: [ClaimFieldsScalarWhereInput!]
-  updateMany: [ClaimFieldsUpdateManyWithWhereNestedInput!]
+input ClaimFieldUpdateManyInput {
+  create: [ClaimFieldCreateInput!]
+  update: [ClaimFieldUpdateWithWhereUniqueNestedInput!]
+  upsert: [ClaimFieldUpsertWithWhereUniqueNestedInput!]
+  delete: [ClaimFieldWhereUniqueInput!]
+  connect: [ClaimFieldWhereUniqueInput!]
+  set: [ClaimFieldWhereUniqueInput!]
+  disconnect: [ClaimFieldWhereUniqueInput!]
+  deleteMany: [ClaimFieldScalarWhereInput!]
+  updateMany: [ClaimFieldUpdateManyWithWhereNestedInput!]
 }
 
-input ClaimFieldsUpdateManyMutationInput {
+input ClaimFieldUpdateManyMutationInput {
   claimType: String
   claimValue: String
 }
 
-input ClaimFieldsUpdateManyWithWhereNestedInput {
-  where: ClaimFieldsScalarWhereInput!
-  data: ClaimFieldsUpdateManyDataInput!
+input ClaimFieldUpdateManyWithWhereNestedInput {
+  where: ClaimFieldScalarWhereInput!
+  data: ClaimFieldUpdateManyDataInput!
 }
 
-input ClaimFieldsUpdateWithWhereUniqueNestedInput {
-  where: ClaimFieldsWhereUniqueInput!
-  data: ClaimFieldsUpdateDataInput!
+input ClaimFieldUpdateWithWhereUniqueNestedInput {
+  where: ClaimFieldWhereUniqueInput!
+  data: ClaimFieldUpdateDataInput!
 }
 
-input ClaimFieldsUpsertWithWhereUniqueNestedInput {
-  where: ClaimFieldsWhereUniqueInput!
-  update: ClaimFieldsUpdateDataInput!
-  create: ClaimFieldsCreateInput!
+input ClaimFieldUpsertWithWhereUniqueNestedInput {
+  where: ClaimFieldWhereUniqueInput!
+  update: ClaimFieldUpdateDataInput!
+  create: ClaimFieldCreateInput!
 }
 
-input ClaimFieldsWhereInput {
+input ClaimFieldWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -270,12 +270,12 @@ input ClaimFieldsWhereInput {
   claimValue_ends_with: String
   claimValue_not_ends_with: String
   subject: DidWhereInput
-  AND: [ClaimFieldsWhereInput!]
-  OR: [ClaimFieldsWhereInput!]
-  NOT: [ClaimFieldsWhereInput!]
+  AND: [ClaimFieldWhereInput!]
+  OR: [ClaimFieldWhereInput!]
+  NOT: [ClaimFieldWhereInput!]
 }
 
-input ClaimFieldsWhereUniqueInput {
+input ClaimFieldWhereUniqueInput {
   id: ID
 }
 
@@ -440,7 +440,7 @@ input ClaimUpdateDataInput {
   subject: String
   issuedAt: DateTime
   jwt: String
-  claimFields: ClaimFieldsUpdateManyInput
+  claimFields: ClaimFieldUpdateManyInput
 }
 
 input ClaimUpdateInput {
@@ -450,7 +450,7 @@ input ClaimUpdateInput {
   subject: String
   issuedAt: DateTime
   jwt: String
-  claimFields: ClaimFieldsUpdateManyInput
+  claimFields: ClaimFieldUpdateManyInput
 }
 
 input ClaimUpdateManyDataInput {
@@ -600,9 +600,9 @@ input ClaimWhereInput {
   jwt_not_starts_with: String
   jwt_ends_with: String
   jwt_not_ends_with: String
-  claimFields_every: ClaimFieldsWhereInput
-  claimFields_some: ClaimFieldsWhereInput
-  claimFields_none: ClaimFieldsWhereInput
+  claimFields_every: ClaimFieldWhereInput
+  claimFields_some: ClaimFieldWhereInput
+  claimFields_none: ClaimFieldWhereInput
   AND: [ClaimWhereInput!]
   OR: [ClaimWhereInput!]
   NOT: [ClaimWhereInput!]
@@ -1067,12 +1067,12 @@ type Mutation {
   upsertClaim(where: ClaimWhereUniqueInput!, create: ClaimCreateInput!, update: ClaimUpdateInput!): Claim!
   deleteClaim(where: ClaimWhereUniqueInput!): Claim
   deleteManyClaims(where: ClaimWhereInput): BatchPayload!
-  createClaimFields(data: ClaimFieldsCreateInput!): ClaimFields!
-  updateClaimFields(data: ClaimFieldsUpdateInput!, where: ClaimFieldsWhereUniqueInput!): ClaimFields
-  updateManyClaimFieldses(data: ClaimFieldsUpdateManyMutationInput!, where: ClaimFieldsWhereInput): BatchPayload!
-  upsertClaimFields(where: ClaimFieldsWhereUniqueInput!, create: ClaimFieldsCreateInput!, update: ClaimFieldsUpdateInput!): ClaimFields!
-  deleteClaimFields(where: ClaimFieldsWhereUniqueInput!): ClaimFields
-  deleteManyClaimFieldses(where: ClaimFieldsWhereInput): BatchPayload!
+  createClaimField(data: ClaimFieldCreateInput!): ClaimField!
+  updateClaimField(data: ClaimFieldUpdateInput!, where: ClaimFieldWhereUniqueInput!): ClaimField
+  updateManyClaimFields(data: ClaimFieldUpdateManyMutationInput!, where: ClaimFieldWhereInput): BatchPayload!
+  upsertClaimField(where: ClaimFieldWhereUniqueInput!, create: ClaimFieldCreateInput!, update: ClaimFieldUpdateInput!): ClaimField!
+  deleteClaimField(where: ClaimFieldWhereUniqueInput!): ClaimField
+  deleteManyClaimFields(where: ClaimFieldWhereInput): BatchPayload!
   createDid(data: DidCreateInput!): Did!
   updateDid(data: DidUpdateInput!, where: DidWhereUniqueInput!): Did
   updateManyDids(data: DidUpdateManyMutationInput!, where: DidWhereInput): BatchPayload!
@@ -1114,9 +1114,9 @@ type Query {
   claim(where: ClaimWhereUniqueInput!): Claim
   claims(where: ClaimWhereInput, orderBy: ClaimOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Claim]!
   claimsConnection(where: ClaimWhereInput, orderBy: ClaimOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClaimConnection!
-  claimFields(where: ClaimFieldsWhereUniqueInput!): ClaimFields
-  claimFieldses(where: ClaimFieldsWhereInput, orderBy: ClaimFieldsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ClaimFields]!
-  claimFieldsesConnection(where: ClaimFieldsWhereInput, orderBy: ClaimFieldsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClaimFieldsConnection!
+  claimField(where: ClaimFieldWhereUniqueInput!): ClaimField
+  claimFields(where: ClaimFieldWhereInput, orderBy: ClaimFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ClaimField]!
+  claimFieldsConnection(where: ClaimFieldWhereInput, orderBy: ClaimFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClaimFieldConnection!
   did(where: DidWhereUniqueInput!): Did
   dids(where: DidWhereInput, orderBy: DidOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Did]!
   didsConnection(where: DidWhereInput, orderBy: DidOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DidConnection!
@@ -1131,7 +1131,7 @@ type Query {
 
 type Subscription {
   claim(where: ClaimSubscriptionWhereInput): ClaimSubscriptionPayload
-  claimFields(where: ClaimFieldsSubscriptionWhereInput): ClaimFieldsSubscriptionPayload
+  claimField(where: ClaimFieldSubscriptionWhereInput): ClaimFieldSubscriptionPayload
   did(where: DidSubscriptionWhereInput): DidSubscriptionPayload
   installation(where: InstallationSubscriptionWhereInput): InstallationSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
