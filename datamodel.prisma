@@ -24,21 +24,15 @@ type Did {
   receivedClaims: [Claim!] @relation(name: "Claims_To_User")
 }
 
-type ClaimField {
-  id: ID! @id
-  claimType: String!
-  claimValue: String!
-  subject: Did!
-}
-
 type Claim {
   id: ID! @id
+  user_id: String!
   team_id: String!
   channel_id: String!
-  issuer: String!
-  subject: String!
+  issuer: Did! @relation(name: "Claims_From_User")
+  subject: Did! @relation(name: "Claims_To_User")
   createdAt: DateTime! @createdAt
-  issuedAt: DateTime!
   jwt: String!
-  claimFields: [ClaimField!]!
+  claimType: String!
+  claimValue: String!
 }

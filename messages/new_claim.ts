@@ -1,4 +1,4 @@
-export default (issuer, subject, payload, signers, signersCount) => {
+export default (issuer, subject, channelId, claimType, claimValue, signers, signersCount, claimCount) => {
 	console.log({signers})
 	const elements = signers.map(signer => ({
 		"type": "image",
@@ -9,7 +9,7 @@ export default (issuer, subject, payload, signers, signersCount) => {
 	elements.push({
 		"type": "plain_text",
 		"emoji": true,
-		"text": signersCount + " claims"
+		"text": `${signersCount} signers / ${claimCount} claims`
 	})
 
 
@@ -18,7 +18,7 @@ export default (issuer, subject, payload, signers, signersCount) => {
 		elements
 	}
 	return {
-		channel: payload.channel.id,
+		channel: channelId,
 		blocks: [
 
 			{
@@ -35,16 +35,21 @@ export default (issuer, subject, payload, signers, signersCount) => {
 				"type": "section",
 				"text": {
 					"type": "mrkdwn",
-					"text": `<@${subject.user_id}> \n Skill *${payload.submission.skill}*`
+					"text": `<@${subject.user_id}> \n ${claimType} *${claimValue}*`
 				},
 				"accessory": {
 					"type": "button",
+					"action_id": "sign_existing_claim",
 					"text": {
 						"type": "plain_text",
 						"emoji": true,
 						"text": "Sign"
 					},
-					"value": "click_me_123"
+					"value": JSON.stringify({
+						subject: subject.user_id,
+						claimType,
+						claimValue
+					})
 				}
 			},
 			signersBlock,

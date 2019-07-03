@@ -21,6 +21,7 @@
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "http": "0.0.0",
+    "lodash": "^4.17.11",
     "morgan": "^1.9.1",
     "morgan-body": "^2.4.7",
     "nacl-did": "^0.4.0",

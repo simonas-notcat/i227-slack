@@ -17,7 +17,6 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   claim: (where?: ClaimWhereInput) => Promise<boolean>;
-  claimField: (where?: ClaimFieldWhereInput) => Promise<boolean>;
   did: (where?: DidWhereInput) => Promise<boolean>;
   installation: (where?: InstallationWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
@@ -61,25 +60,6 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => ClaimConnectionPromise;
-  claimField: (where: ClaimFieldWhereUniqueInput) => ClaimFieldNullablePromise;
-  claimFields: (args?: {
-    where?: ClaimFieldWhereInput;
-    orderBy?: ClaimFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => FragmentableArray<ClaimField>;
-  claimFieldsConnection: (args?: {
-    where?: ClaimFieldWhereInput;
-    orderBy?: ClaimFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => ClaimFieldConnectionPromise;
   did: (where: DidWhereUniqueInput) => DidNullablePromise;
   dids: (args?: {
     where?: DidWhereInput;
@@ -161,22 +141,6 @@ export interface Prisma {
   }) => ClaimPromise;
   deleteClaim: (where: ClaimWhereUniqueInput) => ClaimPromise;
   deleteManyClaims: (where?: ClaimWhereInput) => BatchPayloadPromise;
-  createClaimField: (data: ClaimFieldCreateInput) => ClaimFieldPromise;
-  updateClaimField: (args: {
-    data: ClaimFieldUpdateInput;
-    where: ClaimFieldWhereUniqueInput;
-  }) => ClaimFieldPromise;
-  updateManyClaimFields: (args: {
-    data: ClaimFieldUpdateManyMutationInput;
-    where?: ClaimFieldWhereInput;
-  }) => BatchPayloadPromise;
-  upsertClaimField: (args: {
-    where: ClaimFieldWhereUniqueInput;
-    create: ClaimFieldCreateInput;
-    update: ClaimFieldUpdateInput;
-  }) => ClaimFieldPromise;
-  deleteClaimField: (where: ClaimFieldWhereUniqueInput) => ClaimFieldPromise;
-  deleteManyClaimFields: (where?: ClaimFieldWhereInput) => BatchPayloadPromise;
   createDid: (data: DidCreateInput) => DidPromise;
   updateDid: (args: {
     data: DidUpdateInput;
@@ -241,9 +205,6 @@ export interface Subscription {
   claim: (
     where?: ClaimSubscriptionWhereInput
   ) => ClaimSubscriptionPayloadSubscription;
-  claimField: (
-    where?: ClaimFieldSubscriptionWhereInput
-  ) => ClaimFieldSubscriptionPayloadSubscription;
   did: (
     where?: DidSubscriptionWhereInput
   ) => DidSubscriptionPayloadSubscription;
@@ -262,14 +223,6 @@ export interface ClientConstructor<T> {
 /**
  * Types
  */
-
-export type ClaimFieldOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "claimType_ASC"
-  | "claimType_DESC"
-  | "claimValue_ASC"
-  | "claimValue_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -292,20 +245,20 @@ export type DidOrderByInput =
 export type ClaimOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "user_id_ASC"
+  | "user_id_DESC"
   | "team_id_ASC"
   | "team_id_DESC"
   | "channel_id_ASC"
   | "channel_id_DESC"
-  | "issuer_ASC"
-  | "issuer_DESC"
-  | "subject_ASC"
-  | "subject_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
-  | "issuedAt_ASC"
-  | "issuedAt_DESC"
   | "jwt_ASC"
-  | "jwt_DESC";
+  | "jwt_DESC"
+  | "claimType_ASC"
+  | "claimType_DESC"
+  | "claimValue_ASC"
+  | "claimValue_DESC";
 
 export type InstallationOrderByInput =
   | "id_ASC"
@@ -322,6 +275,322 @@ export type InstallationOrderByInput =
   | "team_id_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export interface UserUpsertWithWhereUniqueWithoutDidsInput {
+  where: UserWhereUniqueInput;
+  update: UserUpdateWithoutDidsDataInput;
+  create: UserCreateWithoutDidsInput;
+}
+
+export type ClaimWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ClaimUpdateManyWithoutSubjectInput {
+  create?: Maybe<
+    ClaimCreateWithoutSubjectInput[] | ClaimCreateWithoutSubjectInput
+  >;
+  delete?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
+  connect?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
+  set?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
+  disconnect?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
+  update?: Maybe<
+    | ClaimUpdateWithWhereUniqueWithoutSubjectInput[]
+    | ClaimUpdateWithWhereUniqueWithoutSubjectInput
+  >;
+  upsert?: Maybe<
+    | ClaimUpsertWithWhereUniqueWithoutSubjectInput[]
+    | ClaimUpsertWithWhereUniqueWithoutSubjectInput
+  >;
+  deleteMany?: Maybe<ClaimScalarWhereInput[] | ClaimScalarWhereInput>;
+  updateMany?: Maybe<
+    ClaimUpdateManyWithWhereNestedInput[] | ClaimUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ClaimWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user_id?: Maybe<String>;
+  user_id_not?: Maybe<String>;
+  user_id_in?: Maybe<String[] | String>;
+  user_id_not_in?: Maybe<String[] | String>;
+  user_id_lt?: Maybe<String>;
+  user_id_lte?: Maybe<String>;
+  user_id_gt?: Maybe<String>;
+  user_id_gte?: Maybe<String>;
+  user_id_contains?: Maybe<String>;
+  user_id_not_contains?: Maybe<String>;
+  user_id_starts_with?: Maybe<String>;
+  user_id_not_starts_with?: Maybe<String>;
+  user_id_ends_with?: Maybe<String>;
+  user_id_not_ends_with?: Maybe<String>;
+  team_id?: Maybe<String>;
+  team_id_not?: Maybe<String>;
+  team_id_in?: Maybe<String[] | String>;
+  team_id_not_in?: Maybe<String[] | String>;
+  team_id_lt?: Maybe<String>;
+  team_id_lte?: Maybe<String>;
+  team_id_gt?: Maybe<String>;
+  team_id_gte?: Maybe<String>;
+  team_id_contains?: Maybe<String>;
+  team_id_not_contains?: Maybe<String>;
+  team_id_starts_with?: Maybe<String>;
+  team_id_not_starts_with?: Maybe<String>;
+  team_id_ends_with?: Maybe<String>;
+  team_id_not_ends_with?: Maybe<String>;
+  channel_id?: Maybe<String>;
+  channel_id_not?: Maybe<String>;
+  channel_id_in?: Maybe<String[] | String>;
+  channel_id_not_in?: Maybe<String[] | String>;
+  channel_id_lt?: Maybe<String>;
+  channel_id_lte?: Maybe<String>;
+  channel_id_gt?: Maybe<String>;
+  channel_id_gte?: Maybe<String>;
+  channel_id_contains?: Maybe<String>;
+  channel_id_not_contains?: Maybe<String>;
+  channel_id_starts_with?: Maybe<String>;
+  channel_id_not_starts_with?: Maybe<String>;
+  channel_id_ends_with?: Maybe<String>;
+  channel_id_not_ends_with?: Maybe<String>;
+  issuer?: Maybe<DidWhereInput>;
+  subject?: Maybe<DidWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  jwt?: Maybe<String>;
+  jwt_not?: Maybe<String>;
+  jwt_in?: Maybe<String[] | String>;
+  jwt_not_in?: Maybe<String[] | String>;
+  jwt_lt?: Maybe<String>;
+  jwt_lte?: Maybe<String>;
+  jwt_gt?: Maybe<String>;
+  jwt_gte?: Maybe<String>;
+  jwt_contains?: Maybe<String>;
+  jwt_not_contains?: Maybe<String>;
+  jwt_starts_with?: Maybe<String>;
+  jwt_not_starts_with?: Maybe<String>;
+  jwt_ends_with?: Maybe<String>;
+  jwt_not_ends_with?: Maybe<String>;
+  claimType?: Maybe<String>;
+  claimType_not?: Maybe<String>;
+  claimType_in?: Maybe<String[] | String>;
+  claimType_not_in?: Maybe<String[] | String>;
+  claimType_lt?: Maybe<String>;
+  claimType_lte?: Maybe<String>;
+  claimType_gt?: Maybe<String>;
+  claimType_gte?: Maybe<String>;
+  claimType_contains?: Maybe<String>;
+  claimType_not_contains?: Maybe<String>;
+  claimType_starts_with?: Maybe<String>;
+  claimType_not_starts_with?: Maybe<String>;
+  claimType_ends_with?: Maybe<String>;
+  claimType_not_ends_with?: Maybe<String>;
+  claimValue?: Maybe<String>;
+  claimValue_not?: Maybe<String>;
+  claimValue_in?: Maybe<String[] | String>;
+  claimValue_not_in?: Maybe<String[] | String>;
+  claimValue_lt?: Maybe<String>;
+  claimValue_lte?: Maybe<String>;
+  claimValue_gt?: Maybe<String>;
+  claimValue_gte?: Maybe<String>;
+  claimValue_contains?: Maybe<String>;
+  claimValue_not_contains?: Maybe<String>;
+  claimValue_starts_with?: Maybe<String>;
+  claimValue_not_starts_with?: Maybe<String>;
+  claimValue_ends_with?: Maybe<String>;
+  claimValue_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ClaimWhereInput[] | ClaimWhereInput>;
+  OR?: Maybe<ClaimWhereInput[] | ClaimWhereInput>;
+  NOT?: Maybe<ClaimWhereInput[] | ClaimWhereInput>;
+}
+
+export interface ClaimUpdateWithWhereUniqueWithoutSubjectInput {
+  where: ClaimWhereUniqueInput;
+  data: ClaimUpdateWithoutSubjectDataInput;
+}
+
+export interface DidWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  did?: Maybe<String>;
+  did_not?: Maybe<String>;
+  did_in?: Maybe<String[] | String>;
+  did_not_in?: Maybe<String[] | String>;
+  did_lt?: Maybe<String>;
+  did_lte?: Maybe<String>;
+  did_gt?: Maybe<String>;
+  did_gte?: Maybe<String>;
+  did_contains?: Maybe<String>;
+  did_not_contains?: Maybe<String>;
+  did_starts_with?: Maybe<String>;
+  did_not_starts_with?: Maybe<String>;
+  did_ends_with?: Maybe<String>;
+  did_not_ends_with?: Maybe<String>;
+  privateKey?: Maybe<String>;
+  privateKey_not?: Maybe<String>;
+  privateKey_in?: Maybe<String[] | String>;
+  privateKey_not_in?: Maybe<String[] | String>;
+  privateKey_lt?: Maybe<String>;
+  privateKey_lte?: Maybe<String>;
+  privateKey_gt?: Maybe<String>;
+  privateKey_gte?: Maybe<String>;
+  privateKey_contains?: Maybe<String>;
+  privateKey_not_contains?: Maybe<String>;
+  privateKey_starts_with?: Maybe<String>;
+  privateKey_not_starts_with?: Maybe<String>;
+  privateKey_ends_with?: Maybe<String>;
+  privateKey_not_ends_with?: Maybe<String>;
+  users_every?: Maybe<UserWhereInput>;
+  users_some?: Maybe<UserWhereInput>;
+  users_none?: Maybe<UserWhereInput>;
+  issuedClaims_every?: Maybe<ClaimWhereInput>;
+  issuedClaims_some?: Maybe<ClaimWhereInput>;
+  issuedClaims_none?: Maybe<ClaimWhereInput>;
+  receivedClaims_every?: Maybe<ClaimWhereInput>;
+  receivedClaims_some?: Maybe<ClaimWhereInput>;
+  receivedClaims_none?: Maybe<ClaimWhereInput>;
+  AND?: Maybe<DidWhereInput[] | DidWhereInput>;
+  OR?: Maybe<DidWhereInput[] | DidWhereInput>;
+  NOT?: Maybe<DidWhereInput[] | DidWhereInput>;
+}
+
+export interface DidCreateWithoutReceivedClaimsInput {
+  id?: Maybe<ID_Input>;
+  did: String;
+  privateKey?: Maybe<String>;
+  users?: Maybe<UserCreateManyWithoutDidsInput>;
+  issuedClaims?: Maybe<ClaimCreateManyWithoutIssuerInput>;
+}
+
+export interface DidCreateInput {
+  id?: Maybe<ID_Input>;
+  did: String;
+  privateKey?: Maybe<String>;
+  users?: Maybe<UserCreateManyWithoutDidsInput>;
+  issuedClaims?: Maybe<ClaimCreateManyWithoutIssuerInput>;
+  receivedClaims?: Maybe<ClaimCreateManyWithoutSubjectInput>;
+}
+
+export interface ClaimCreateManyWithoutIssuerInput {
+  create?: Maybe<
+    ClaimCreateWithoutIssuerInput[] | ClaimCreateWithoutIssuerInput
+  >;
+  connect?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
+}
+
+export interface ClaimUpdateWithoutSubjectDataInput {
+  user_id?: Maybe<String>;
+  team_id?: Maybe<String>;
+  channel_id?: Maybe<String>;
+  issuer?: Maybe<DidUpdateOneRequiredWithoutIssuedClaimsInput>;
+  jwt?: Maybe<String>;
+  claimType?: Maybe<String>;
+  claimValue?: Maybe<String>;
+}
+
+export interface ClaimCreateWithoutIssuerInput {
+  id?: Maybe<ID_Input>;
+  user_id: String;
+  team_id: String;
+  channel_id: String;
+  subject: DidCreateOneWithoutReceivedClaimsInput;
+  jwt: String;
+  claimType: String;
+  claimValue: String;
+}
+
+export interface InstallationSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<InstallationWhereInput>;
+  AND?: Maybe<
+    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
+  >;
+}
+
+export interface ClaimUpdateInput {
+  user_id?: Maybe<String>;
+  team_id?: Maybe<String>;
+  channel_id?: Maybe<String>;
+  issuer?: Maybe<DidUpdateOneRequiredWithoutIssuedClaimsInput>;
+  subject?: Maybe<DidUpdateOneRequiredWithoutReceivedClaimsInput>;
+  jwt?: Maybe<String>;
+  claimType?: Maybe<String>;
+  claimValue?: Maybe<String>;
+}
+
+export interface ClaimSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ClaimWhereInput>;
+  AND?: Maybe<ClaimSubscriptionWhereInput[] | ClaimSubscriptionWhereInput>;
+  OR?: Maybe<ClaimSubscriptionWhereInput[] | ClaimSubscriptionWhereInput>;
+  NOT?: Maybe<ClaimSubscriptionWhereInput[] | ClaimSubscriptionWhereInput>;
+}
+
+export interface DidUpdateOneRequiredWithoutIssuedClaimsInput {
+  create?: Maybe<DidCreateWithoutIssuedClaimsInput>;
+  update?: Maybe<DidUpdateWithoutIssuedClaimsDataInput>;
+  upsert?: Maybe<DidUpsertWithoutIssuedClaimsInput>;
+  connect?: Maybe<DidWhereUniqueInput>;
+}
+
+export interface DidUpdateManyDataInput {
+  did?: Maybe<String>;
+  privateKey?: Maybe<String>;
+}
+
+export interface DidUpdateWithoutIssuedClaimsDataInput {
+  did?: Maybe<String>;
+  privateKey?: Maybe<String>;
+  users?: Maybe<UserUpdateManyWithoutDidsInput>;
+  receivedClaims?: Maybe<ClaimUpdateManyWithoutSubjectInput>;
+}
+
+export interface DidUpdateManyWithWhereNestedInput {
+  where: DidScalarWhereInput;
+  data: DidUpdateManyDataInput;
+}
 
 export interface UserUpdateManyWithoutDidsInput {
   create?: Maybe<UserCreateWithoutDidsInput[] | UserCreateWithoutDidsInput>;
@@ -343,9 +612,49 @@ export interface UserUpdateManyWithoutDidsInput {
   >;
 }
 
-export type ClaimWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface DidUpsertWithWhereUniqueWithoutUsersInput {
+  where: DidWhereUniqueInput;
+  update: DidUpdateWithoutUsersDataInput;
+  create: DidCreateWithoutUsersInput;
+}
+
+export interface UserUpdateWithWhereUniqueWithoutDidsInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutDidsDataInput;
+}
+
+export interface DidUpdateWithoutUsersDataInput {
+  did?: Maybe<String>;
+  privateKey?: Maybe<String>;
+  issuedClaims?: Maybe<ClaimUpdateManyWithoutIssuerInput>;
+  receivedClaims?: Maybe<ClaimUpdateManyWithoutSubjectInput>;
+}
+
+export interface UserUpdateWithoutDidsDataInput {
+  user_id?: Maybe<String>;
+  team_id?: Maybe<String>;
+  default_did?: Maybe<String>;
+}
+
+export interface DidUpdateWithWhereUniqueWithoutUsersInput {
+  where: DidWhereUniqueInput;
+  data: DidUpdateWithoutUsersDataInput;
+}
+
+export interface InstallationUpdateInput {
+  access_token?: Maybe<String>;
+  scope?: Maybe<String>;
+  user_id?: Maybe<String>;
+  team_name?: Maybe<String>;
+  team_id?: Maybe<String>;
+}
+
+export interface UserUpdateInput {
+  user_id?: Maybe<String>;
+  team_id?: Maybe<String>;
+  default_did?: Maybe<String>;
+  dids?: Maybe<DidUpdateManyWithoutUsersInput>;
+}
 
 export interface UserScalarWhereInput {
   id?: Maybe<ID_Input>;
@@ -409,259 +718,41 @@ export interface UserScalarWhereInput {
   NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
 }
 
-export interface ClaimWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  team_id?: Maybe<String>;
-  team_id_not?: Maybe<String>;
-  team_id_in?: Maybe<String[] | String>;
-  team_id_not_in?: Maybe<String[] | String>;
-  team_id_lt?: Maybe<String>;
-  team_id_lte?: Maybe<String>;
-  team_id_gt?: Maybe<String>;
-  team_id_gte?: Maybe<String>;
-  team_id_contains?: Maybe<String>;
-  team_id_not_contains?: Maybe<String>;
-  team_id_starts_with?: Maybe<String>;
-  team_id_not_starts_with?: Maybe<String>;
-  team_id_ends_with?: Maybe<String>;
-  team_id_not_ends_with?: Maybe<String>;
-  channel_id?: Maybe<String>;
-  channel_id_not?: Maybe<String>;
-  channel_id_in?: Maybe<String[] | String>;
-  channel_id_not_in?: Maybe<String[] | String>;
-  channel_id_lt?: Maybe<String>;
-  channel_id_lte?: Maybe<String>;
-  channel_id_gt?: Maybe<String>;
-  channel_id_gte?: Maybe<String>;
-  channel_id_contains?: Maybe<String>;
-  channel_id_not_contains?: Maybe<String>;
-  channel_id_starts_with?: Maybe<String>;
-  channel_id_not_starts_with?: Maybe<String>;
-  channel_id_ends_with?: Maybe<String>;
-  channel_id_not_ends_with?: Maybe<String>;
-  issuer?: Maybe<String>;
-  issuer_not?: Maybe<String>;
-  issuer_in?: Maybe<String[] | String>;
-  issuer_not_in?: Maybe<String[] | String>;
-  issuer_lt?: Maybe<String>;
-  issuer_lte?: Maybe<String>;
-  issuer_gt?: Maybe<String>;
-  issuer_gte?: Maybe<String>;
-  issuer_contains?: Maybe<String>;
-  issuer_not_contains?: Maybe<String>;
-  issuer_starts_with?: Maybe<String>;
-  issuer_not_starts_with?: Maybe<String>;
-  issuer_ends_with?: Maybe<String>;
-  issuer_not_ends_with?: Maybe<String>;
-  subject?: Maybe<String>;
-  subject_not?: Maybe<String>;
-  subject_in?: Maybe<String[] | String>;
-  subject_not_in?: Maybe<String[] | String>;
-  subject_lt?: Maybe<String>;
-  subject_lte?: Maybe<String>;
-  subject_gt?: Maybe<String>;
-  subject_gte?: Maybe<String>;
-  subject_contains?: Maybe<String>;
-  subject_not_contains?: Maybe<String>;
-  subject_starts_with?: Maybe<String>;
-  subject_not_starts_with?: Maybe<String>;
-  subject_ends_with?: Maybe<String>;
-  subject_not_ends_with?: Maybe<String>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  issuedAt?: Maybe<DateTimeInput>;
-  issuedAt_not?: Maybe<DateTimeInput>;
-  issuedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  issuedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  issuedAt_lt?: Maybe<DateTimeInput>;
-  issuedAt_lte?: Maybe<DateTimeInput>;
-  issuedAt_gt?: Maybe<DateTimeInput>;
-  issuedAt_gte?: Maybe<DateTimeInput>;
-  jwt?: Maybe<String>;
-  jwt_not?: Maybe<String>;
-  jwt_in?: Maybe<String[] | String>;
-  jwt_not_in?: Maybe<String[] | String>;
-  jwt_lt?: Maybe<String>;
-  jwt_lte?: Maybe<String>;
-  jwt_gt?: Maybe<String>;
-  jwt_gte?: Maybe<String>;
-  jwt_contains?: Maybe<String>;
-  jwt_not_contains?: Maybe<String>;
-  jwt_starts_with?: Maybe<String>;
-  jwt_not_starts_with?: Maybe<String>;
-  jwt_ends_with?: Maybe<String>;
-  jwt_not_ends_with?: Maybe<String>;
-  claimFields_every?: Maybe<ClaimFieldWhereInput>;
-  claimFields_some?: Maybe<ClaimFieldWhereInput>;
-  claimFields_none?: Maybe<ClaimFieldWhereInput>;
-  AND?: Maybe<ClaimWhereInput[] | ClaimWhereInput>;
-  OR?: Maybe<ClaimWhereInput[] | ClaimWhereInput>;
-  NOT?: Maybe<ClaimWhereInput[] | ClaimWhereInput>;
-}
-
-export interface ClaimFieldCreateManyInput {
-  create?: Maybe<ClaimFieldCreateInput[] | ClaimFieldCreateInput>;
-  connect?: Maybe<ClaimFieldWhereUniqueInput[] | ClaimFieldWhereUniqueInput>;
-}
-
-export interface ClaimUpdateManyMutationInput {
-  team_id?: Maybe<String>;
-  channel_id?: Maybe<String>;
-  issuer?: Maybe<String>;
-  subject?: Maybe<String>;
-  issuedAt?: Maybe<DateTimeInput>;
-  jwt?: Maybe<String>;
-}
-
-export interface ClaimFieldCreateInput {
-  id?: Maybe<ID_Input>;
-  claimType: String;
-  claimValue: String;
-  subject: DidCreateOneInput;
-}
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export interface UserUpdateManyWithWhereNestedInput {
   where: UserScalarWhereInput;
   data: UserUpdateManyDataInput;
 }
 
-export interface DidCreateOneInput {
-  create?: Maybe<DidCreateInput>;
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  user_id: String;
+  team_id: String;
+  default_did: String;
+  dids?: Maybe<DidCreateManyWithoutUsersInput>;
+}
+
+export interface UserUpdateManyDataInput {
+  user_id?: Maybe<String>;
+  team_id?: Maybe<String>;
+  default_did?: Maybe<String>;
+}
+
+export interface DidCreateOneWithoutIssuedClaimsInput {
+  create?: Maybe<DidCreateWithoutIssuedClaimsInput>;
   connect?: Maybe<DidWhereUniqueInput>;
 }
 
-export interface DidWhereInput {
+export interface InstallationCreateInput {
   id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  did?: Maybe<String>;
-  did_not?: Maybe<String>;
-  did_in?: Maybe<String[] | String>;
-  did_not_in?: Maybe<String[] | String>;
-  did_lt?: Maybe<String>;
-  did_lte?: Maybe<String>;
-  did_gt?: Maybe<String>;
-  did_gte?: Maybe<String>;
-  did_contains?: Maybe<String>;
-  did_not_contains?: Maybe<String>;
-  did_starts_with?: Maybe<String>;
-  did_not_starts_with?: Maybe<String>;
-  did_ends_with?: Maybe<String>;
-  did_not_ends_with?: Maybe<String>;
-  privateKey?: Maybe<String>;
-  privateKey_not?: Maybe<String>;
-  privateKey_in?: Maybe<String[] | String>;
-  privateKey_not_in?: Maybe<String[] | String>;
-  privateKey_lt?: Maybe<String>;
-  privateKey_lte?: Maybe<String>;
-  privateKey_gt?: Maybe<String>;
-  privateKey_gte?: Maybe<String>;
-  privateKey_contains?: Maybe<String>;
-  privateKey_not_contains?: Maybe<String>;
-  privateKey_starts_with?: Maybe<String>;
-  privateKey_not_starts_with?: Maybe<String>;
-  privateKey_ends_with?: Maybe<String>;
-  privateKey_not_ends_with?: Maybe<String>;
-  users_every?: Maybe<UserWhereInput>;
-  users_some?: Maybe<UserWhereInput>;
-  users_none?: Maybe<UserWhereInput>;
-  issuedClaims_every?: Maybe<ClaimWhereInput>;
-  issuedClaims_some?: Maybe<ClaimWhereInput>;
-  issuedClaims_none?: Maybe<ClaimWhereInput>;
-  receivedClaims_every?: Maybe<ClaimWhereInput>;
-  receivedClaims_some?: Maybe<ClaimWhereInput>;
-  receivedClaims_none?: Maybe<ClaimWhereInput>;
-  AND?: Maybe<DidWhereInput[] | DidWhereInput>;
-  OR?: Maybe<DidWhereInput[] | DidWhereInput>;
-  NOT?: Maybe<DidWhereInput[] | DidWhereInput>;
-}
-
-export interface DidCreateInput {
-  id?: Maybe<ID_Input>;
-  did: String;
-  privateKey?: Maybe<String>;
-  users?: Maybe<UserCreateManyWithoutDidsInput>;
-  issuedClaims?: Maybe<ClaimCreateManyInput>;
-  receivedClaims?: Maybe<ClaimCreateManyInput>;
-}
-
-export interface ClaimFieldWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  claimType?: Maybe<String>;
-  claimType_not?: Maybe<String>;
-  claimType_in?: Maybe<String[] | String>;
-  claimType_not_in?: Maybe<String[] | String>;
-  claimType_lt?: Maybe<String>;
-  claimType_lte?: Maybe<String>;
-  claimType_gt?: Maybe<String>;
-  claimType_gte?: Maybe<String>;
-  claimType_contains?: Maybe<String>;
-  claimType_not_contains?: Maybe<String>;
-  claimType_starts_with?: Maybe<String>;
-  claimType_not_starts_with?: Maybe<String>;
-  claimType_ends_with?: Maybe<String>;
-  claimType_not_ends_with?: Maybe<String>;
-  claimValue?: Maybe<String>;
-  claimValue_not?: Maybe<String>;
-  claimValue_in?: Maybe<String[] | String>;
-  claimValue_not_in?: Maybe<String[] | String>;
-  claimValue_lt?: Maybe<String>;
-  claimValue_lte?: Maybe<String>;
-  claimValue_gt?: Maybe<String>;
-  claimValue_gte?: Maybe<String>;
-  claimValue_contains?: Maybe<String>;
-  claimValue_not_contains?: Maybe<String>;
-  claimValue_starts_with?: Maybe<String>;
-  claimValue_not_starts_with?: Maybe<String>;
-  claimValue_ends_with?: Maybe<String>;
-  claimValue_not_ends_with?: Maybe<String>;
-  subject?: Maybe<DidWhereInput>;
-  AND?: Maybe<ClaimFieldWhereInput[] | ClaimFieldWhereInput>;
-  OR?: Maybe<ClaimFieldWhereInput[] | ClaimFieldWhereInput>;
-  NOT?: Maybe<ClaimFieldWhereInput[] | ClaimFieldWhereInput>;
+  access_token: String;
+  scope: String;
+  user_id: String;
+  team_name: String;
+  team_id: String;
 }
 
 export interface UserCreateManyWithoutDidsInput {
@@ -669,231 +760,16 @@ export interface UserCreateManyWithoutDidsInput {
   connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
 }
 
-export interface ClaimFieldSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ClaimFieldWhereInput>;
-  AND?: Maybe<
-    ClaimFieldSubscriptionWhereInput[] | ClaimFieldSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    ClaimFieldSubscriptionWhereInput[] | ClaimFieldSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    ClaimFieldSubscriptionWhereInput[] | ClaimFieldSubscriptionWhereInput
-  >;
-}
-
-export interface UserCreateWithoutDidsInput {
-  id?: Maybe<ID_Input>;
-  user_id: String;
-  team_id: String;
-  default_did: String;
-}
-
-export interface UserUpdateManyMutationInput {
-  user_id?: Maybe<String>;
-  team_id?: Maybe<String>;
-  default_did?: Maybe<String>;
-}
-
-export interface ClaimCreateManyInput {
-  create?: Maybe<ClaimCreateInput[] | ClaimCreateInput>;
-  connect?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
-}
-
-export interface DidUpdateManyWithWhereNestedInput {
-  where: DidScalarWhereInput;
-  data: DidUpdateManyDataInput;
-}
-
-export interface ClaimUpdateInput {
-  team_id?: Maybe<String>;
-  channel_id?: Maybe<String>;
-  issuer?: Maybe<String>;
-  subject?: Maybe<String>;
-  issuedAt?: Maybe<DateTimeInput>;
-  jwt?: Maybe<String>;
-  claimFields?: Maybe<ClaimFieldUpdateManyInput>;
-}
-
-export interface DidScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  did?: Maybe<String>;
-  did_not?: Maybe<String>;
-  did_in?: Maybe<String[] | String>;
-  did_not_in?: Maybe<String[] | String>;
-  did_lt?: Maybe<String>;
-  did_lte?: Maybe<String>;
-  did_gt?: Maybe<String>;
-  did_gte?: Maybe<String>;
-  did_contains?: Maybe<String>;
-  did_not_contains?: Maybe<String>;
-  did_starts_with?: Maybe<String>;
-  did_not_starts_with?: Maybe<String>;
-  did_ends_with?: Maybe<String>;
-  did_not_ends_with?: Maybe<String>;
-  privateKey?: Maybe<String>;
-  privateKey_not?: Maybe<String>;
-  privateKey_in?: Maybe<String[] | String>;
-  privateKey_not_in?: Maybe<String[] | String>;
-  privateKey_lt?: Maybe<String>;
-  privateKey_lte?: Maybe<String>;
-  privateKey_gt?: Maybe<String>;
-  privateKey_gte?: Maybe<String>;
-  privateKey_contains?: Maybe<String>;
-  privateKey_not_contains?: Maybe<String>;
-  privateKey_starts_with?: Maybe<String>;
-  privateKey_not_starts_with?: Maybe<String>;
-  privateKey_ends_with?: Maybe<String>;
-  privateKey_not_ends_with?: Maybe<String>;
-  AND?: Maybe<DidScalarWhereInput[] | DidScalarWhereInput>;
-  OR?: Maybe<DidScalarWhereInput[] | DidScalarWhereInput>;
-  NOT?: Maybe<DidScalarWhereInput[] | DidScalarWhereInput>;
-}
-
-export interface ClaimFieldUpdateManyInput {
-  create?: Maybe<ClaimFieldCreateInput[] | ClaimFieldCreateInput>;
-  update?: Maybe<
-    | ClaimFieldUpdateWithWhereUniqueNestedInput[]
-    | ClaimFieldUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | ClaimFieldUpsertWithWhereUniqueNestedInput[]
-    | ClaimFieldUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<ClaimFieldWhereUniqueInput[] | ClaimFieldWhereUniqueInput>;
-  connect?: Maybe<ClaimFieldWhereUniqueInput[] | ClaimFieldWhereUniqueInput>;
-  set?: Maybe<ClaimFieldWhereUniqueInput[] | ClaimFieldWhereUniqueInput>;
-  disconnect?: Maybe<ClaimFieldWhereUniqueInput[] | ClaimFieldWhereUniqueInput>;
-  deleteMany?: Maybe<ClaimFieldScalarWhereInput[] | ClaimFieldScalarWhereInput>;
-  updateMany?: Maybe<
-    | ClaimFieldUpdateManyWithWhereNestedInput[]
-    | ClaimFieldUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface DidUpdateWithoutUsersDataInput {
-  did?: Maybe<String>;
-  privateKey?: Maybe<String>;
-  issuedClaims?: Maybe<ClaimUpdateManyInput>;
-  receivedClaims?: Maybe<ClaimUpdateManyInput>;
-}
-
-export interface ClaimFieldUpdateWithWhereUniqueNestedInput {
-  where: ClaimFieldWhereUniqueInput;
-  data: ClaimFieldUpdateDataInput;
-}
-
-export interface DidUpdateWithWhereUniqueWithoutUsersInput {
-  where: DidWhereUniqueInput;
-  data: DidUpdateWithoutUsersDataInput;
-}
-
-export interface ClaimFieldUpdateDataInput {
-  claimType?: Maybe<String>;
-  claimValue?: Maybe<String>;
-  subject?: Maybe<DidUpdateOneRequiredInput>;
-}
-
-export interface UserUpdateInput {
-  user_id?: Maybe<String>;
-  team_id?: Maybe<String>;
-  default_did?: Maybe<String>;
-  dids?: Maybe<DidUpdateManyWithoutUsersInput>;
-}
-
-export interface DidUpdateOneRequiredInput {
-  create?: Maybe<DidCreateInput>;
-  update?: Maybe<DidUpdateDataInput>;
-  upsert?: Maybe<DidUpsertNestedInput>;
-  connect?: Maybe<DidWhereUniqueInput>;
-}
-
-export interface DidCreateWithoutUsersInput {
-  id?: Maybe<ID_Input>;
-  did: String;
-  privateKey?: Maybe<String>;
-  issuedClaims?: Maybe<ClaimCreateManyInput>;
-  receivedClaims?: Maybe<ClaimCreateManyInput>;
-}
-
-export interface DidUpdateDataInput {
-  did?: Maybe<String>;
-  privateKey?: Maybe<String>;
-  users?: Maybe<UserUpdateManyWithoutDidsInput>;
-  issuedClaims?: Maybe<ClaimUpdateManyInput>;
-  receivedClaims?: Maybe<ClaimUpdateManyInput>;
-}
-
-export interface DidCreateManyWithoutUsersInput {
-  create?: Maybe<DidCreateWithoutUsersInput[] | DidCreateWithoutUsersInput>;
-  connect?: Maybe<DidWhereUniqueInput[] | DidWhereUniqueInput>;
-}
-
-export interface ClaimFieldUpdateManyMutationInput {
-  claimType?: Maybe<String>;
-  claimValue?: Maybe<String>;
-}
-
-export interface InstallationUpdateManyMutationInput {
-  access_token?: Maybe<String>;
-  scope?: Maybe<String>;
-  user_id?: Maybe<String>;
-  team_name?: Maybe<String>;
-  team_id?: Maybe<String>;
-}
-
-export interface UserUpdateWithWhereUniqueWithoutDidsInput {
-  where: UserWhereUniqueInput;
-  data: UserUpdateWithoutDidsDataInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface UserUpdateWithoutDidsDataInput {
-  user_id?: Maybe<String>;
-  team_id?: Maybe<String>;
-  default_did?: Maybe<String>;
-}
-
 export interface DidUpdateManyMutationInput {
   did?: Maybe<String>;
   privateKey?: Maybe<String>;
 }
 
-export interface UserUpsertWithWhereUniqueWithoutDidsInput {
-  where: UserWhereUniqueInput;
-  update: UserUpdateWithoutDidsDataInput;
-  create: UserCreateWithoutDidsInput;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+export interface ClaimCreateManyWithoutSubjectInput {
+  create?: Maybe<
+    ClaimCreateWithoutSubjectInput[] | ClaimCreateWithoutSubjectInput
+  >;
+  connect?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
 }
 
 export interface UserWhereInput {
@@ -961,6 +837,17 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
+export interface DidCreateOneWithoutReceivedClaimsInput {
+  create?: Maybe<DidCreateWithoutReceivedClaimsInput>;
+  connect?: Maybe<DidWhereUniqueInput>;
+}
+
+export interface ClaimUpsertWithWhereUniqueWithoutSubjectInput {
+  where: ClaimWhereUniqueInput;
+  update: ClaimUpdateWithoutSubjectDataInput;
+  create: ClaimCreateWithoutSubjectInput;
+}
+
 export interface DidSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -972,47 +859,139 @@ export interface DidSubscriptionWhereInput {
   NOT?: Maybe<DidSubscriptionWhereInput[] | DidSubscriptionWhereInput>;
 }
 
-export interface ClaimFieldUpdateInput {
+export interface ClaimScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user_id?: Maybe<String>;
+  user_id_not?: Maybe<String>;
+  user_id_in?: Maybe<String[] | String>;
+  user_id_not_in?: Maybe<String[] | String>;
+  user_id_lt?: Maybe<String>;
+  user_id_lte?: Maybe<String>;
+  user_id_gt?: Maybe<String>;
+  user_id_gte?: Maybe<String>;
+  user_id_contains?: Maybe<String>;
+  user_id_not_contains?: Maybe<String>;
+  user_id_starts_with?: Maybe<String>;
+  user_id_not_starts_with?: Maybe<String>;
+  user_id_ends_with?: Maybe<String>;
+  user_id_not_ends_with?: Maybe<String>;
+  team_id?: Maybe<String>;
+  team_id_not?: Maybe<String>;
+  team_id_in?: Maybe<String[] | String>;
+  team_id_not_in?: Maybe<String[] | String>;
+  team_id_lt?: Maybe<String>;
+  team_id_lte?: Maybe<String>;
+  team_id_gt?: Maybe<String>;
+  team_id_gte?: Maybe<String>;
+  team_id_contains?: Maybe<String>;
+  team_id_not_contains?: Maybe<String>;
+  team_id_starts_with?: Maybe<String>;
+  team_id_not_starts_with?: Maybe<String>;
+  team_id_ends_with?: Maybe<String>;
+  team_id_not_ends_with?: Maybe<String>;
+  channel_id?: Maybe<String>;
+  channel_id_not?: Maybe<String>;
+  channel_id_in?: Maybe<String[] | String>;
+  channel_id_not_in?: Maybe<String[] | String>;
+  channel_id_lt?: Maybe<String>;
+  channel_id_lte?: Maybe<String>;
+  channel_id_gt?: Maybe<String>;
+  channel_id_gte?: Maybe<String>;
+  channel_id_contains?: Maybe<String>;
+  channel_id_not_contains?: Maybe<String>;
+  channel_id_starts_with?: Maybe<String>;
+  channel_id_not_starts_with?: Maybe<String>;
+  channel_id_ends_with?: Maybe<String>;
+  channel_id_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  jwt?: Maybe<String>;
+  jwt_not?: Maybe<String>;
+  jwt_in?: Maybe<String[] | String>;
+  jwt_not_in?: Maybe<String[] | String>;
+  jwt_lt?: Maybe<String>;
+  jwt_lte?: Maybe<String>;
+  jwt_gt?: Maybe<String>;
+  jwt_gte?: Maybe<String>;
+  jwt_contains?: Maybe<String>;
+  jwt_not_contains?: Maybe<String>;
+  jwt_starts_with?: Maybe<String>;
+  jwt_not_starts_with?: Maybe<String>;
+  jwt_ends_with?: Maybe<String>;
+  jwt_not_ends_with?: Maybe<String>;
   claimType?: Maybe<String>;
+  claimType_not?: Maybe<String>;
+  claimType_in?: Maybe<String[] | String>;
+  claimType_not_in?: Maybe<String[] | String>;
+  claimType_lt?: Maybe<String>;
+  claimType_lte?: Maybe<String>;
+  claimType_gt?: Maybe<String>;
+  claimType_gte?: Maybe<String>;
+  claimType_contains?: Maybe<String>;
+  claimType_not_contains?: Maybe<String>;
+  claimType_starts_with?: Maybe<String>;
+  claimType_not_starts_with?: Maybe<String>;
+  claimType_ends_with?: Maybe<String>;
+  claimType_not_ends_with?: Maybe<String>;
   claimValue?: Maybe<String>;
-  subject?: Maybe<DidUpdateOneRequiredInput>;
+  claimValue_not?: Maybe<String>;
+  claimValue_in?: Maybe<String[] | String>;
+  claimValue_not_in?: Maybe<String[] | String>;
+  claimValue_lt?: Maybe<String>;
+  claimValue_lte?: Maybe<String>;
+  claimValue_gt?: Maybe<String>;
+  claimValue_gte?: Maybe<String>;
+  claimValue_contains?: Maybe<String>;
+  claimValue_not_contains?: Maybe<String>;
+  claimValue_starts_with?: Maybe<String>;
+  claimValue_not_starts_with?: Maybe<String>;
+  claimValue_ends_with?: Maybe<String>;
+  claimValue_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ClaimScalarWhereInput[] | ClaimScalarWhereInput>;
+  OR?: Maybe<ClaimScalarWhereInput[] | ClaimScalarWhereInput>;
+  NOT?: Maybe<ClaimScalarWhereInput[] | ClaimScalarWhereInput>;
 }
 
-export interface DidUpdateManyDataInput {
+export type DidWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
   did?: Maybe<String>;
-  privateKey?: Maybe<String>;
+}>;
+
+export interface ClaimUpdateManyWithWhereNestedInput {
+  where: ClaimScalarWhereInput;
+  data: ClaimUpdateManyDataInput;
 }
 
-export interface UserUpdateManyDataInput {
+export type InstallationWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ClaimUpdateManyDataInput {
   user_id?: Maybe<String>;
   team_id?: Maybe<String>;
-  default_did?: Maybe<String>;
-}
-
-export interface DidUpsertWithWhereUniqueWithoutUsersInput {
-  where: DidWhereUniqueInput;
-  update: DidUpdateWithoutUsersDataInput;
-  create: DidCreateWithoutUsersInput;
-}
-
-export interface ClaimUpdateManyInput {
-  create?: Maybe<ClaimCreateInput[] | ClaimCreateInput>;
-  update?: Maybe<
-    | ClaimUpdateWithWhereUniqueNestedInput[]
-    | ClaimUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | ClaimUpsertWithWhereUniqueNestedInput[]
-    | ClaimUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
-  connect?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
-  set?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
-  disconnect?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
-  deleteMany?: Maybe<ClaimScalarWhereInput[] | ClaimScalarWhereInput>;
-  updateMany?: Maybe<
-    ClaimUpdateManyWithWhereNestedInput[] | ClaimUpdateManyWithWhereNestedInput
-  >;
+  channel_id?: Maybe<String>;
+  jwt?: Maybe<String>;
+  claimType?: Maybe<String>;
+  claimValue?: Maybe<String>;
 }
 
 export interface DidUpdateManyWithoutUsersInput {
@@ -1035,9 +1014,187 @@ export interface DidUpdateManyWithoutUsersInput {
   >;
 }
 
-export interface ClaimUpdateWithWhereUniqueNestedInput {
+export interface DidUpsertWithoutIssuedClaimsInput {
+  update: DidUpdateWithoutIssuedClaimsDataInput;
+  create: DidCreateWithoutIssuedClaimsInput;
+}
+
+export interface DidCreateManyWithoutUsersInput {
+  create?: Maybe<DidCreateWithoutUsersInput[] | DidCreateWithoutUsersInput>;
+  connect?: Maybe<DidWhereUniqueInput[] | DidWhereUniqueInput>;
+}
+
+export interface DidUpdateOneRequiredWithoutReceivedClaimsInput {
+  create?: Maybe<DidCreateWithoutReceivedClaimsInput>;
+  update?: Maybe<DidUpdateWithoutReceivedClaimsDataInput>;
+  upsert?: Maybe<DidUpsertWithoutReceivedClaimsInput>;
+  connect?: Maybe<DidWhereUniqueInput>;
+}
+
+export interface ClaimCreateInput {
+  id?: Maybe<ID_Input>;
+  user_id: String;
+  team_id: String;
+  channel_id: String;
+  issuer: DidCreateOneWithoutIssuedClaimsInput;
+  subject: DidCreateOneWithoutReceivedClaimsInput;
+  jwt: String;
+  claimType: String;
+  claimValue: String;
+}
+
+export interface DidUpdateWithoutReceivedClaimsDataInput {
+  did?: Maybe<String>;
+  privateKey?: Maybe<String>;
+  users?: Maybe<UserUpdateManyWithoutDidsInput>;
+  issuedClaims?: Maybe<ClaimUpdateManyWithoutIssuerInput>;
+}
+
+export interface UserCreateWithoutDidsInput {
+  id?: Maybe<ID_Input>;
+  user_id: String;
+  team_id: String;
+  default_did: String;
+}
+
+export interface ClaimUpdateManyWithoutIssuerInput {
+  create?: Maybe<
+    ClaimCreateWithoutIssuerInput[] | ClaimCreateWithoutIssuerInput
+  >;
+  delete?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
+  connect?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
+  set?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
+  disconnect?: Maybe<ClaimWhereUniqueInput[] | ClaimWhereUniqueInput>;
+  update?: Maybe<
+    | ClaimUpdateWithWhereUniqueWithoutIssuerInput[]
+    | ClaimUpdateWithWhereUniqueWithoutIssuerInput
+  >;
+  upsert?: Maybe<
+    | ClaimUpsertWithWhereUniqueWithoutIssuerInput[]
+    | ClaimUpsertWithWhereUniqueWithoutIssuerInput
+  >;
+  deleteMany?: Maybe<ClaimScalarWhereInput[] | ClaimScalarWhereInput>;
+  updateMany?: Maybe<
+    ClaimUpdateManyWithWhereNestedInput[] | ClaimUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+}
+
+export interface ClaimUpdateWithWhereUniqueWithoutIssuerInput {
   where: ClaimWhereUniqueInput;
-  data: ClaimUpdateDataInput;
+  data: ClaimUpdateWithoutIssuerDataInput;
+}
+
+export interface DidScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  did?: Maybe<String>;
+  did_not?: Maybe<String>;
+  did_in?: Maybe<String[] | String>;
+  did_not_in?: Maybe<String[] | String>;
+  did_lt?: Maybe<String>;
+  did_lte?: Maybe<String>;
+  did_gt?: Maybe<String>;
+  did_gte?: Maybe<String>;
+  did_contains?: Maybe<String>;
+  did_not_contains?: Maybe<String>;
+  did_starts_with?: Maybe<String>;
+  did_not_starts_with?: Maybe<String>;
+  did_ends_with?: Maybe<String>;
+  did_not_ends_with?: Maybe<String>;
+  privateKey?: Maybe<String>;
+  privateKey_not?: Maybe<String>;
+  privateKey_in?: Maybe<String[] | String>;
+  privateKey_not_in?: Maybe<String[] | String>;
+  privateKey_lt?: Maybe<String>;
+  privateKey_lte?: Maybe<String>;
+  privateKey_gt?: Maybe<String>;
+  privateKey_gte?: Maybe<String>;
+  privateKey_contains?: Maybe<String>;
+  privateKey_not_contains?: Maybe<String>;
+  privateKey_starts_with?: Maybe<String>;
+  privateKey_not_starts_with?: Maybe<String>;
+  privateKey_ends_with?: Maybe<String>;
+  privateKey_not_ends_with?: Maybe<String>;
+  AND?: Maybe<DidScalarWhereInput[] | DidScalarWhereInput>;
+  OR?: Maybe<DidScalarWhereInput[] | DidScalarWhereInput>;
+  NOT?: Maybe<DidScalarWhereInput[] | DidScalarWhereInput>;
+}
+
+export interface ClaimUpdateWithoutIssuerDataInput {
+  user_id?: Maybe<String>;
+  team_id?: Maybe<String>;
+  channel_id?: Maybe<String>;
+  subject?: Maybe<DidUpdateOneRequiredWithoutReceivedClaimsInput>;
+  jwt?: Maybe<String>;
+  claimType?: Maybe<String>;
+  claimValue?: Maybe<String>;
+}
+
+export interface DidCreateWithoutUsersInput {
+  id?: Maybe<ID_Input>;
+  did: String;
+  privateKey?: Maybe<String>;
+  issuedClaims?: Maybe<ClaimCreateManyWithoutIssuerInput>;
+  receivedClaims?: Maybe<ClaimCreateManyWithoutSubjectInput>;
+}
+
+export interface DidUpdateInput {
+  did?: Maybe<String>;
+  privateKey?: Maybe<String>;
+  users?: Maybe<UserUpdateManyWithoutDidsInput>;
+  issuedClaims?: Maybe<ClaimUpdateManyWithoutIssuerInput>;
+  receivedClaims?: Maybe<ClaimUpdateManyWithoutSubjectInput>;
+}
+
+export interface ClaimUpdateManyMutationInput {
+  user_id?: Maybe<String>;
+  team_id?: Maybe<String>;
+  channel_id?: Maybe<String>;
+  jwt?: Maybe<String>;
+  claimType?: Maybe<String>;
+  claimValue?: Maybe<String>;
+}
+
+export interface DidUpsertWithoutReceivedClaimsInput {
+  update: DidUpdateWithoutReceivedClaimsDataInput;
+  create: DidCreateWithoutReceivedClaimsInput;
+}
+
+export interface ClaimUpsertWithWhereUniqueWithoutIssuerInput {
+  where: ClaimWhereUniqueInput;
+  update: ClaimUpdateWithoutIssuerDataInput;
+  create: ClaimCreateWithoutIssuerInput;
+}
+
+export interface InstallationUpdateManyMutationInput {
+  access_token?: Maybe<String>;
+  scope?: Maybe<String>;
+  user_id?: Maybe<String>;
+  team_name?: Maybe<String>;
+  team_id?: Maybe<String>;
 }
 
 export interface InstallationWhereInput {
@@ -1130,294 +1287,29 @@ export interface InstallationWhereInput {
   NOT?: Maybe<InstallationWhereInput[] | InstallationWhereInput>;
 }
 
-export interface ClaimUpdateDataInput {
-  team_id?: Maybe<String>;
-  channel_id?: Maybe<String>;
-  issuer?: Maybe<String>;
-  subject?: Maybe<String>;
-  issuedAt?: Maybe<DateTimeInput>;
-  jwt?: Maybe<String>;
-  claimFields?: Maybe<ClaimFieldUpdateManyInput>;
-}
-
-export interface InstallationUpdateInput {
-  access_token?: Maybe<String>;
-  scope?: Maybe<String>;
+export interface UserUpdateManyMutationInput {
   user_id?: Maybe<String>;
-  team_name?: Maybe<String>;
   team_id?: Maybe<String>;
+  default_did?: Maybe<String>;
 }
 
-export interface ClaimUpsertWithWhereUniqueNestedInput {
-  where: ClaimWhereUniqueInput;
-  update: ClaimUpdateDataInput;
-  create: ClaimCreateInput;
-}
-
-export interface DidUpdateInput {
-  did?: Maybe<String>;
-  privateKey?: Maybe<String>;
-  users?: Maybe<UserUpdateManyWithoutDidsInput>;
-  issuedClaims?: Maybe<ClaimUpdateManyInput>;
-  receivedClaims?: Maybe<ClaimUpdateManyInput>;
-}
-
-export interface ClaimScalarWhereInput {
+export interface ClaimCreateWithoutSubjectInput {
   id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  team_id?: Maybe<String>;
-  team_id_not?: Maybe<String>;
-  team_id_in?: Maybe<String[] | String>;
-  team_id_not_in?: Maybe<String[] | String>;
-  team_id_lt?: Maybe<String>;
-  team_id_lte?: Maybe<String>;
-  team_id_gt?: Maybe<String>;
-  team_id_gte?: Maybe<String>;
-  team_id_contains?: Maybe<String>;
-  team_id_not_contains?: Maybe<String>;
-  team_id_starts_with?: Maybe<String>;
-  team_id_not_starts_with?: Maybe<String>;
-  team_id_ends_with?: Maybe<String>;
-  team_id_not_ends_with?: Maybe<String>;
-  channel_id?: Maybe<String>;
-  channel_id_not?: Maybe<String>;
-  channel_id_in?: Maybe<String[] | String>;
-  channel_id_not_in?: Maybe<String[] | String>;
-  channel_id_lt?: Maybe<String>;
-  channel_id_lte?: Maybe<String>;
-  channel_id_gt?: Maybe<String>;
-  channel_id_gte?: Maybe<String>;
-  channel_id_contains?: Maybe<String>;
-  channel_id_not_contains?: Maybe<String>;
-  channel_id_starts_with?: Maybe<String>;
-  channel_id_not_starts_with?: Maybe<String>;
-  channel_id_ends_with?: Maybe<String>;
-  channel_id_not_ends_with?: Maybe<String>;
-  issuer?: Maybe<String>;
-  issuer_not?: Maybe<String>;
-  issuer_in?: Maybe<String[] | String>;
-  issuer_not_in?: Maybe<String[] | String>;
-  issuer_lt?: Maybe<String>;
-  issuer_lte?: Maybe<String>;
-  issuer_gt?: Maybe<String>;
-  issuer_gte?: Maybe<String>;
-  issuer_contains?: Maybe<String>;
-  issuer_not_contains?: Maybe<String>;
-  issuer_starts_with?: Maybe<String>;
-  issuer_not_starts_with?: Maybe<String>;
-  issuer_ends_with?: Maybe<String>;
-  issuer_not_ends_with?: Maybe<String>;
-  subject?: Maybe<String>;
-  subject_not?: Maybe<String>;
-  subject_in?: Maybe<String[] | String>;
-  subject_not_in?: Maybe<String[] | String>;
-  subject_lt?: Maybe<String>;
-  subject_lte?: Maybe<String>;
-  subject_gt?: Maybe<String>;
-  subject_gte?: Maybe<String>;
-  subject_contains?: Maybe<String>;
-  subject_not_contains?: Maybe<String>;
-  subject_starts_with?: Maybe<String>;
-  subject_not_starts_with?: Maybe<String>;
-  subject_ends_with?: Maybe<String>;
-  subject_not_ends_with?: Maybe<String>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  issuedAt?: Maybe<DateTimeInput>;
-  issuedAt_not?: Maybe<DateTimeInput>;
-  issuedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  issuedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  issuedAt_lt?: Maybe<DateTimeInput>;
-  issuedAt_lte?: Maybe<DateTimeInput>;
-  issuedAt_gt?: Maybe<DateTimeInput>;
-  issuedAt_gte?: Maybe<DateTimeInput>;
-  jwt?: Maybe<String>;
-  jwt_not?: Maybe<String>;
-  jwt_in?: Maybe<String[] | String>;
-  jwt_not_in?: Maybe<String[] | String>;
-  jwt_lt?: Maybe<String>;
-  jwt_lte?: Maybe<String>;
-  jwt_gt?: Maybe<String>;
-  jwt_gte?: Maybe<String>;
-  jwt_contains?: Maybe<String>;
-  jwt_not_contains?: Maybe<String>;
-  jwt_starts_with?: Maybe<String>;
-  jwt_not_starts_with?: Maybe<String>;
-  jwt_ends_with?: Maybe<String>;
-  jwt_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ClaimScalarWhereInput[] | ClaimScalarWhereInput>;
-  OR?: Maybe<ClaimScalarWhereInput[] | ClaimScalarWhereInput>;
-  NOT?: Maybe<ClaimScalarWhereInput[] | ClaimScalarWhereInput>;
-}
-
-export interface InstallationSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<InstallationWhereInput>;
-  AND?: Maybe<
-    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    InstallationSubscriptionWhereInput[] | InstallationSubscriptionWhereInput
-  >;
-}
-
-export interface ClaimUpdateManyWithWhereNestedInput {
-  where: ClaimScalarWhereInput;
-  data: ClaimUpdateManyDataInput;
-}
-
-export type ClaimFieldWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ClaimUpdateManyDataInput {
-  team_id?: Maybe<String>;
-  channel_id?: Maybe<String>;
-  issuer?: Maybe<String>;
-  subject?: Maybe<String>;
-  issuedAt?: Maybe<DateTimeInput>;
-  jwt?: Maybe<String>;
-}
-
-export type InstallationWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface DidUpsertNestedInput {
-  update: DidUpdateDataInput;
-  create: DidCreateInput;
-}
-
-export interface InstallationCreateInput {
-  id?: Maybe<ID_Input>;
-  access_token: String;
-  scope: String;
   user_id: String;
-  team_name: String;
-  team_id: String;
-}
-
-export interface ClaimFieldUpdateManyDataInput {
-  claimType?: Maybe<String>;
-  claimValue?: Maybe<String>;
-}
-
-export interface ClaimFieldUpdateManyWithWhereNestedInput {
-  where: ClaimFieldScalarWhereInput;
-  data: ClaimFieldUpdateManyDataInput;
-}
-
-export interface ClaimFieldScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  claimType?: Maybe<String>;
-  claimType_not?: Maybe<String>;
-  claimType_in?: Maybe<String[] | String>;
-  claimType_not_in?: Maybe<String[] | String>;
-  claimType_lt?: Maybe<String>;
-  claimType_lte?: Maybe<String>;
-  claimType_gt?: Maybe<String>;
-  claimType_gte?: Maybe<String>;
-  claimType_contains?: Maybe<String>;
-  claimType_not_contains?: Maybe<String>;
-  claimType_starts_with?: Maybe<String>;
-  claimType_not_starts_with?: Maybe<String>;
-  claimType_ends_with?: Maybe<String>;
-  claimType_not_ends_with?: Maybe<String>;
-  claimValue?: Maybe<String>;
-  claimValue_not?: Maybe<String>;
-  claimValue_in?: Maybe<String[] | String>;
-  claimValue_not_in?: Maybe<String[] | String>;
-  claimValue_lt?: Maybe<String>;
-  claimValue_lte?: Maybe<String>;
-  claimValue_gt?: Maybe<String>;
-  claimValue_gte?: Maybe<String>;
-  claimValue_contains?: Maybe<String>;
-  claimValue_not_contains?: Maybe<String>;
-  claimValue_starts_with?: Maybe<String>;
-  claimValue_not_starts_with?: Maybe<String>;
-  claimValue_ends_with?: Maybe<String>;
-  claimValue_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ClaimFieldScalarWhereInput[] | ClaimFieldScalarWhereInput>;
-  OR?: Maybe<ClaimFieldScalarWhereInput[] | ClaimFieldScalarWhereInput>;
-  NOT?: Maybe<ClaimFieldScalarWhereInput[] | ClaimFieldScalarWhereInput>;
-}
-
-export interface ClaimFieldUpsertWithWhereUniqueNestedInput {
-  where: ClaimFieldWhereUniqueInput;
-  update: ClaimFieldUpdateDataInput;
-  create: ClaimFieldCreateInput;
-}
-
-export interface ClaimCreateInput {
-  id?: Maybe<ID_Input>;
   team_id: String;
   channel_id: String;
-  issuer: String;
-  subject: String;
-  issuedAt: DateTimeInput;
+  issuer: DidCreateOneWithoutIssuedClaimsInput;
   jwt: String;
-  claimFields?: Maybe<ClaimFieldCreateManyInput>;
+  claimType: String;
+  claimValue: String;
 }
 
-export interface UserCreateInput {
+export interface DidCreateWithoutIssuedClaimsInput {
   id?: Maybe<ID_Input>;
-  user_id: String;
-  team_id: String;
-  default_did: String;
-  dids?: Maybe<DidCreateManyWithoutUsersInput>;
-}
-
-export type DidWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  did?: Maybe<String>;
-}>;
-
-export interface ClaimSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ClaimWhereInput>;
-  AND?: Maybe<ClaimSubscriptionWhereInput[] | ClaimSubscriptionWhereInput>;
-  OR?: Maybe<ClaimSubscriptionWhereInput[] | ClaimSubscriptionWhereInput>;
-  NOT?: Maybe<ClaimSubscriptionWhereInput[] | ClaimSubscriptionWhereInput>;
+  did: String;
+  privateKey?: Maybe<String>;
+  users?: Maybe<UserCreateManyWithoutDidsInput>;
+  receivedClaims?: Maybe<ClaimCreateManyWithoutSubjectInput>;
 }
 
 export interface NodeNode {
@@ -1449,20 +1341,122 @@ export interface UserPreviousValuesSubscription
   default_did: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateClaim {
-  count: Int;
+export interface DidConnection {
+  pageInfo: PageInfo;
+  edges: DidEdge[];
 }
 
-export interface AggregateClaimPromise
-  extends Promise<AggregateClaim>,
+export interface DidConnectionPromise
+  extends Promise<DidConnection>,
     Fragmentable {
-  count: () => Promise<Int>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<DidEdge>>() => T;
+  aggregate: <T = AggregateDidPromise>() => T;
 }
 
-export interface AggregateClaimSubscription
-  extends Promise<AsyncIterator<AggregateClaim>>,
+export interface DidConnectionSubscription
+  extends Promise<AsyncIterator<DidConnection>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<DidEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateDidSubscription>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  user_id: String;
+  team_id: String;
+  default_did: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user_id: () => Promise<String>;
+  team_id: () => Promise<String>;
+  default_did: () => Promise<String>;
+  dids: <T = FragmentableArray<Did>>(args?: {
+    where?: DidWhereInput;
+    orderBy?: DidOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user_id: () => Promise<AsyncIterator<String>>;
+  team_id: () => Promise<AsyncIterator<String>>;
+  default_did: () => Promise<AsyncIterator<String>>;
+  dids: <T = Promise<AsyncIterator<DidSubscription>>>(args?: {
+    where?: DidWhereInput;
+    orderBy?: DidOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user_id: () => Promise<String>;
+  team_id: () => Promise<String>;
+  default_did: () => Promise<String>;
+  dids: <T = FragmentableArray<Did>>(args?: {
+    where?: DidWhereInput;
+    orderBy?: DidOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface DidEdge {
+  node: Did;
+  cursor: String;
+}
+
+export interface DidEdgePromise extends Promise<DidEdge>, Fragmentable {
+  node: <T = DidPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface DidEdgeSubscription
+  extends Promise<AsyncIterator<DidEdge>>,
+    Fragmentable {
+  node: <T = DidSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ClaimConnection {
+  pageInfo: PageInfo;
+  edges: ClaimEdge[];
+}
+
+export interface ClaimConnectionPromise
+  extends Promise<ClaimConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ClaimEdge>>() => T;
+  aggregate: <T = AggregateClaimPromise>() => T;
+}
+
+export interface ClaimConnectionSubscription
+  extends Promise<AsyncIterator<ClaimConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ClaimEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateClaimSubscription>() => T;
 }
 
 export interface BatchPayload {
@@ -1479,6 +1473,69 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface AggregateClaim {
+  count: Int;
+}
+
+export interface AggregateClaimPromise
+  extends Promise<AggregateClaim>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateClaimSubscription
+  extends Promise<AsyncIterator<AggregateClaim>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface InstallationPreviousValues {
+  id: ID_Output;
+  access_token: String;
+  scope: String;
+  user_id: String;
+  team_name: String;
+  team_id: String;
+}
+
+export interface InstallationPreviousValuesPromise
+  extends Promise<InstallationPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  access_token: () => Promise<String>;
+  scope: () => Promise<String>;
+  user_id: () => Promise<String>;
+  team_name: () => Promise<String>;
+  team_id: () => Promise<String>;
+}
+
+export interface InstallationPreviousValuesSubscription
+  extends Promise<AsyncIterator<InstallationPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  access_token: () => Promise<AsyncIterator<String>>;
+  scope: () => Promise<AsyncIterator<String>>;
+  user_id: () => Promise<AsyncIterator<String>>;
+  team_name: () => Promise<AsyncIterator<String>>;
+  team_id: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface ClaimEdge {
@@ -1498,35 +1555,123 @@ export interface ClaimEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ClaimField {
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface InstallationSubscriptionPayload {
+  mutation: MutationType;
+  node: Installation;
+  updatedFields: String[];
+  previousValues: InstallationPreviousValues;
+}
+
+export interface InstallationSubscriptionPayloadPromise
+  extends Promise<InstallationSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = InstallationPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = InstallationPreviousValuesPromise>() => T;
+}
+
+export interface InstallationSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<InstallationSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = InstallationSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = InstallationPreviousValuesSubscription>() => T;
+}
+
+export interface InstallationEdge {
+  node: Installation;
+  cursor: String;
+}
+
+export interface InstallationEdgePromise
+  extends Promise<InstallationEdge>,
+    Fragmentable {
+  node: <T = InstallationPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface InstallationEdgeSubscription
+  extends Promise<AsyncIterator<InstallationEdge>>,
+    Fragmentable {
+  node: <T = InstallationSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Claim {
   id: ID_Output;
+  user_id: String;
+  team_id: String;
+  channel_id: String;
+  createdAt: DateTimeOutput;
+  jwt: String;
   claimType: String;
   claimValue: String;
 }
 
-export interface ClaimFieldPromise extends Promise<ClaimField>, Fragmentable {
+export interface ClaimPromise extends Promise<Claim>, Fragmentable {
   id: () => Promise<ID_Output>;
+  user_id: () => Promise<String>;
+  team_id: () => Promise<String>;
+  channel_id: () => Promise<String>;
+  issuer: <T = DidPromise>() => T;
+  subject: <T = DidPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  jwt: () => Promise<String>;
   claimType: () => Promise<String>;
   claimValue: () => Promise<String>;
-  subject: <T = DidPromise>() => T;
 }
 
-export interface ClaimFieldSubscription
-  extends Promise<AsyncIterator<ClaimField>>,
+export interface ClaimSubscription
+  extends Promise<AsyncIterator<Claim>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  user_id: () => Promise<AsyncIterator<String>>;
+  team_id: () => Promise<AsyncIterator<String>>;
+  channel_id: () => Promise<AsyncIterator<String>>;
+  issuer: <T = DidSubscription>() => T;
+  subject: <T = DidSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  jwt: () => Promise<AsyncIterator<String>>;
   claimType: () => Promise<AsyncIterator<String>>;
   claimValue: () => Promise<AsyncIterator<String>>;
-  subject: <T = DidSubscription>() => T;
 }
 
-export interface ClaimFieldNullablePromise
-  extends Promise<ClaimField | null>,
+export interface ClaimNullablePromise
+  extends Promise<Claim | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  user_id: () => Promise<String>;
+  team_id: () => Promise<String>;
+  channel_id: () => Promise<String>;
+  issuer: <T = DidPromise>() => T;
+  subject: <T = DidPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  jwt: () => Promise<String>;
   claimType: () => Promise<String>;
   claimValue: () => Promise<String>;
-  subject: <T = DidPromise>() => T;
 }
 
 export interface Did {
@@ -1636,306 +1781,6 @@ export interface DidNullablePromise extends Promise<Did | null>, Fragmentable {
   }) => T;
 }
 
-export interface User {
-  id: ID_Output;
-  user_id: String;
-  team_id: String;
-  default_did: String;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  user_id: () => Promise<String>;
-  team_id: () => Promise<String>;
-  default_did: () => Promise<String>;
-  dids: <T = FragmentableArray<Did>>(args?: {
-    where?: DidWhereInput;
-    orderBy?: DidOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  user_id: () => Promise<AsyncIterator<String>>;
-  team_id: () => Promise<AsyncIterator<String>>;
-  default_did: () => Promise<AsyncIterator<String>>;
-  dids: <T = Promise<AsyncIterator<DidSubscription>>>(args?: {
-    where?: DidWhereInput;
-    orderBy?: DidOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  user_id: () => Promise<String>;
-  team_id: () => Promise<String>;
-  default_did: () => Promise<String>;
-  dids: <T = FragmentableArray<Did>>(args?: {
-    where?: DidWhereInput;
-    orderBy?: DidOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface InstallationPreviousValues {
-  id: ID_Output;
-  access_token: String;
-  scope: String;
-  user_id: String;
-  team_name: String;
-  team_id: String;
-}
-
-export interface InstallationPreviousValuesPromise
-  extends Promise<InstallationPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  access_token: () => Promise<String>;
-  scope: () => Promise<String>;
-  user_id: () => Promise<String>;
-  team_name: () => Promise<String>;
-  team_id: () => Promise<String>;
-}
-
-export interface InstallationPreviousValuesSubscription
-  extends Promise<AsyncIterator<InstallationPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  access_token: () => Promise<AsyncIterator<String>>;
-  scope: () => Promise<AsyncIterator<String>>;
-  user_id: () => Promise<AsyncIterator<String>>;
-  team_name: () => Promise<AsyncIterator<String>>;
-  team_id: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface UserEdge {
-  node: User;
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateInstallation {
-  count: Int;
-}
-
-export interface AggregateInstallationPromise
-  extends Promise<AggregateInstallation>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateInstallationSubscription
-  extends Promise<AsyncIterator<AggregateInstallation>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface InstallationConnection {
-  pageInfo: PageInfo;
-  edges: InstallationEdge[];
-}
-
-export interface InstallationConnectionPromise
-  extends Promise<InstallationConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<InstallationEdge>>() => T;
-  aggregate: <T = AggregateInstallationPromise>() => T;
-}
-
-export interface InstallationConnectionSubscription
-  extends Promise<AsyncIterator<InstallationConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<InstallationEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateInstallationSubscription>() => T;
-}
-
-export interface Claim {
-  id: ID_Output;
-  team_id: String;
-  channel_id: String;
-  issuer: String;
-  subject: String;
-  createdAt: DateTimeOutput;
-  issuedAt: DateTimeOutput;
-  jwt: String;
-}
-
-export interface ClaimPromise extends Promise<Claim>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  team_id: () => Promise<String>;
-  channel_id: () => Promise<String>;
-  issuer: () => Promise<String>;
-  subject: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  issuedAt: () => Promise<DateTimeOutput>;
-  jwt: () => Promise<String>;
-  claimFields: <T = FragmentableArray<ClaimField>>(args?: {
-    where?: ClaimFieldWhereInput;
-    orderBy?: ClaimFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface ClaimSubscription
-  extends Promise<AsyncIterator<Claim>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  team_id: () => Promise<AsyncIterator<String>>;
-  channel_id: () => Promise<AsyncIterator<String>>;
-  issuer: () => Promise<AsyncIterator<String>>;
-  subject: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  issuedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  jwt: () => Promise<AsyncIterator<String>>;
-  claimFields: <T = Promise<AsyncIterator<ClaimFieldSubscription>>>(args?: {
-    where?: ClaimFieldWhereInput;
-    orderBy?: ClaimFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface ClaimNullablePromise
-  extends Promise<Claim | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  team_id: () => Promise<String>;
-  channel_id: () => Promise<String>;
-  issuer: () => Promise<String>;
-  subject: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  issuedAt: () => Promise<DateTimeOutput>;
-  jwt: () => Promise<String>;
-  claimFields: <T = FragmentableArray<ClaimField>>(args?: {
-    where?: ClaimFieldWhereInput;
-    orderBy?: ClaimFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface Installation {
-  id: ID_Output;
-  access_token: String;
-  scope: String;
-  user_id: String;
-  team_name: String;
-  team_id: String;
-}
-
-export interface InstallationPromise
-  extends Promise<Installation>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  access_token: () => Promise<String>;
-  scope: () => Promise<String>;
-  user_id: () => Promise<String>;
-  team_name: () => Promise<String>;
-  team_id: () => Promise<String>;
-}
-
-export interface InstallationSubscription
-  extends Promise<AsyncIterator<Installation>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  access_token: () => Promise<AsyncIterator<String>>;
-  scope: () => Promise<AsyncIterator<String>>;
-  user_id: () => Promise<AsyncIterator<String>>;
-  team_name: () => Promise<AsyncIterator<String>>;
-  team_id: () => Promise<AsyncIterator<String>>;
-}
-
-export interface InstallationNullablePromise
-  extends Promise<Installation | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  access_token: () => Promise<String>;
-  scope: () => Promise<String>;
-  user_id: () => Promise<String>;
-  team_name: () => Promise<String>;
-  team_id: () => Promise<String>;
-}
-
 export interface ClaimSubscriptionPayload {
   mutation: MutationType;
   node: Claim;
@@ -1961,162 +1806,6 @@ export interface ClaimSubscriptionPayloadSubscription
   previousValues: <T = ClaimPreviousValuesSubscription>() => T;
 }
 
-export interface DidEdge {
-  node: Did;
-  cursor: String;
-}
-
-export interface DidEdgePromise extends Promise<DidEdge>, Fragmentable {
-  node: <T = DidPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface DidEdgeSubscription
-  extends Promise<AsyncIterator<DidEdge>>,
-    Fragmentable {
-  node: <T = DidSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ClaimPreviousValues {
-  id: ID_Output;
-  team_id: String;
-  channel_id: String;
-  issuer: String;
-  subject: String;
-  createdAt: DateTimeOutput;
-  issuedAt: DateTimeOutput;
-  jwt: String;
-}
-
-export interface ClaimPreviousValuesPromise
-  extends Promise<ClaimPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  team_id: () => Promise<String>;
-  channel_id: () => Promise<String>;
-  issuer: () => Promise<String>;
-  subject: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  issuedAt: () => Promise<DateTimeOutput>;
-  jwt: () => Promise<String>;
-}
-
-export interface ClaimPreviousValuesSubscription
-  extends Promise<AsyncIterator<ClaimPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  team_id: () => Promise<AsyncIterator<String>>;
-  channel_id: () => Promise<AsyncIterator<String>>;
-  issuer: () => Promise<AsyncIterator<String>>;
-  subject: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  issuedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  jwt: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateClaimField {
-  count: Int;
-}
-
-export interface AggregateClaimFieldPromise
-  extends Promise<AggregateClaimField>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateClaimFieldSubscription
-  extends Promise<AsyncIterator<AggregateClaimField>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ClaimConnection {
-  pageInfo: PageInfo;
-  edges: ClaimEdge[];
-}
-
-export interface ClaimConnectionPromise
-  extends Promise<ClaimConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ClaimEdge>>() => T;
-  aggregate: <T = AggregateClaimPromise>() => T;
-}
-
-export interface ClaimConnectionSubscription
-  extends Promise<AsyncIterator<ClaimConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ClaimEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateClaimSubscription>() => T;
-}
-
-export interface ClaimFieldConnection {
-  pageInfo: PageInfo;
-  edges: ClaimFieldEdge[];
-}
-
-export interface ClaimFieldConnectionPromise
-  extends Promise<ClaimFieldConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ClaimFieldEdge>>() => T;
-  aggregate: <T = AggregateClaimFieldPromise>() => T;
-}
-
-export interface ClaimFieldConnectionSubscription
-  extends Promise<AsyncIterator<ClaimFieldConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ClaimFieldEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateClaimFieldSubscription>() => T;
-}
-
-export interface ClaimFieldSubscriptionPayload {
-  mutation: MutationType;
-  node: ClaimField;
-  updatedFields: String[];
-  previousValues: ClaimFieldPreviousValues;
-}
-
-export interface ClaimFieldSubscriptionPayloadPromise
-  extends Promise<ClaimFieldSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ClaimFieldPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ClaimFieldPreviousValuesPromise>() => T;
-}
-
-export interface ClaimFieldSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ClaimFieldSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ClaimFieldSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ClaimFieldPreviousValuesSubscription>() => T;
-}
-
-export interface InstallationEdge {
-  node: Installation;
-  cursor: String;
-}
-
-export interface InstallationEdgePromise
-  extends Promise<InstallationEdge>,
-    Fragmentable {
-  node: <T = InstallationPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface InstallationEdgeSubscription
-  extends Promise<AsyncIterator<InstallationEdge>>,
-    Fragmentable {
-  node: <T = InstallationSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
 export interface AggregateDid {
   count: Int;
 }
@@ -2131,6 +1820,23 @@ export interface AggregateDidSubscription
   extends Promise<AsyncIterator<AggregateDid>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface DidPreviousValues {
@@ -2180,72 +1886,80 @@ export interface DidSubscriptionPayloadSubscription
   previousValues: <T = DidPreviousValuesSubscription>() => T;
 }
 
-export interface InstallationSubscriptionPayload {
-  mutation: MutationType;
-  node: Installation;
-  updatedFields: String[];
-  previousValues: InstallationPreviousValues;
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
 }
 
-export interface InstallationSubscriptionPayloadPromise
-  extends Promise<InstallationSubscriptionPayload>,
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = InstallationPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = InstallationPreviousValuesPromise>() => T;
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface InstallationSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<InstallationSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = InstallationSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = InstallationPreviousValuesSubscription>() => T;
-}
-
-export interface ClaimFieldPreviousValues {
+export interface ClaimPreviousValues {
   id: ID_Output;
+  user_id: String;
+  team_id: String;
+  channel_id: String;
+  createdAt: DateTimeOutput;
+  jwt: String;
   claimType: String;
   claimValue: String;
 }
 
-export interface ClaimFieldPreviousValuesPromise
-  extends Promise<ClaimFieldPreviousValues>,
+export interface ClaimPreviousValuesPromise
+  extends Promise<ClaimPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  user_id: () => Promise<String>;
+  team_id: () => Promise<String>;
+  channel_id: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  jwt: () => Promise<String>;
   claimType: () => Promise<String>;
   claimValue: () => Promise<String>;
 }
 
-export interface ClaimFieldPreviousValuesSubscription
-  extends Promise<AsyncIterator<ClaimFieldPreviousValues>>,
+export interface ClaimPreviousValuesSubscription
+  extends Promise<AsyncIterator<ClaimPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  user_id: () => Promise<AsyncIterator<String>>;
+  team_id: () => Promise<AsyncIterator<String>>;
+  channel_id: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  jwt: () => Promise<AsyncIterator<String>>;
   claimType: () => Promise<AsyncIterator<String>>;
   claimValue: () => Promise<AsyncIterator<String>>;
 }
 
-export interface DidConnection {
-  pageInfo: PageInfo;
-  edges: DidEdge[];
+export interface AggregateInstallation {
+  count: Int;
 }
 
-export interface DidConnectionPromise
-  extends Promise<DidConnection>,
+export interface AggregateInstallationPromise
+  extends Promise<AggregateInstallation>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DidEdge>>() => T;
-  aggregate: <T = AggregateDidPromise>() => T;
+  count: () => Promise<Int>;
 }
 
-export interface DidConnectionSubscription
-  extends Promise<AsyncIterator<DidConnection>>,
+export interface AggregateInstallationSubscription
+  extends Promise<AsyncIterator<AggregateInstallation>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<DidEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateDidSubscription>() => T;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -2273,50 +1987,70 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
+export interface Installation {
+  id: ID_Output;
+  access_token: String;
+  scope: String;
+  user_id: String;
+  team_name: String;
+  team_id: String;
 }
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface InstallationPromise
+  extends Promise<Installation>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  access_token: () => Promise<String>;
+  scope: () => Promise<String>;
+  user_id: () => Promise<String>;
+  team_name: () => Promise<String>;
+  team_id: () => Promise<String>;
+}
+
+export interface InstallationSubscription
+  extends Promise<AsyncIterator<Installation>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  access_token: () => Promise<AsyncIterator<String>>;
+  scope: () => Promise<AsyncIterator<String>>;
+  user_id: () => Promise<AsyncIterator<String>>;
+  team_name: () => Promise<AsyncIterator<String>>;
+  team_id: () => Promise<AsyncIterator<String>>;
+}
+
+export interface InstallationNullablePromise
+  extends Promise<Installation | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  access_token: () => Promise<String>;
+  scope: () => Promise<String>;
+  user_id: () => Promise<String>;
+  team_name: () => Promise<String>;
+  team_id: () => Promise<String>;
+}
+
+export interface InstallationConnection {
+  pageInfo: PageInfo;
+  edges: InstallationEdge[];
+}
+
+export interface InstallationConnectionPromise
+  extends Promise<InstallationConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  edges: <T = FragmentableArray<InstallationEdge>>() => T;
+  aggregate: <T = AggregateInstallationPromise>() => T;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface InstallationConnectionSubscription
+  extends Promise<AsyncIterator<InstallationConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<InstallationEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateInstallationSubscription>() => T;
 }
 
-export interface ClaimFieldEdge {
-  node: ClaimField;
-  cursor: String;
-}
-
-export interface ClaimFieldEdgePromise
-  extends Promise<ClaimFieldEdge>,
-    Fragmentable {
-  node: <T = ClaimFieldPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ClaimFieldEdgeSubscription
-  extends Promise<AsyncIterator<ClaimFieldEdge>>,
-    Fragmentable {
-  node: <T = ClaimFieldSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
+export type Long = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
@@ -2324,17 +2058,15 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 export type Int = number;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-export type Long = string;
-
-/*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /*
 DateTime scalar input type, allowing Date
@@ -2345,6 +2077,11 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 /**
  * Model Metadata
@@ -2361,10 +2098,6 @@ export const models: Model[] = [
   },
   {
     name: "Did",
-    embedded: false
-  },
-  {
-    name: "ClaimField",
     embedded: false
   },
   {
