@@ -54,15 +54,17 @@ slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload
     channel: payload.channel.id,
     blocks: [
       {
-				"type": "section",
-				"text": {
-					"type": "mrkdwn",
-					"text": `<@${payload.user.id}> has made this statement:`
-				}
-			},
-			{
-				"type": "divider"
-			},
+        "type": "context",
+        "elements": [
+          {
+            "type": "mrkdwn",
+            "text": `<@${payload.user.id}> has made this statement:`
+          }
+        ]
+      },
+			// {
+			// 	"type": "divider"
+			// },
     ]
   }
 

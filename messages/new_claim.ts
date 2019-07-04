@@ -35,7 +35,7 @@ export default (issuer, subject, channelId, claimType, claimValue, signers, sign
 					"text": {
 						"type": "plain_text",
 						"emoji": true,
-						"text": "👍"
+						"text": "Vote 👍"
 					},
 					"value": JSON.stringify({
 						subject: subject.user_id,
@@ -45,9 +45,9 @@ export default (issuer, subject, channelId, claimType, claimValue, signers, sign
 				}
 			},
 			signersBlock,
-			{
-				"type": "divider"
-			}
+			// {
+			// 	"type": "divider"
+			// }
 
 		]
 	}
