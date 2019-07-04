@@ -9,6 +9,9 @@ import axios from 'axios'
 import { uniqBy } from 'lodash'
 
 slackInteractions.action({ blockId: 'index_actions', actionId: 'create_new_skill'}, async (payload, respond) => {
+    respond({
+      delete_original: true
+    })
 
   const installations = await prisma.installations({where: {team_id: payload.team.id}})
   const web = new WebClient(installations[installations.length - 1].access_token)
@@ -36,9 +39,34 @@ slackInteractions.action({ blockId: 'index_actions', actionId: 'create_new_skill
 
 slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload, respond) => {
 
+  // try {
+  //   await respond({
+  //     replace_original: true
+  //   })
+
+  // } catch( e){
+  //   console.log(e)
+  // }
 
   console.log({payload})
-  await signAndPostNewClaimToChannel({
+  const firstMessage = {
+    response_type: 'in_channel',
+    channel: payload.channel.id,
+    blocks: [
+      {
+				"type": "section",
+				"text": {
+					"type": "mrkdwn",
+					"text": `<@${payload.user.id}> has made this statement:`
+				}
+			},
+			{
+				"type": "divider"
+			},
+    ]
+  }
+
+  const {web, response} = await signAndCreatePostResponseNewClaimToChannel({
     issuerUserId: payload.user.id,
     subjectUserId: payload.submission.user,
     teamId: payload.team.id,
@@ -47,6 +75,10 @@ slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload
     channelId: payload.channel.id,
   })
 
+  console.log({firstMessage, response})
+
+  await web.chat.postMessage(firstMessage)
+  await web.chat.postMessage(response)
   
 })
 
@@ -56,8 +88,9 @@ slackInteractions.action({ actionId: 'sign_existing_claim'}, async (payload, res
   console.log(payload.actions)
 
   const data = JSON.parse(payload.actions[0].value)
+  // respond({delete_original: true})
 
-  await signAndPostNewClaimToChannel({
+  const {response} = await signAndCreatePostResponseNewClaimToChannel({
     issuerUserId: payload.user.id,
     subjectUserId: data.subject,
     teamId: payload.team.id,
@@ -65,9 +98,12 @@ slackInteractions.action({ actionId: 'sign_existing_claim'}, async (payload, res
     claimValue: data.claimValue,
     channelId: payload.channel.id,
   })
+  response['replace_original'] = true
+
+  respond(response)
 })
 
-const signAndPostNewClaimToChannel = async ({issuerUserId, subjectUserId, teamId, channelId, claimType, claimValue}) => {
+const signAndCreatePostResponseNewClaimToChannel = async ({issuerUserId, subjectUserId, teamId, channelId, claimType, claimValue}) => {
 
 
   const issuer = await getOrCreateUser(issuerUserId, teamId)
@@ -124,7 +160,6 @@ const signAndPostNewClaimToChannel = async ({issuerUserId, subjectUserId, teamId
   try {
 
     const subjectDids = await prisma.user({id: subject.id}).dids()
-    console.log('\n\n', {subjectDids})
     const claims = await prisma.claims({
         where: {
           claimType,
@@ -149,11 +184,11 @@ const signAndPostNewClaimToChannel = async ({issuerUserId, subjectUserId, teamId
 
     const signers = await Promise.all(promises)
 
-    console.log('\n\n\n', {signers})
 
     const response = newClaimMessage(issuer, subject, channelId, claimType, claimValue, signers, uniqueSigners.length, claims.length)
     // console.log(JSON.stringify(response))
-    const result = await web.chat.postMessage(response);
+    // const result = await web.chat.postMessage(response);
+    return {web, response}
   } catch (e) {
     console.log('EEEOEOEOEOEOEOEOPRRORRRORAas')
     console.log(e)

@@ -9,7 +9,7 @@ export default (issuer, subject, channelId, claimType, claimValue, signers, sign
 	elements.push({
 		"type": "plain_text",
 		"emoji": true,
-		"text": `${signersCount} signers / ${claimCount} claims`
+		"text": `${signersCount} voters / ${claimCount} votes`
 	})
 
 
@@ -18,24 +18,16 @@ export default (issuer, subject, channelId, claimType, claimValue, signers, sign
 		elements
 	}
 	return {
+		
 		channel: channelId,
 		blocks: [
+
 
 			{
 				"type": "section",
 				"text": {
 					"type": "mrkdwn",
-					"text": `<@${issuer.user_id}> has created new claim`
-				}
-			},
-			{
-				"type": "divider"
-			},
-			{
-				"type": "section",
-				"text": {
-					"type": "mrkdwn",
-					"text": `<@${subject.user_id}> \n ${claimType} *${claimValue}*`
+					"text": `<@${subject.user_id}> - ${claimType} *${claimValue}*`
 				},
 				"accessory": {
 					"type": "button",
@@ -43,7 +35,7 @@ export default (issuer, subject, channelId, claimType, claimValue, signers, sign
 					"text": {
 						"type": "plain_text",
 						"emoji": true,
-						"text": "Sign"
+						"text": "👍"
 					},
 					"value": JSON.stringify({
 						subject: subject.user_id,
