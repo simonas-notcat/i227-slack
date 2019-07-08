@@ -41,7 +41,7 @@ export const getProfileResponse = async (userId, teamId) => {
           "elements": [
             {
               "type": "mrkdwn",
-              "text": `${subject.default_did}`
+              "text":  subjectDids.map(did => did.did === subject.default_did ? '+ ' + did.did : did.did).join('\n')
             }
           ]
         },
@@ -196,10 +196,6 @@ slackInteractions.action({ blockId: 'share_existing_claim_submit'}, async (paylo
   }
 
 
-
-
-
-
   const response = {
     replace_original: true,
     blocks: [
@@ -242,24 +238,40 @@ export const handleUportCallback = async (req, res, next) => {
 
   const jwt = req.body.access_token
   const creds = await credentials.authenticateDisclosureResponse(jwt)
+
+  const didExists = await prisma.$exists.did({did: creds.did})
+
+  let did
+  if (didExists) {
+    did = await prisma.updateDid({
+      where: {did: creds.did},
+      data: {
+        did: creds.did,
+        pushToken: creds.pushToken,
+        boxPub: creds.boxPub,
+      }
+    })
+  } else {
+    did = await prisma.createDid({
+      did: creds.did,
+      pushToken: creds.pushToken,
+      boxPub: creds.boxPub,
+    })
+  }
   
   await prisma.updateUser({
     where: { id: subject.id },
     data: {
-      default_did: creds.did,
+      // default_did: creds.did,
       dids: {
-        create: {
-          did: creds.did,
-          pushToken: creds.pushToken,
-          boxPub: creds.boxPub,
-        }
+        connect: {id: did.id}
       }
     }
   })
 
 
   axios.post(uportConnect.response_url, {
-    text: `<@${uportConnect.user_id}> default DID is: ${creds.did}`,
+    text: `<@${uportConnect.user_id}> connected DID: ${creds.did}`,
     // response_type: 'in_channel'
   }).catch(console.error);
 
