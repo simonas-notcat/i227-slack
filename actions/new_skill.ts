@@ -7,30 +7,24 @@ import newSkillClaimDialog from '../messages/new_skill_claim_dialog'
 import { prisma } from '../generated/prisma-client'
 import axios from 'axios'
 import { uniqBy } from 'lodash'
+import { getWebClientForTeamId } from '../installationManager'
 
 slackInteractions.action({ blockId: 'index_actions', actionId: 'create_new_skill'}, async (payload, respond) => {
-    respond({
-      delete_original: true
-    })
+  respond({
+    replace_original: true
+  })
 
-  const installations = await prisma.installations({where: {team_id: payload.team.id}})
-  const web = new WebClient(installations[installations.length - 1].access_token)
+  const web = await getWebClientForTeamId(payload.team.id)
+
   try {
-    try {
-      // Open dialog
-      const response = await web.dialog.open({ 
-        trigger_id: payload.trigger_id,
-        dialog: newSkillClaimDialog,
-      });
-    } catch (error) {
-      axios.post(payload.response_url, {
-        text: `An error occurred while opening the dialog: ${error.message}`,
-      }).catch(console.error);
-    }
-  } catch (e) {
-    console.log(e)
+    // Open dialog
+    const response = await web.dialog.open({ 
+      trigger_id: payload.trigger_id,
+      dialog: newSkillClaimDialog,
+    });
+  } catch (error) {
+    console.log(error)
   }
- 
 })
 
 
@@ -72,6 +66,7 @@ slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload
     issuerUserId: payload.user.id,
     subjectUserId: payload.submission.user,
     teamId: payload.team.id,
+    responseUrl: payload.response_url,
     claimType: 'skill',
     claimValue: payload.submission.skill,
     channelId: payload.channel.id,
@@ -95,6 +90,7 @@ slackInteractions.action({ actionId: 'sign_existing_claim'}, async (payload, res
   const {response} = await signAndCreatePostResponseNewClaimToChannel({
     issuerUserId: payload.user.id,
     subjectUserId: data.subject,
+    responseUrl: payload.response_url,
     teamId: payload.team.id,
     claimType: data.claimType,
     claimValue: data.claimValue,
@@ -105,7 +101,7 @@ slackInteractions.action({ actionId: 'sign_existing_claim'}, async (payload, res
   respond(response)
 })
 
-const signAndCreatePostResponseNewClaimToChannel = async ({issuerUserId, subjectUserId, teamId, channelId, claimType, claimValue}) => {
+const signAndCreatePostResponseNewClaimToChannel = async ({issuerUserId, subjectUserId, responseUrl, teamId, channelId, claimType, claimValue}) => {
 
 
   const issuer = await getOrCreateUser(issuerUserId, teamId)
@@ -122,13 +118,20 @@ const signAndCreatePostResponseNewClaimToChannel = async ({issuerUserId, subject
   const issuerDid = await prisma.did({did: issuer.default_did})
   const subjectDid = await prisma.did({did: subject.default_did})
 
+  const web = await getWebClientForTeamId(teamId)
+
   try {
+
+    const userInfo = await web.users.profile.get({user: issuerUserId})
 
     const claim = await prisma.createClaim({
       issuer: {connect: {id: issuerDid.id}},
       subject: {connect: {id: subjectDid.id}},
       user_id: issuerUserId,
       team_id: teamId,
+      image_url: userInfo.profile.image_24,
+      name: userInfo.profile.real_name_normalized,
+      response_url: responseUrl,
       channel_id: channelId,
       jwt,
       claimType,
@@ -157,8 +160,6 @@ const signAndCreatePostResponseNewClaimToChannel = async ({issuerUserId, subject
   }
 
   
-  const installations = await prisma.installations({where: {team_id: teamId}})
-  const web = new WebClient(installations[installations.length - 1].access_token)
   try {
 
     const subjectDids = await prisma.user({id: subject.id}).dids()
@@ -172,19 +173,13 @@ const signAndCreatePostResponseNewClaimToChannel = async ({issuerUserId, subject
 
     const uniqueSigners = uniqBy(claims, 'user_id')
 
-    const promises = uniqueSigners.map(async (claim) => {
-      try{
-        const userInfo = await web.users.profile.get({user: claim.user_id})
-        return ({
-          image_url: userInfo.profile.image_24,
-          name: userInfo.profile.real_name_normalized,
-        })
-      } catch(e) {
-        console.log(e)
-      }
+    const signers = uniqueSigners.map((claim) => {
+      return ({
+        image_url: claim.image_url,
+        name: claim.name,
+      })
     })
 
-    const signers = await Promise.all(promises)
 
 
     const response = newClaimMessage(issuer, subject, channelId, claimType, claimValue, signers, uniqueSigners.length, claims.length)

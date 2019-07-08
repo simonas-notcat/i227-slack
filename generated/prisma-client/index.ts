@@ -251,6 +251,12 @@ export type ClaimOrderByInput =
   | "team_id_DESC"
   | "channel_id_ASC"
   | "channel_id_DESC"
+  | "response_url_ASC"
+  | "response_url_DESC"
+  | "image_url_ASC"
+  | "image_url_DESC"
+  | "name_ASC"
+  | "name_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "jwt_ASC"
@@ -365,6 +371,48 @@ export interface ClaimWhereInput {
   channel_id_not_starts_with?: Maybe<String>;
   channel_id_ends_with?: Maybe<String>;
   channel_id_not_ends_with?: Maybe<String>;
+  response_url?: Maybe<String>;
+  response_url_not?: Maybe<String>;
+  response_url_in?: Maybe<String[] | String>;
+  response_url_not_in?: Maybe<String[] | String>;
+  response_url_lt?: Maybe<String>;
+  response_url_lte?: Maybe<String>;
+  response_url_gt?: Maybe<String>;
+  response_url_gte?: Maybe<String>;
+  response_url_contains?: Maybe<String>;
+  response_url_not_contains?: Maybe<String>;
+  response_url_starts_with?: Maybe<String>;
+  response_url_not_starts_with?: Maybe<String>;
+  response_url_ends_with?: Maybe<String>;
+  response_url_not_ends_with?: Maybe<String>;
+  image_url?: Maybe<String>;
+  image_url_not?: Maybe<String>;
+  image_url_in?: Maybe<String[] | String>;
+  image_url_not_in?: Maybe<String[] | String>;
+  image_url_lt?: Maybe<String>;
+  image_url_lte?: Maybe<String>;
+  image_url_gt?: Maybe<String>;
+  image_url_gte?: Maybe<String>;
+  image_url_contains?: Maybe<String>;
+  image_url_not_contains?: Maybe<String>;
+  image_url_starts_with?: Maybe<String>;
+  image_url_not_starts_with?: Maybe<String>;
+  image_url_ends_with?: Maybe<String>;
+  image_url_not_ends_with?: Maybe<String>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
   issuer?: Maybe<DidWhereInput>;
   subject?: Maybe<DidWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
@@ -512,6 +560,9 @@ export interface ClaimUpdateWithoutSubjectDataInput {
   user_id?: Maybe<String>;
   team_id?: Maybe<String>;
   channel_id?: Maybe<String>;
+  response_url?: Maybe<String>;
+  image_url?: Maybe<String>;
+  name?: Maybe<String>;
   issuer?: Maybe<DidUpdateOneRequiredWithoutIssuedClaimsInput>;
   jwt?: Maybe<String>;
   claimType?: Maybe<String>;
@@ -520,9 +571,12 @@ export interface ClaimUpdateWithoutSubjectDataInput {
 
 export interface ClaimCreateWithoutIssuerInput {
   id?: Maybe<ID_Input>;
-  user_id: String;
-  team_id: String;
-  channel_id: String;
+  user_id?: Maybe<String>;
+  team_id?: Maybe<String>;
+  channel_id?: Maybe<String>;
+  response_url?: Maybe<String>;
+  image_url?: Maybe<String>;
+  name?: Maybe<String>;
   subject: DidCreateOneWithoutReceivedClaimsInput;
   jwt: String;
   claimType: String;
@@ -550,6 +604,9 @@ export interface ClaimUpdateInput {
   user_id?: Maybe<String>;
   team_id?: Maybe<String>;
   channel_id?: Maybe<String>;
+  response_url?: Maybe<String>;
+  image_url?: Maybe<String>;
+  name?: Maybe<String>;
   issuer?: Maybe<DidUpdateOneRequiredWithoutIssuedClaimsInput>;
   subject?: Maybe<DidUpdateOneRequiredWithoutReceivedClaimsInput>;
   jwt?: Maybe<String>;
@@ -916,6 +973,48 @@ export interface ClaimScalarWhereInput {
   channel_id_not_starts_with?: Maybe<String>;
   channel_id_ends_with?: Maybe<String>;
   channel_id_not_ends_with?: Maybe<String>;
+  response_url?: Maybe<String>;
+  response_url_not?: Maybe<String>;
+  response_url_in?: Maybe<String[] | String>;
+  response_url_not_in?: Maybe<String[] | String>;
+  response_url_lt?: Maybe<String>;
+  response_url_lte?: Maybe<String>;
+  response_url_gt?: Maybe<String>;
+  response_url_gte?: Maybe<String>;
+  response_url_contains?: Maybe<String>;
+  response_url_not_contains?: Maybe<String>;
+  response_url_starts_with?: Maybe<String>;
+  response_url_not_starts_with?: Maybe<String>;
+  response_url_ends_with?: Maybe<String>;
+  response_url_not_ends_with?: Maybe<String>;
+  image_url?: Maybe<String>;
+  image_url_not?: Maybe<String>;
+  image_url_in?: Maybe<String[] | String>;
+  image_url_not_in?: Maybe<String[] | String>;
+  image_url_lt?: Maybe<String>;
+  image_url_lte?: Maybe<String>;
+  image_url_gt?: Maybe<String>;
+  image_url_gte?: Maybe<String>;
+  image_url_contains?: Maybe<String>;
+  image_url_not_contains?: Maybe<String>;
+  image_url_starts_with?: Maybe<String>;
+  image_url_not_starts_with?: Maybe<String>;
+  image_url_ends_with?: Maybe<String>;
+  image_url_not_ends_with?: Maybe<String>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -989,6 +1088,9 @@ export interface ClaimUpdateManyDataInput {
   user_id?: Maybe<String>;
   team_id?: Maybe<String>;
   channel_id?: Maybe<String>;
+  response_url?: Maybe<String>;
+  image_url?: Maybe<String>;
+  name?: Maybe<String>;
   jwt?: Maybe<String>;
   claimType?: Maybe<String>;
   claimValue?: Maybe<String>;
@@ -1033,9 +1135,12 @@ export interface DidUpdateOneRequiredWithoutReceivedClaimsInput {
 
 export interface ClaimCreateInput {
   id?: Maybe<ID_Input>;
-  user_id: String;
-  team_id: String;
-  channel_id: String;
+  user_id?: Maybe<String>;
+  team_id?: Maybe<String>;
+  channel_id?: Maybe<String>;
+  response_url?: Maybe<String>;
+  image_url?: Maybe<String>;
+  name?: Maybe<String>;
   issuer: DidCreateOneWithoutIssuedClaimsInput;
   subject: DidCreateOneWithoutReceivedClaimsInput;
   jwt: String;
@@ -1147,6 +1252,9 @@ export interface ClaimUpdateWithoutIssuerDataInput {
   user_id?: Maybe<String>;
   team_id?: Maybe<String>;
   channel_id?: Maybe<String>;
+  response_url?: Maybe<String>;
+  image_url?: Maybe<String>;
+  name?: Maybe<String>;
   subject?: Maybe<DidUpdateOneRequiredWithoutReceivedClaimsInput>;
   jwt?: Maybe<String>;
   claimType?: Maybe<String>;
@@ -1173,6 +1281,9 @@ export interface ClaimUpdateManyMutationInput {
   user_id?: Maybe<String>;
   team_id?: Maybe<String>;
   channel_id?: Maybe<String>;
+  response_url?: Maybe<String>;
+  image_url?: Maybe<String>;
+  name?: Maybe<String>;
   jwt?: Maybe<String>;
   claimType?: Maybe<String>;
   claimValue?: Maybe<String>;
@@ -1295,9 +1406,12 @@ export interface UserUpdateManyMutationInput {
 
 export interface ClaimCreateWithoutSubjectInput {
   id?: Maybe<ID_Input>;
-  user_id: String;
-  team_id: String;
-  channel_id: String;
+  user_id?: Maybe<String>;
+  team_id?: Maybe<String>;
+  channel_id?: Maybe<String>;
+  response_url?: Maybe<String>;
+  image_url?: Maybe<String>;
+  name?: Maybe<String>;
   issuer: DidCreateOneWithoutIssuedClaimsInput;
   jwt: String;
   claimType: String;
@@ -1622,9 +1736,12 @@ export interface InstallationEdgeSubscription
 
 export interface Claim {
   id: ID_Output;
-  user_id: String;
-  team_id: String;
-  channel_id: String;
+  user_id?: String;
+  team_id?: String;
+  channel_id?: String;
+  response_url?: String;
+  image_url?: String;
+  name?: String;
   createdAt: DateTimeOutput;
   jwt: String;
   claimType: String;
@@ -1636,6 +1753,9 @@ export interface ClaimPromise extends Promise<Claim>, Fragmentable {
   user_id: () => Promise<String>;
   team_id: () => Promise<String>;
   channel_id: () => Promise<String>;
+  response_url: () => Promise<String>;
+  image_url: () => Promise<String>;
+  name: () => Promise<String>;
   issuer: <T = DidPromise>() => T;
   subject: <T = DidPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
@@ -1651,6 +1771,9 @@ export interface ClaimSubscription
   user_id: () => Promise<AsyncIterator<String>>;
   team_id: () => Promise<AsyncIterator<String>>;
   channel_id: () => Promise<AsyncIterator<String>>;
+  response_url: () => Promise<AsyncIterator<String>>;
+  image_url: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
   issuer: <T = DidSubscription>() => T;
   subject: <T = DidSubscription>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -1666,6 +1789,9 @@ export interface ClaimNullablePromise
   user_id: () => Promise<String>;
   team_id: () => Promise<String>;
   channel_id: () => Promise<String>;
+  response_url: () => Promise<String>;
+  image_url: () => Promise<String>;
+  name: () => Promise<String>;
   issuer: <T = DidPromise>() => T;
   subject: <T = DidPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
@@ -1911,9 +2037,12 @@ export interface PageInfoSubscription
 
 export interface ClaimPreviousValues {
   id: ID_Output;
-  user_id: String;
-  team_id: String;
-  channel_id: String;
+  user_id?: String;
+  team_id?: String;
+  channel_id?: String;
+  response_url?: String;
+  image_url?: String;
+  name?: String;
   createdAt: DateTimeOutput;
   jwt: String;
   claimType: String;
@@ -1927,6 +2056,9 @@ export interface ClaimPreviousValuesPromise
   user_id: () => Promise<String>;
   team_id: () => Promise<String>;
   channel_id: () => Promise<String>;
+  response_url: () => Promise<String>;
+  image_url: () => Promise<String>;
+  name: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   jwt: () => Promise<String>;
   claimType: () => Promise<String>;
@@ -1940,6 +2072,9 @@ export interface ClaimPreviousValuesSubscription
   user_id: () => Promise<AsyncIterator<String>>;
   team_id: () => Promise<AsyncIterator<String>>;
   channel_id: () => Promise<AsyncIterator<String>>;
+  response_url: () => Promise<AsyncIterator<String>>;
+  image_url: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   jwt: () => Promise<AsyncIterator<String>>;
   claimType: () => Promise<AsyncIterator<String>>;

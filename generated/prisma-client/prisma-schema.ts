@@ -24,9 +24,12 @@ type BatchPayload {
 
 type Claim {
   id: ID!
-  user_id: String!
-  team_id: String!
-  channel_id: String!
+  user_id: String
+  team_id: String
+  channel_id: String
+  response_url: String
+  image_url: String
+  name: String
   issuer: Did!
   subject: Did!
   createdAt: DateTime!
@@ -43,9 +46,12 @@ type ClaimConnection {
 
 input ClaimCreateInput {
   id: ID
-  user_id: String!
-  team_id: String!
-  channel_id: String!
+  user_id: String
+  team_id: String
+  channel_id: String
+  response_url: String
+  image_url: String
+  name: String
   issuer: DidCreateOneWithoutIssuedClaimsInput!
   subject: DidCreateOneWithoutReceivedClaimsInput!
   jwt: String!
@@ -65,9 +71,12 @@ input ClaimCreateManyWithoutSubjectInput {
 
 input ClaimCreateWithoutIssuerInput {
   id: ID
-  user_id: String!
-  team_id: String!
-  channel_id: String!
+  user_id: String
+  team_id: String
+  channel_id: String
+  response_url: String
+  image_url: String
+  name: String
   subject: DidCreateOneWithoutReceivedClaimsInput!
   jwt: String!
   claimType: String!
@@ -76,9 +85,12 @@ input ClaimCreateWithoutIssuerInput {
 
 input ClaimCreateWithoutSubjectInput {
   id: ID
-  user_id: String!
-  team_id: String!
-  channel_id: String!
+  user_id: String
+  team_id: String
+  channel_id: String
+  response_url: String
+  image_url: String
+  name: String
   issuer: DidCreateOneWithoutIssuedClaimsInput!
   jwt: String!
   claimType: String!
@@ -99,6 +111,12 @@ enum ClaimOrderByInput {
   team_id_DESC
   channel_id_ASC
   channel_id_DESC
+  response_url_ASC
+  response_url_DESC
+  image_url_ASC
+  image_url_DESC
+  name_ASC
+  name_DESC
   createdAt_ASC
   createdAt_DESC
   jwt_ASC
@@ -111,9 +129,12 @@ enum ClaimOrderByInput {
 
 type ClaimPreviousValues {
   id: ID!
-  user_id: String!
-  team_id: String!
-  channel_id: String!
+  user_id: String
+  team_id: String
+  channel_id: String
+  response_url: String
+  image_url: String
+  name: String
   createdAt: DateTime!
   jwt: String!
   claimType: String!
@@ -177,6 +198,48 @@ input ClaimScalarWhereInput {
   channel_id_not_starts_with: String
   channel_id_ends_with: String
   channel_id_not_ends_with: String
+  response_url: String
+  response_url_not: String
+  response_url_in: [String!]
+  response_url_not_in: [String!]
+  response_url_lt: String
+  response_url_lte: String
+  response_url_gt: String
+  response_url_gte: String
+  response_url_contains: String
+  response_url_not_contains: String
+  response_url_starts_with: String
+  response_url_not_starts_with: String
+  response_url_ends_with: String
+  response_url_not_ends_with: String
+  image_url: String
+  image_url_not: String
+  image_url_in: [String!]
+  image_url_not_in: [String!]
+  image_url_lt: String
+  image_url_lte: String
+  image_url_gt: String
+  image_url_gte: String
+  image_url_contains: String
+  image_url_not_contains: String
+  image_url_starts_with: String
+  image_url_not_starts_with: String
+  image_url_ends_with: String
+  image_url_not_ends_with: String
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -254,6 +317,9 @@ input ClaimUpdateInput {
   user_id: String
   team_id: String
   channel_id: String
+  response_url: String
+  image_url: String
+  name: String
   issuer: DidUpdateOneRequiredWithoutIssuedClaimsInput
   subject: DidUpdateOneRequiredWithoutReceivedClaimsInput
   jwt: String
@@ -265,6 +331,9 @@ input ClaimUpdateManyDataInput {
   user_id: String
   team_id: String
   channel_id: String
+  response_url: String
+  image_url: String
+  name: String
   jwt: String
   claimType: String
   claimValue: String
@@ -274,6 +343,9 @@ input ClaimUpdateManyMutationInput {
   user_id: String
   team_id: String
   channel_id: String
+  response_url: String
+  image_url: String
+  name: String
   jwt: String
   claimType: String
   claimValue: String
@@ -312,6 +384,9 @@ input ClaimUpdateWithoutIssuerDataInput {
   user_id: String
   team_id: String
   channel_id: String
+  response_url: String
+  image_url: String
+  name: String
   subject: DidUpdateOneRequiredWithoutReceivedClaimsInput
   jwt: String
   claimType: String
@@ -322,6 +397,9 @@ input ClaimUpdateWithoutSubjectDataInput {
   user_id: String
   team_id: String
   channel_id: String
+  response_url: String
+  image_url: String
+  name: String
   issuer: DidUpdateOneRequiredWithoutIssuedClaimsInput
   jwt: String
   claimType: String
@@ -407,6 +485,48 @@ input ClaimWhereInput {
   channel_id_not_starts_with: String
   channel_id_ends_with: String
   channel_id_not_ends_with: String
+  response_url: String
+  response_url_not: String
+  response_url_in: [String!]
+  response_url_not_in: [String!]
+  response_url_lt: String
+  response_url_lte: String
+  response_url_gt: String
+  response_url_gte: String
+  response_url_contains: String
+  response_url_not_contains: String
+  response_url_starts_with: String
+  response_url_not_starts_with: String
+  response_url_ends_with: String
+  response_url_not_ends_with: String
+  image_url: String
+  image_url_not: String
+  image_url_in: [String!]
+  image_url_not_in: [String!]
+  image_url_lt: String
+  image_url_lte: String
+  image_url_gt: String
+  image_url_gte: String
+  image_url_contains: String
+  image_url_not_contains: String
+  image_url_starts_with: String
+  image_url_not_starts_with: String
+  image_url_ends_with: String
+  image_url_not_ends_with: String
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
   issuer: DidWhereInput
   subject: DidWhereInput
   createdAt: DateTime

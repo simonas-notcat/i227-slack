@@ -45,9 +45,9 @@ export default (issuer, subject, channelId, claimType, claimValue, signers, sign
 				}
 			},
 			signersBlock,
-			// {
-			// 	"type": "divider"
-			// }
+			{
+				"type": "divider"
+			}
 
 		]
 	}
