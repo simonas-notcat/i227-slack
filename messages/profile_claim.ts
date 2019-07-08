@@ -1,6 +1,6 @@
 const S = require('string')
 
-export default ({subject, channelId, claimType, claimValue, signers, signersCount, claimCount}) => {
+export default ({subject, claimType, claimValue, signers, signersCount, claimCount}): any[] => {
 
 	const elements = signers.map(signer => ({
 		"type": "image",
@@ -19,25 +19,22 @@ export default ({subject, channelId, claimType, claimValue, signers, signersCoun
 		"type": "context",
 		elements
 	}
-	return {
-		
-		channel: channelId,
-		blocks: [
+	return [
 
 
 			{
 				"type": "section",
 				"text": {
 					"type": "mrkdwn",
-					"text": `<@${subject.user_id}> - ${S(claimType).humanize().titleCase().s} *${claimValue}*`
+					"text": `${S(claimType).humanize().titleCase().s} *${claimValue}*`
 				},
 				"accessory": {
 					"type": "button",
-					"action_id": "sign_existing_claim",
+					"action_id": "share_existing_claim",
 					"text": {
 						"type": "plain_text",
 						"emoji": true,
-						"text": "Vote 👍"
+						"text": "Share"
 					},
 					"value": JSON.stringify({
 						subject: subject.user_id,
@@ -51,6 +48,6 @@ export default ({subject, channelId, claimType, claimValue, signers, signersCoun
 				"type": "divider"
 			}
 
-		] as any[]
-	}
+		]
+	
 }

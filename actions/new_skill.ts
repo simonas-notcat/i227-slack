@@ -1,11 +1,8 @@
 import { slackInteractions } from './adapter'
-const { WebClient } = require('@slack/web-api')
 import { getOrCreateUser, signClaim } from '../userManager'
-import message from '../messages/create_new_claim'
 import newClaimMessage from '../messages/new_claim'
 import newSkillClaimDialog from '../messages/new_skill_claim_dialog'
 import { prisma } from '../generated/prisma-client'
-import axios from 'axios'
 import { uniqBy } from 'lodash'
 import { getWebClientForTeamId } from '../installationManager'
 
@@ -28,19 +25,7 @@ slackInteractions.action({ blockId: 'index_actions', actionId: 'create_new_skill
 })
 
 
-
-
-
 slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload, respond) => {
-
-  // try {
-  //   await respond({
-  //     replace_original: true
-  //   })
-
-  // } catch( e){
-  //   console.log(e)
-  // }
 
   console.log({payload})
   const firstMessage = {
@@ -56,9 +41,6 @@ slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload
           }
         ]
       },
-			// {
-			// 	"type": "divider"
-			// },
     ]
   }
 
@@ -72,7 +54,6 @@ slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload
     channelId: payload.channel.id,
   })
 
-  console.log({firstMessage, response})
 
   await web.chat.postMessage(firstMessage)
   await web.chat.postMessage(response)
@@ -81,11 +62,10 @@ slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload
 
 slackInteractions.action({ actionId: 'sign_existing_claim'}, async (payload, respond) => {
 
-  console.log({payload})
-  console.log(payload.actions)
+  // console.log({payload})
+  // console.log(payload.actions)
 
   const data = JSON.parse(payload.actions[0].value)
-  // respond({delete_original: true})
 
   const {response} = await signAndCreatePostResponseNewClaimToChannel({
     issuerUserId: payload.user.id,
@@ -106,7 +86,6 @@ const signAndCreatePostResponseNewClaimToChannel = async ({issuerUserId, subject
 
   const issuer = await getOrCreateUser(issuerUserId, teamId)
   const subject = await getOrCreateUser(subjectUserId, teamId)
-  console.log({issuer, subject})
 
   const jwt = await signClaim(issuer, {
     sub: subject.default_did,
@@ -182,12 +161,9 @@ const signAndCreatePostResponseNewClaimToChannel = async ({issuerUserId, subject
 
 
 
-    const response = newClaimMessage(issuer, subject, channelId, claimType, claimValue, signers, uniqueSigners.length, claims.length)
-    // console.log(JSON.stringify(response))
-    // const result = await web.chat.postMessage(response);
+    const response = newClaimMessage({subject, channelId, claimType, claimValue, signers, signersCount: uniqueSigners.length, claimCount: claims.length})
     return {web, response}
   } catch (e) {
-    console.log('EEEOEOEOEOEOEOEOPRRORRRORAas')
     console.log(e)
   }
 

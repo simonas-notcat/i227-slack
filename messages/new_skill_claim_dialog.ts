@@ -1,7 +1,7 @@
 export default {
   callback_id: 'new_skill_claim_submit',
-  title: 'Sign skill claim',
-  submit_label: 'Sign',
+  title: 'Endorse skill',
+  submit_label: 'Endorse',
   elements: [
     {
       label: 'Teammate',
