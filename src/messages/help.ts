@@ -4,44 +4,42 @@ export default {
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "Here are your options "
+        "text": "Reputation built by community"
       }
     },
     {
-      "type": "actions",
-      "block_id": "index_actions",
-      "elements": [
-        {
-          "type": "button",
-          "action_id": "create_new_skill",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "Create skill claim"
-          },
-          "style": "primary",
-          "value": "create_new_skill"
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "Endorse skill:\n`/wot vote @User skill Team player`"
+      },
+      "accessory": {
+        "type": "button",
+        "action_id": "create_new_skill",
+        "style": "primary",
+        "text": {
+          "type": "plain_text",
+          "emoji": true,
+          "text": "Endorse skill"
         },
-        {
-          "type": "button",
-          "action_id": "my_profile",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "My profile"
-          },
-          "value": "my_profile"
+        "value": "create_new_skill"
+      }      
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "View profile:\n`/wot profile @User`"
+      },
+      "accessory": {
+        "type": "button",
+        "action_id": "my_profile",
+        "text": {
+          "type": "plain_text",
+          "emoji": true,
+          "text": "My profile"
         },
-        {
-          "type": "button",
-          "action_id": "create_sdr",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "Find users by claims"
-          },
-          "value": "create_sdr"
-        }
-      ]
+        "value": "my_profile"
+      }  
     }
 ]}

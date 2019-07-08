@@ -5,8 +5,9 @@ import newSkillClaimDialog from '../messages/new_skill_claim_dialog'
 import { prisma } from '../generated/prisma-client'
 import { uniqBy } from 'lodash'
 import { getWebClientForTeamId } from '../installationManager'
+import axios from 'axios'
 
-slackInteractions.action({ blockId: 'index_actions', actionId: 'create_new_skill'}, async (payload, respond) => {
+slackInteractions.action({ actionId: 'create_new_skill'}, async (payload, respond) => {
   respond({
     replace_original: true
   })
@@ -24,6 +25,55 @@ slackInteractions.action({ blockId: 'index_actions', actionId: 'create_new_skill
   }
 })
 
+
+export const sendVoteForRequest = async (request: any) => {
+  const arr = request.text.split(' ')
+  const found = request.text.match(/@\w+/g)
+  // /bot vote @Simonas skill Typescript Developer
+  const claimType = arr.length > 1 && arr[2]
+  const claimValue = arr.length > 2 && arr.slice(3).join(' ')
+  
+  const subjectUserId = (found && found[0] && found[0].substring(1)) || request.user_id
+
+  if (!claimType || !claimValue || !subjectUserId) {
+    await axios.post(request.response_url, {
+      text: 'Usage: `/wot vote @User skill Developer`'
+    })
+  } else {
+
+      const firstMessage = {
+        response_type: 'in_channel',
+        channel: request.channel_id,
+        blocks: [
+          {
+            "type": "context",
+            "elements": [
+              {
+                "type": "mrkdwn",
+                "text": `<@${request.user_id}> has made this statement:`
+              }
+            ]
+          },
+        ]
+      }
+    
+      const {web, response} = await signAndCreatePostResponseNewClaimToChannel({
+        issuerUserId: request.user_id,
+        subjectUserId: subjectUserId,
+        teamId: request.team_id,
+        responseUrl: request.response_url,
+        claimType,
+        claimValue,
+        channelId: request.channel_id,
+      })
+    
+    
+      await web.chat.postMessage(firstMessage)
+      await web.chat.postMessage(response)
+      
+
+  }
+}
 
 slackInteractions.action({ callbackId: 'new_skill_claim_submit'}, async (payload, respond) => {
 

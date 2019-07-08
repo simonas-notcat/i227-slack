@@ -80,7 +80,7 @@ export const getProfileResponse = async (userId, teamId) => {
 export const sendProfileForRequest = async (request: any) => {
   const found = request.text.match(/@\w+/g)
 
-  const userId = (found[0] && found[0].substring(1)) || request.user_id
+  const userId = (found && found[0] && found[0].substring(1)) || request.user_id
   const response = await getProfileResponse(userId, request.team_id)
   try {
     await axios.post(request.response_url, response)
@@ -90,7 +90,7 @@ export const sendProfileForRequest = async (request: any) => {
   
 }
 
-slackInteractions.action({ blockId: 'index_actions', actionId: 'my_profile'}, async (payload, respond) => {
+slackInteractions.action({ actionId: 'my_profile'}, async (payload, respond) => {
   console.log({payload})
   console.log(payload.actions)
 
