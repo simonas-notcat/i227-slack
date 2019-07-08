@@ -41,5 +41,23 @@ export default {
         },
         "value": "my_profile"
       }  
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "Connect your Identity Wallet (uPort)"
+      },
+      "accessory": {
+        "type": "button",
+        "action_id": "connect_uport",
+        "text": {
+          "type": "plain_text",
+          "emoji": true,
+          "text": "Connect"
+        },
+        "value": "connect_uport"
+      }  
     }
+
 ]}

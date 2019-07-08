@@ -1,6 +1,9 @@
 import { slackInteractions } from './adapter'
 import './tos'
-import './profile'
-import './new_skill'
+import { handleUportCallback} from './profile'
+import './new_claim'
 
-export default slackInteractions
+export { 
+  slackInteractions,
+  handleUportCallback
+}

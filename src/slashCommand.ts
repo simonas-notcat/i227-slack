@@ -1,7 +1,7 @@
 
 import Help from './messages/help'
 import { sendProfileForRequest } from './actions/profile'
-import { sendVoteForRequest } from './actions/new_skill'
+import { sendVoteForRequest } from './actions/new_claim'
 
 export default (req, res, next) => {
   if (req.body.command === '/wot') {

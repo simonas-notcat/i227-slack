@@ -19,6 +19,8 @@ type Did {
   id: ID! @id
   did: String! @unique
   privateKey: String
+  boxPub: String
+  pushToken: String
   users: [User!]
   issuedClaims: [Claim!] @relation(name: "Claims_From_User")
   receivedClaims: [Claim!] @relation(name: "Claims_To_User")
@@ -38,4 +40,12 @@ type Claim {
   jwt: String!
   claimType: String!
   claimValue: String!
+}
+
+type UportConnect {
+  id: ID! @id
+  user_id: String
+  team_id: String
+  channel_id: String
+  response_url: String
 }

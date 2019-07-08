@@ -31,7 +31,9 @@
     "request": "^2.88.0",
     "string": "^3.3.3",
     "ts-node": "^8.3.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.2",
+    "uport-credentials": "^1.2.2",
+    "uport-transports": "^0.2.6"
   },
   "nodemonConfig": {
     "ignore": [

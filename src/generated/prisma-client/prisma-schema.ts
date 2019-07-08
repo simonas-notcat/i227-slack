@@ -14,6 +14,10 @@ type AggregateInstallation {
   count: Int!
 }
 
+type AggregateUportConnect {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -594,6 +598,8 @@ type Did {
   id: ID!
   did: String!
   privateKey: String
+  boxPub: String
+  pushToken: String
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   issuedClaims(where: ClaimWhereInput, orderBy: ClaimOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Claim!]
   receivedClaims(where: ClaimWhereInput, orderBy: ClaimOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Claim!]
@@ -609,6 +615,8 @@ input DidCreateInput {
   id: ID
   did: String!
   privateKey: String
+  boxPub: String
+  pushToken: String
   users: UserCreateManyWithoutDidsInput
   issuedClaims: ClaimCreateManyWithoutIssuerInput
   receivedClaims: ClaimCreateManyWithoutSubjectInput
@@ -633,6 +641,8 @@ input DidCreateWithoutIssuedClaimsInput {
   id: ID
   did: String!
   privateKey: String
+  boxPub: String
+  pushToken: String
   users: UserCreateManyWithoutDidsInput
   receivedClaims: ClaimCreateManyWithoutSubjectInput
 }
@@ -641,6 +651,8 @@ input DidCreateWithoutReceivedClaimsInput {
   id: ID
   did: String!
   privateKey: String
+  boxPub: String
+  pushToken: String
   users: UserCreateManyWithoutDidsInput
   issuedClaims: ClaimCreateManyWithoutIssuerInput
 }
@@ -649,6 +661,8 @@ input DidCreateWithoutUsersInput {
   id: ID
   did: String!
   privateKey: String
+  boxPub: String
+  pushToken: String
   issuedClaims: ClaimCreateManyWithoutIssuerInput
   receivedClaims: ClaimCreateManyWithoutSubjectInput
 }
@@ -665,12 +679,18 @@ enum DidOrderByInput {
   did_DESC
   privateKey_ASC
   privateKey_DESC
+  boxPub_ASC
+  boxPub_DESC
+  pushToken_ASC
+  pushToken_DESC
 }
 
 type DidPreviousValues {
   id: ID!
   did: String!
   privateKey: String
+  boxPub: String
+  pushToken: String
 }
 
 input DidScalarWhereInput {
@@ -716,6 +736,34 @@ input DidScalarWhereInput {
   privateKey_not_starts_with: String
   privateKey_ends_with: String
   privateKey_not_ends_with: String
+  boxPub: String
+  boxPub_not: String
+  boxPub_in: [String!]
+  boxPub_not_in: [String!]
+  boxPub_lt: String
+  boxPub_lte: String
+  boxPub_gt: String
+  boxPub_gte: String
+  boxPub_contains: String
+  boxPub_not_contains: String
+  boxPub_starts_with: String
+  boxPub_not_starts_with: String
+  boxPub_ends_with: String
+  boxPub_not_ends_with: String
+  pushToken: String
+  pushToken_not: String
+  pushToken_in: [String!]
+  pushToken_not_in: [String!]
+  pushToken_lt: String
+  pushToken_lte: String
+  pushToken_gt: String
+  pushToken_gte: String
+  pushToken_contains: String
+  pushToken_not_contains: String
+  pushToken_starts_with: String
+  pushToken_not_starts_with: String
+  pushToken_ends_with: String
+  pushToken_not_ends_with: String
   AND: [DidScalarWhereInput!]
   OR: [DidScalarWhereInput!]
   NOT: [DidScalarWhereInput!]
@@ -742,6 +790,8 @@ input DidSubscriptionWhereInput {
 input DidUpdateInput {
   did: String
   privateKey: String
+  boxPub: String
+  pushToken: String
   users: UserUpdateManyWithoutDidsInput
   issuedClaims: ClaimUpdateManyWithoutIssuerInput
   receivedClaims: ClaimUpdateManyWithoutSubjectInput
@@ -750,11 +800,15 @@ input DidUpdateInput {
 input DidUpdateManyDataInput {
   did: String
   privateKey: String
+  boxPub: String
+  pushToken: String
 }
 
 input DidUpdateManyMutationInput {
   did: String
   privateKey: String
+  boxPub: String
+  pushToken: String
 }
 
 input DidUpdateManyWithoutUsersInput {
@@ -791,6 +845,8 @@ input DidUpdateOneRequiredWithoutReceivedClaimsInput {
 input DidUpdateWithoutIssuedClaimsDataInput {
   did: String
   privateKey: String
+  boxPub: String
+  pushToken: String
   users: UserUpdateManyWithoutDidsInput
   receivedClaims: ClaimUpdateManyWithoutSubjectInput
 }
@@ -798,6 +854,8 @@ input DidUpdateWithoutIssuedClaimsDataInput {
 input DidUpdateWithoutReceivedClaimsDataInput {
   did: String
   privateKey: String
+  boxPub: String
+  pushToken: String
   users: UserUpdateManyWithoutDidsInput
   issuedClaims: ClaimUpdateManyWithoutIssuerInput
 }
@@ -805,6 +863,8 @@ input DidUpdateWithoutReceivedClaimsDataInput {
 input DidUpdateWithoutUsersDataInput {
   did: String
   privateKey: String
+  boxPub: String
+  pushToken: String
   issuedClaims: ClaimUpdateManyWithoutIssuerInput
   receivedClaims: ClaimUpdateManyWithoutSubjectInput
 }
@@ -873,6 +933,34 @@ input DidWhereInput {
   privateKey_not_starts_with: String
   privateKey_ends_with: String
   privateKey_not_ends_with: String
+  boxPub: String
+  boxPub_not: String
+  boxPub_in: [String!]
+  boxPub_not_in: [String!]
+  boxPub_lt: String
+  boxPub_lte: String
+  boxPub_gt: String
+  boxPub_gte: String
+  boxPub_contains: String
+  boxPub_not_contains: String
+  boxPub_starts_with: String
+  boxPub_not_starts_with: String
+  boxPub_ends_with: String
+  boxPub_not_ends_with: String
+  pushToken: String
+  pushToken_not: String
+  pushToken_in: [String!]
+  pushToken_not_in: [String!]
+  pushToken_lt: String
+  pushToken_lte: String
+  pushToken_gt: String
+  pushToken_gte: String
+  pushToken_contains: String
+  pushToken_not_contains: String
+  pushToken_starts_with: String
+  pushToken_not_starts_with: String
+  pushToken_ends_with: String
+  pushToken_not_ends_with: String
   users_every: UserWhereInput
   users_some: UserWhereInput
   users_none: UserWhereInput
@@ -1094,6 +1182,12 @@ type Mutation {
   upsertInstallation(where: InstallationWhereUniqueInput!, create: InstallationCreateInput!, update: InstallationUpdateInput!): Installation!
   deleteInstallation(where: InstallationWhereUniqueInput!): Installation
   deleteManyInstallations(where: InstallationWhereInput): BatchPayload!
+  createUportConnect(data: UportConnectCreateInput!): UportConnect!
+  updateUportConnect(data: UportConnectUpdateInput!, where: UportConnectWhereUniqueInput!): UportConnect
+  updateManyUportConnects(data: UportConnectUpdateManyMutationInput!, where: UportConnectWhereInput): BatchPayload!
+  upsertUportConnect(where: UportConnectWhereUniqueInput!, create: UportConnectCreateInput!, update: UportConnectUpdateInput!): UportConnect!
+  deleteUportConnect(where: UportConnectWhereUniqueInput!): UportConnect
+  deleteManyUportConnects(where: UportConnectWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -1129,6 +1223,9 @@ type Query {
   installation(where: InstallationWhereUniqueInput!): Installation
   installations(where: InstallationWhereInput, orderBy: InstallationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Installation]!
   installationsConnection(where: InstallationWhereInput, orderBy: InstallationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InstallationConnection!
+  uportConnect(where: UportConnectWhereUniqueInput!): UportConnect
+  uportConnects(where: UportConnectWhereInput, orderBy: UportConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UportConnect]!
+  uportConnectsConnection(where: UportConnectWhereInput, orderBy: UportConnectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UportConnectConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -1139,7 +1236,168 @@ type Subscription {
   claim(where: ClaimSubscriptionWhereInput): ClaimSubscriptionPayload
   did(where: DidSubscriptionWhereInput): DidSubscriptionPayload
   installation(where: InstallationSubscriptionWhereInput): InstallationSubscriptionPayload
+  uportConnect(where: UportConnectSubscriptionWhereInput): UportConnectSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type UportConnect {
+  id: ID!
+  user_id: String
+  team_id: String
+  channel_id: String
+  response_url: String
+}
+
+type UportConnectConnection {
+  pageInfo: PageInfo!
+  edges: [UportConnectEdge]!
+  aggregate: AggregateUportConnect!
+}
+
+input UportConnectCreateInput {
+  id: ID
+  user_id: String
+  team_id: String
+  channel_id: String
+  response_url: String
+}
+
+type UportConnectEdge {
+  node: UportConnect!
+  cursor: String!
+}
+
+enum UportConnectOrderByInput {
+  id_ASC
+  id_DESC
+  user_id_ASC
+  user_id_DESC
+  team_id_ASC
+  team_id_DESC
+  channel_id_ASC
+  channel_id_DESC
+  response_url_ASC
+  response_url_DESC
+}
+
+type UportConnectPreviousValues {
+  id: ID!
+  user_id: String
+  team_id: String
+  channel_id: String
+  response_url: String
+}
+
+type UportConnectSubscriptionPayload {
+  mutation: MutationType!
+  node: UportConnect
+  updatedFields: [String!]
+  previousValues: UportConnectPreviousValues
+}
+
+input UportConnectSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UportConnectWhereInput
+  AND: [UportConnectSubscriptionWhereInput!]
+  OR: [UportConnectSubscriptionWhereInput!]
+  NOT: [UportConnectSubscriptionWhereInput!]
+}
+
+input UportConnectUpdateInput {
+  user_id: String
+  team_id: String
+  channel_id: String
+  response_url: String
+}
+
+input UportConnectUpdateManyMutationInput {
+  user_id: String
+  team_id: String
+  channel_id: String
+  response_url: String
+}
+
+input UportConnectWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user_id: String
+  user_id_not: String
+  user_id_in: [String!]
+  user_id_not_in: [String!]
+  user_id_lt: String
+  user_id_lte: String
+  user_id_gt: String
+  user_id_gte: String
+  user_id_contains: String
+  user_id_not_contains: String
+  user_id_starts_with: String
+  user_id_not_starts_with: String
+  user_id_ends_with: String
+  user_id_not_ends_with: String
+  team_id: String
+  team_id_not: String
+  team_id_in: [String!]
+  team_id_not_in: [String!]
+  team_id_lt: String
+  team_id_lte: String
+  team_id_gt: String
+  team_id_gte: String
+  team_id_contains: String
+  team_id_not_contains: String
+  team_id_starts_with: String
+  team_id_not_starts_with: String
+  team_id_ends_with: String
+  team_id_not_ends_with: String
+  channel_id: String
+  channel_id_not: String
+  channel_id_in: [String!]
+  channel_id_not_in: [String!]
+  channel_id_lt: String
+  channel_id_lte: String
+  channel_id_gt: String
+  channel_id_gte: String
+  channel_id_contains: String
+  channel_id_not_contains: String
+  channel_id_starts_with: String
+  channel_id_not_starts_with: String
+  channel_id_ends_with: String
+  channel_id_not_ends_with: String
+  response_url: String
+  response_url_not: String
+  response_url_in: [String!]
+  response_url_not_in: [String!]
+  response_url_lt: String
+  response_url_lte: String
+  response_url_gt: String
+  response_url_gte: String
+  response_url_contains: String
+  response_url_not_contains: String
+  response_url_starts_with: String
+  response_url_not_starts_with: String
+  response_url_ends_with: String
+  response_url_not_ends_with: String
+  AND: [UportConnectWhereInput!]
+  OR: [UportConnectWhereInput!]
+  NOT: [UportConnectWhereInput!]
+}
+
+input UportConnectWhereUniqueInput {
+  id: ID
 }
 
 type User {

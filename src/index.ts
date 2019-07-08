@@ -9,7 +9,7 @@ import slashCommand from './slashCommand'
 import {
   prisma
 } from './generated/prisma-client'
-import slackInteractions from './actions'
+import { slackInteractions, handleUportCallback } from './actions'
 import * as oauth from './oauth'
 const app = express()
 
@@ -22,6 +22,9 @@ app.post('/slack/commands', bodyParser.urlencoded({extended: false}), slashComma
 
 app.get('/auth', oauth.authPage)
 app.get('/auth/redirect', oauth.redirect)
+
+
+app.post('/uport_callback', bodyParser.json({ type: '*/*' }), handleUportCallback)
 
 app.use(function (err, req, res, next) {
   console.error(err.stack)

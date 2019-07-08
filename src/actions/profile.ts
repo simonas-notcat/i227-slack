@@ -1,6 +1,6 @@
 import { slackInteractions } from './adapter'
 const { WebClient } = require('@slack/web-api')
-import { getOrCreateUser } from '../userManager'
+import { getOrCreateUser, getUportConnectUrl, credentials } from '../userManager'
 import message from '../messages/profile'
 import { prisma } from '../generated/prisma-client'
 import { uniqBy, groupBy } from 'lodash'
@@ -216,3 +216,51 @@ slackInteractions.action({ blockId: 'share_existing_claim_submit'}, async (paylo
   respond(response)
 
 })
+
+
+
+
+slackInteractions.action({ actionId: 'connect_uport'}, async (payload, respond) => {
+
+  // console.log({payload})
+  // console.log(payload.actions)
+
+  const uri = await getUportConnectUrl(payload)
+
+  const response = {
+    text: `<${uri}|Login with uPort>`,
+  }
+
+  respond(response)
+})
+
+export const handleUportCallback = async (req, res, next) => {
+
+  const uportConnect = await prisma.uportConnect({id: req.query.id})
+
+  const subject = await getOrCreateUser(uportConnect.user_id, uportConnect.team_id)
+
+  const jwt = req.body.access_token
+  const creds = await credentials.authenticateDisclosureResponse(jwt)
+  
+  await prisma.updateUser({
+    where: { id: subject.id },
+    data: {
+      default_did: creds.did,
+      dids: {
+        create: {
+          did: creds.did,
+          pushToken: creds.pushToken,
+          boxPub: creds.boxPub,
+        }
+      }
+    }
+  })
+
+
+  axios.post(uportConnect.response_url, {
+    text: `<@${uportConnect.user_id}> default DID is: ${creds.did}`,
+    // response_type: 'in_channel'
+  }).catch(console.error);
+
+}
