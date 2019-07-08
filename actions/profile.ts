@@ -7,14 +7,11 @@ import { uniqBy, groupBy } from 'lodash'
 import claimMessage from '../messages/profile_claim'
 import newClaimMessage from '../messages/new_claim'
 import { getWebClientForTeamId } from '../installationManager'
+import axios from 'axios'
 const S = require('string')
 
-
-slackInteractions.action({ blockId: 'index_actions', actionId: 'my_profile'}, async (payload, respond) => {
-  console.log({payload})
-  console.log(payload.actions)
-
-  const subject = await getOrCreateUser(payload.user.id, payload.user.team_id)
+export const getProfileResponse = async (userId, teamId) => {
+  const subject = await getOrCreateUser(userId, teamId)
   
   try {
 
@@ -36,7 +33,7 @@ slackInteractions.action({ blockId: 'index_actions', actionId: 'my_profile'}, as
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": `Your profile:`
+            "text": `<@${subject.user_id}> profile:`
           }
         },
         {
@@ -74,10 +71,31 @@ slackInteractions.action({ blockId: 'index_actions', actionId: 'my_profile'}, as
 
 
 
-    respond(response)
+    return response
   } catch (e) {
     console.log(e)
   }
+}
+
+export const sendProfileForRequest = async (request: any) => {
+  const found = request.text.match(/@\w+/g)
+
+  const userId = (found[0] && found[0].substring(1)) || request.user_id
+  const response = await getProfileResponse(userId, request.team_id)
+  try {
+    await axios.post(request.response_url, response)
+  } catch (e) {
+    console.log(e)
+  }
+  
+}
+
+slackInteractions.action({ blockId: 'index_actions', actionId: 'my_profile'}, async (payload, respond) => {
+  console.log({payload})
+  console.log(payload.actions)
+
+  const response = await getProfileResponse(payload.user.id, payload.user.team_id)
+  respond(response)
 
 })
 
